@@ -11,7 +11,7 @@ exports.ADDRESSES=[
           "hex": "0x0983383fca34acbb800000"
         },
         "matPNG",
-        "Pangolin"
+        "WarpDefi"
       ]
     },
     {

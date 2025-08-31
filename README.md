@@ -1,5 +1,5 @@
 # WarpDefi Smart Contracts
-This repo contains all of the smart contracts used to run [Pangolin](pangolin.exchange).
+This repo contains all of the smart contracts used to run [WarpDefi](http://warpdefi.com/).
 
 ## Deployed Contracts
 Factory address: `0xefa94DE7a4656D787667C749f7E1223D71E9FD88`
@@ -59,19 +59,9 @@ The deployment script adds minimum two farms to MiniChef, based on the constants
 
 # Faucets
 
-## Aurora
+## WarpOnChain
 Currently on Aurora you need to get funds into Goerli and then bridge across. You can do this by following these steps:
 - Get some ETH from Chainlink Faucet https://faucets.chain.link/goerli
 - Send ETH to Aurora via Rainbow Bridge https://testnet.rainbowbridge.app/
 
-## BSC
-Faucet: https://testnet.binance.org/faucet-smart
-## Cronos
-Faucet: https://cronos.crypto.org/faucet
-Testnet Explorer: https://cronos.crypto.org/explorer/testnet3/
 
-## Harmony
-To get Harmony tokens on the testnet please go here https://faucet.pops.one/. **Please note** the Metamask address is different to your Harmony address, so you'll need to go to the Explorer to convert https://explorer.pops.one/
-
-## Polygon (MATIC)
-Faucet: https://faucet.polygon.technology/
