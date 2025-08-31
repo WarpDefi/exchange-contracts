@@ -6,7 +6,7 @@ const PNG_SUPPLY = ethers.utils.parseUnits("500000000", 18);
 const ZERO_ADDRESS = ethers.constants.AddressZero;
 
 // Start test block
-describe("RewarderViaMultiplierForPangoChef.sol", function () {
+describe("RewarderViaMultiplierForWarpDefiChef.sol", function () {
   before(async function () {
     // Get all signers
     this.signers = await ethers.getSigners();

@@ -301,7 +301,7 @@ async function main() {
     console.log("Transferred WarpDefiFactory ownership to Multisig.");
 
     /*******************
-     * PANGOCHEF ROLES *
+     * WARPDEFICHEF ROLES *
      *******************/
 
     await chef.grantRole(FUNDER_ROLE, vester.address);

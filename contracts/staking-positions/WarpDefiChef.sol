@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPLv3
 pragma solidity 0.8.15;
 
-import "./PangoChefFunding.sol";
+import "./WarpDefiChefFunding.sol";
 import "./ReentrancyGuard.sol";
 
 import "./interfaces/IWAVAX.sol";
@@ -22,7 +22,7 @@ contract SafeExternalCalls {
  * @notice WarpDefiChef is a MiniChef alternative that utilizes the Sunshine and Rainbows algorithm
  *         for distributing rewards from pools to stakers.
  */
-contract WarpDefiChef is PangoChefFunding, ReentrancyGuard {
+contract WarpDefiChef is WarpDefiChefFunding, ReentrancyGuard {
     using SafeTransferLib for ERC20;
     using EnumerableSet for EnumerableSet.UintSet;
 
@@ -181,7 +181,7 @@ contract WarpDefiChef is PangoChefFunding, ReentrancyGuard {
         address newAdmin,
         IWarpDefiFactory newFactory,
         address newWrappedNativeToken
-    ) PangoChefFunding(newRewardsToken, newAdmin) {
+    ) WarpDefiChefFunding(newRewardsToken, newAdmin) {
         // Get WAVAX-WARP (or WETH-WARP, etc.) liquidity token.
         address poolZeroPair = newFactory.getPair(newRewardsToken, newWrappedNativeToken);
 
@@ -423,7 +423,7 @@ contract WarpDefiChef is PangoChefFunding, ReentrancyGuard {
         return _earned(deltaRewardSummations, user);
     }
 
-    /** @inheritdoc PangoChefFunding*/
+    /** @inheritdoc WarpDefiChefFunding*/
     function poolsLength() public view override returns (uint256) {
         return _poolsLength;
     }

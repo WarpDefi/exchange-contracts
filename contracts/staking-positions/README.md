@@ -11,7 +11,7 @@ These files are in scope:
 * [`WarpDefiStakingPositions.sol`](./WarpDefiStakingPositions.sol)
 * [`WarpDefiStakingPositionsFunding.sol`](./WarpDefiStakingPositionsFunding.sol)
 * [`WarpDefiChef.sol`](./WarpDefiChef.sol)
-* [`PangoChefFunding.sol`](./PangoChefFunding.sol)
+* [`WarpDefiChefFunding.sol`](./WarpDefiChefFunding.sol)
 * [`ReentrancyGuard.sol`](./ReentrancyGuard.sol)
 
 These files are NOT in scope:

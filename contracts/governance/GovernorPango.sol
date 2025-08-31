@@ -5,7 +5,7 @@ import "./interfaces/ITimelock.sol";
 
 // SPDX-License-Identifier: MIT
 /*
- * @notice GovernorPango is an adaptation of GovernorAlpha intended to work with WarpDefiStakingPositions NFTs
+ * @notice GovernorWarpDefi is an adaptation of GovernorAlpha intended to work with WarpDefiStakingPositions NFTs
  *         on an evm compatible blockchain. The proposal lifecycle is the same as GovernorAlpha but additional
  *         restrictions are imposed:
  *
@@ -15,7 +15,7 @@ import "./interfaces/ITimelock.sol";
  *         4) An NFT cannot be used for voting on the same proposal multiple times, regardless of ownership
  *         5) The proposer is always allowed to cancel the proposal before voting begins
  */
-contract GovernorPango {
+contract GovernorWarpDefi {
     /// @notice The delay before voting on a proposal may take place, once proposed
     /// @dev Can be changed via vote within the range: [1 days, 7 days]
     uint40 public VOTING_DELAY = 1 days;

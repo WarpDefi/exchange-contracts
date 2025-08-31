@@ -7,7 +7,7 @@ import "@boringcrypto/boring-solidity/contracts/libraries/BoringMath.sol";
 
 import "./interfaces/IRewarder.sol";
 
-contract RewarderViaMultiplierForPangoChef is IRewarder {
+contract RewarderViaMultiplierForWarpDefiChef is IRewarder {
     using BoringMath for uint256;
     using BoringERC20 for IERC20;
 

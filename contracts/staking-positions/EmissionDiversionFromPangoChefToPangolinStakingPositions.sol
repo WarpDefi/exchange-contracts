@@ -3,7 +3,7 @@ pragma solidity 0.8.15;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-interface IPangoChef {
+interface IWarpDefiChef {
     function claim(uint256 poolId) external returns (uint256 reward);
 
     function rewardsToken() external view returns (address);
@@ -14,9 +14,9 @@ interface IPangoChef {
 }
 
 /** @author shung for WarpDefi */
-contract EmissionDiversionFromPangoChefToWarpDefiStakingPositions {
-    IPangoChef public immutable pangoChef;
-    IPangoChef public immutable warpdefiStakingPositions;
+contract EmissionDiversionFromWarpDefiChefToWarpDefiStakingPositions {
+    IWarpDefiChef public immutable warpdefiChef;
+    IWarpDefiChef public immutable warpdefiStakingPositions;
     address public immutable rewardsToken;
     bytes32 private constant FUNDER_ROLE = keccak256("FUNDER_ROLE");
 
@@ -25,21 +25,21 @@ contract EmissionDiversionFromPangoChefToWarpDefiStakingPositions {
         _;
     }
 
-    constructor(address newPangoChef, address newStakingPositions) {
-        require(newPangoChef.code.length != 0, "empty contract");
-        address newRewardsToken = IPangoChef(newPangoChef).rewardsToken();
+    constructor(address newWarpDefiChef, address newStakingPositions) {
+        require(newWarpDefiChef.code.length != 0, "empty contract");
+        address newRewardsToken = IWarpDefiChef(newWarpDefiChef).rewardsToken();
         require(
-            newRewardsToken == IPangoChef(newStakingPositions).rewardsToken(),
+            newRewardsToken == IWarpDefiChef(newStakingPositions).rewardsToken(),
             "invalid addresses"
         );
         IERC20(newRewardsToken).approve(newStakingPositions, type(uint256).max);
-        pangoChef = IPangoChef(newPangoChef);
-        warpdefiStakingPositions = IPangoChef(newStakingPositions);
+        warpdefiChef = IWarpDefiChef(newWarpDefiChef);
+        warpdefiStakingPositions = IWarpDefiChef(newStakingPositions);
         rewardsToken = newRewardsToken;
     }
 
     function claimAndAddReward(uint256 poolId) external onlyFunder {
-        uint256 amount = pangoChef.claim(poolId);
+        uint256 amount = warpdefiChef.claim(poolId);
         warpdefiStakingPositions.addReward(amount);
     }
 

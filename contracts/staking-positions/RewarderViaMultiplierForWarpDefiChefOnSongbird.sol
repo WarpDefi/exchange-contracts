@@ -3,7 +3,7 @@ pragma solidity 0.8.15;
 
 import "./WarpDefiChef.sol";
 
-contract RewarderViaMultiplierForPangoChefOnSongbird is IRewarder {
+contract RewarderViaMultiplierForWarpDefiChefOnSongbird is IRewarder {
     using SafeTransferLib for ERC20;
 
     ERC20[] public rewardTokens;

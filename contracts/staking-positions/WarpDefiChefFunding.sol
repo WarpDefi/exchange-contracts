@@ -15,7 +15,7 @@ import "./GenericErrors.sol";
  *      StakingRewards, but instead of distributing rewards to stakers based on their staked
  *      amount, it distributes rewards to pools based on arbitrary weights.
  */
-abstract contract PangoChefFunding is AccessControlEnumerable, GenericErrors {
+abstract contract WarpDefiChefFunding is AccessControlEnumerable, GenericErrors {
     using SafeTransferLib for ERC20;
 
     struct PoolRewardInfo {
@@ -94,7 +94,7 @@ abstract contract PangoChefFunding is AccessControlEnumerable, GenericErrors {
     event WeightSet(uint256 indexed poolId, uint256 newWeight);
 
     /**
-     * @notice Constructor to create PangoChefFunding contract.
+     * @notice Constructor to create WarpDefiChefFunding contract.
      * @param newRewardsToken The token that is distributed as reward.
      * @param newAdmin The initial owner of the contract.
      */

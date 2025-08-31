@@ -8,7 +8,7 @@ const PROPOSAL_THRESHOLD_MIN =   (1_000_000).toString() + '0'.repeat(18);
 const PROPOSAL_THRESHOLD_MAX = (115_000_000).toString() + '0'.repeat(18);
 // ------------------------------------------------
 async function main() {
-    const contractName = 'GovernorPango';
+    const contractName = 'GovernorWarpDefi';
 
     console.log(`Deploying ${contractName} ...`);
     console.log(`Timelock:               ${TIMELOCK_ADDRESS}`);
