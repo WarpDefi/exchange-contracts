@@ -1,4 +1,4 @@
-# Pangolin Smart Contracts
+# WarpDefi Smart Contracts
 This repo contains all of the smart contracts used to run [Pangolin](pangolin.exchange).
 
 ## Deployed Contracts
