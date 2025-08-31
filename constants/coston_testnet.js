@@ -1,7 +1,7 @@
 const WCFLR = "0x1659941d425224408c5679eeef606666c7991a8A";
 exports.WRAPPED_NATIVE_TOKEN = WCFLR;
 exports.PNG_SYMBOL = "PCT";
-exports.PNG_NAME = "Pangolin Coston";
+exports.PNG_NAME = "WarpDefi Coston";
 exports.TOTAL_SUPPLY = 230000000; // 230M
 exports.INITIAL_MINT = 3450000;
 exports.AIRDROP_AMOUNT = 3450000; // 3.45M or 1.5% of max supply

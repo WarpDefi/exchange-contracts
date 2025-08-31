@@ -51,7 +51,7 @@ The deployment script sets up `FeeCollector` to manage funding of the PNG stakin
 
 ### Revenue Distributor
 
-Portion of swap fees accumulated in `FeeCollector` is sent to `RevenueDistributor`. This contract allows anyone to call its `distributeToken` function to allocate revenue to pre-determined recipients. In default configuration, these recipients are the new DAO with 80% allocation, and Pangolin Foundation DAO with 20% allocation. The allocation can be later changed by the joint agreement of both DAOs, using the `JointMultisig` contract. Any future ERC20 revenue of the DAO **must** also be transferred to the Revenue Distributor.
+Portion of swap fees accumulated in `FeeCollector` is sent to `RevenueDistributor`. This contract allows anyone to call its `distributeToken` function to allocate revenue to pre-determined recipients. In default configuration, these recipients are the new DAO with 80% allocation, and WarpDefi Foundation DAO with 20% allocation. The allocation can be later changed by the joint agreement of both DAOs, using the `JointMultisig` contract. Any future ERC20 revenue of the DAO **must** also be transferred to the Revenue Distributor.
 
 ### Mini Chef
 

@@ -1,7 +1,7 @@
 const WSGB = "0x02f0826ef6aD107Cfc861152B32B52fD11BaB9ED";
 exports.WRAPPED_NATIVE_TOKEN = WSGB;
 exports.PNG_SYMBOL = "PSB";
-exports.PNG_NAME = "Pangolin Songbird";
+exports.PNG_NAME = "WarpDefi Songbird";
 exports.TOTAL_SUPPLY = 230000000; // two-hundred-and-thirty million.
 exports.INITIAL_MINT = 9200000; // nine-million and two-hundred thousand. 1% initial airdrop, 1% feature airdrop, 2% protocol-owned liquidity.
 exports.AIRDROP_AMOUNT = 2300000; // two-million and three-hundred thousand. 1% initial airdrop.

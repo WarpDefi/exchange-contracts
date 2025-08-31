@@ -29,7 +29,7 @@ contract PangolinPair is IPangolinPair, PangolinERC20 {
 
     uint private unlocked = 1;
     modifier lock() {
-        require(unlocked == 1, 'Pangolin: LOCKED');
+        require(unlocked == 1, 'WarpDefi: LOCKED');
         unlocked = 0;
         _;
         unlocked = 1;
@@ -43,7 +43,7 @@ contract PangolinPair is IPangolinPair, PangolinERC20 {
 
     function _safeTransfer(address token, address to, uint value) private {
         (bool success, bytes memory data) = token.call(abi.encodeWithSelector(SELECTOR, to, value));
-        require(success && (data.length == 0 || abi.decode(data, (bool))), 'Pangolin: TRANSFER_FAILED');
+        require(success && (data.length == 0 || abi.decode(data, (bool))), 'WarpDefi: TRANSFER_FAILED');
     }
 
     event Mint(address indexed sender, uint amount0, uint amount1);

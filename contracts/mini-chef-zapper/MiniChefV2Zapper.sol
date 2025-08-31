@@ -12,8 +12,8 @@ import "../pangolin-lib/libraries/TransferHelper.sol";
 // SPDX-License-Identifier: MIT
 
 /// @author Wivern for Beefy.Finance
-/// @author bmino for Pangolin
-/// @notice This contract adds liquidity to Pangolin compatible liquidity pair pools and farms.
+/// @author WarpDefi
+/// @notice This contract adds liquidity to WarpDefi compatible liquidity pair pools and farms.
 
 
 interface IMiniChefV2 {

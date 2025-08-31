@@ -7,7 +7,7 @@ import "../Claimable.sol";
 
 /**
  * @title Allocation Vester
- * @author shung for Pangolin
+ * @author WarpDefi
  * @notice This contract allows allocating and distributing tokens to recipients by vesting (i.e.,
  * streaming) it for arbitrary durations for each recipient.
  */

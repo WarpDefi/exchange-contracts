@@ -1,7 +1,7 @@
 const WFLR = "0x1D80c49BbBCd1C0911346656B529DF9E5c2F783d";
 exports.WRAPPED_NATIVE_TOKEN = WFLR;
 exports.PNG_SYMBOL = "PFL";
-exports.PNG_NAME = "Pangolin Flare";
+exports.PNG_NAME = "WarpDefi Flare";
 exports.TOTAL_SUPPLY = 230000000; // two-hundred-and-thirty million.
 exports.INITIAL_MINT = 16100000; // sixteen-million and one-hundred thousand. 2% airdrop, 5% protocol-owned liquidity.
 exports.AIRDROP_AMOUNT = 0; // 0% initial airdrop.

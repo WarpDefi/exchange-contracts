@@ -9,7 +9,7 @@ import './pool/IPangolinV3PoolOwnerActions.sol';
 import './pool/IPangolinV3PoolEvents.sol';
 
 /// @title The interface for a PangolinV3 Pool
-/// @notice A Pangolin pool facilitates swapping and automated market making between any two assets that strictly conform
+/// @notice A WarpDefi pool facilitates swapping and automated market making between any two assets that strictly conform
 /// to the ERC20 specification
 /// @dev The pool interface is broken up into many smaller pieces
 interface IPangolinV3Pool is
