@@ -18,7 +18,7 @@ import './base/SelfPermit.sol';
 import './base/PoolInitializer.sol';
 
 /// @title NFT positions
-/// @notice Wraps Pangolin V3 positions in the ERC721 non-fungible token interface
+/// @notice Wraps WarpDefi V3 positions in the ERC721 non-fungible token interface
 contract NonfungiblePositionManager is
     INonfungiblePositionManager,
     Multicall,
@@ -28,7 +28,7 @@ contract NonfungiblePositionManager is
     LiquidityManagement,
     SelfPermit
 {
-    // details about the Pangolin V3 position
+    // details about the WarpDefi V3 position
     struct Position {
         // the nonce for permits
         uint96 nonce;
@@ -79,7 +79,7 @@ contract NonfungiblePositionManager is
         address _WETH9,
         address _tokenDescriptor_,
         address _pangolinRewarder_
-    ) ERC721Permit('Pangolin V3 Positions NFT', 'PNV3-POS', '1') PeripheryImmutableState(_factory, _WETH9) {
+    ) ERC721Permit('WarpDefi V3 Positions NFT', 'PNV3-POS', '1') PeripheryImmutableState(_factory, _WETH9) {
         _tokenDescriptor = _tokenDescriptor_;
         _pangolinRewarder = _pangolinRewarder_;
     }

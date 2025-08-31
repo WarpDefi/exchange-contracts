@@ -20,7 +20,7 @@ describe("RewarderViaMultiplierForPangoChef.sol", function () {
     ]);
 
     // get contract factories
-    this.Pangolin = await ethers.getContractFactory("Png");
+    this.WarpDefi = await ethers.getContractFactory("Png");
     this.Factory = await ethers.getContractFactory("WarpDefiFactory");
     this.Chef = await ethers.getContractFactory("WarpDefiChef");
     this.Wavax = await ethers.getContractFactory("WAVAX");
@@ -36,12 +36,12 @@ describe("RewarderViaMultiplierForPangoChef.sol", function () {
     this.alt_wavax = await this.wavax.connect(this.unauthorized);
 
     // Deploy PNG ERC20 token for rewards.
-    this.png = await this.Pangolin.deploy(PNG_SUPPLY, PNG_SUPPLY, "PNG", "WarpDefi");
+    this.png = await this.WarpDefi.deploy(PNG_SUPPLY, PNG_SUPPLY, "PNG", "WarpDefi");
     await this.png.deployed();
     this.alt_png = await this.png.connect(this.unauthorized);
 
     // Deploy another ERC20 token.
-    this.another_token = await this.Pangolin.deploy(PNG_SUPPLY, PNG_SUPPLY, "PNG", "WarpDefi");
+    this.another_token = await this.WarpDefi.deploy(PNG_SUPPLY, PNG_SUPPLY, "PNG", "WarpDefi");
     await this.another_token.deployed();
     this.alt_another_token = await this.another_token.connect(this.unauthorized);
 

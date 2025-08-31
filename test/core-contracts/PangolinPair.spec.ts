@@ -106,7 +106,7 @@ describe("PangolinPair", () => {
           "0x",
           overrides
         )
-      ).to.be.revertedWith("Pangolin: K");
+      ).to.be.revertedWith("WarpDefi: K");
       await pair.swap(0, expectedOutputAmount, wallet.address, "0x", overrides);
     });
   });
@@ -129,7 +129,7 @@ describe("PangolinPair", () => {
       await token0.transfer(pair.address, inputAmount);
       await expect(
         pair.swap(outputAmount.add(1), 0, wallet.address, "0x", overrides)
-      ).to.be.revertedWith("Pangolin: K");
+      ).to.be.revertedWith("WarpDefi: K");
       await pair.swap(outputAmount, 0, wallet.address, "0x", overrides);
     });
   });

@@ -1,6 +1,6 @@
-# Pangolin Staking Positions and Pango Chef
+# WarpDefi Staking Positions and  WarpDefiChef
 
-Pangolin Staking Positions and Pango Chef are unique staking and farming solutions. They utilize
+WarpDefi Staking Positions and WarpDefiChef are unique staking and farming solutions. They utilize
 the Sunshine and Rainbows (SAR) algorithm, which distributes rewards as a function of balance and
 staking duration.
 
@@ -113,7 +113,7 @@ pool separately utilizes the SAR algorithm to distribute its reward allocation t
 
 PangoChef requires a Uniswap V2 factory and a wrapped native token address to be defined in
 the constructor. Although it accepts any ERC20 token to be staked, it is mainly intended for
-Pangolin liquidity pool tokens.
+WarpDefi liquidity pool tokens.
 
 PangolinStakingPosition had a simple compounding mechanism. In PangoChef, compounding requires
 that (1) pool’s staking token is a liquidity pool pair token of the factory defined in the

@@ -55,7 +55,7 @@ describe("AllocationVester.sol", function () {
       TOTAL_SUPPLY,
       TOTAL_SUPPLY,
       "PNG",
-      "Pangolin"
+      "WarpDefi"
     );
     await this.png.deployed();
 

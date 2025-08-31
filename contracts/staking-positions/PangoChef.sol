@@ -18,7 +18,7 @@ contract SafeExternalCalls {
 
 /**
  * @title PangoChef
- * @author Shung for Pangolin
+ * @author WarpDefi
  * @notice PangoChef is a MiniChef alternative that utilizes the Sunshine and Rainbows algorithm
  *         for distributing rewards from pools to stakers.
  */
@@ -173,7 +173,7 @@ contract PangoChef is PangoChefFunding, ReentrancyGuard {
      * @notice Constructor to create and initialize PangoChef contract.
      * @param newRewardsToken The token distributed as reward (i.e.: PNG).
      * @param newAdmin The initial owner of the contract.
-     * @param newFactory The Pangolin factory that creates and records AMM pairs.
+     * @param newFactory The WarpDefi factory that creates and records AMM pairs.
      * @param newWrappedNativeToken The contract for wrapping and unwrapping the native gas token.
      */
     constructor(
@@ -250,7 +250,7 @@ contract PangoChef is PangoChefFunding, ReentrancyGuard {
 
     /**
      * @notice External function to stake to a pool using the rewards of the pool.
-     * @dev This function only works if the staking token is a Pangolin liquidity token (PGL), and
+     * @dev This function only works if the staking token is a WarpDefi liquidity token (PGL), and
      *      one of its reserves is the rewardsToken (PNG). The user must supply sufficient amount
      *      of the other reserve to be combined with PNG. The rewards and the user supplied pair
      *      token is then used to mint a liquidity pool token, which must be the same token as the
@@ -669,7 +669,7 @@ contract PangoChef is PangoChefFunding, ReentrancyGuard {
     }
 
     /**
-     * @notice Private function to add liquidity to a Pangolin pair when compounding.
+     * @notice Private function to add liquidity to a WarpDefi pair when compounding.
      * @param pool The properties of the pool that has the liquidity token to add liquidity to.
      * @param rewardAmount The amount of reward tokens that will be paired up. Requires that the
      *                     reward amount is already set aside for adding liquidity. That means,
@@ -687,7 +687,7 @@ contract PangoChef is PangoChefFunding, ReentrancyGuard {
         address poolToken = pool.tokenOrRecipient;
         address rewardPair = pool.rewardPair;
 
-        // Ensure the pool token is a Pangolin pair token containing PNG as one of the pairs.
+        // Ensure the pool token is a WarpDefi pair token containing PNG as one of the pairs.
         if (rewardPair == address(0)) revert InvalidType();
 
         // Get token amounts from the pool.
@@ -841,7 +841,7 @@ contract PangoChef is PangoChefFunding, ReentrancyGuard {
         pool.tokenOrRecipient = tokenOrRecipient;
         pool.poolType = poolType;
 
-        // Set rewardPair if token is a Pangolin pair which has rewardsToken as one of the reserves.
+        // Set rewardPair if token is a WarpDefi pair which has rewardsToken as one of the reserves.
         if (poolType == PoolType.ERC20_POOL) {
             if (tokenOrRecipient.code.length == 0) revert InvalidToken();
 

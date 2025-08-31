@@ -12,10 +12,10 @@ interface ITokenMetadata {
 }
 
 /**
- * @title Pangolin Staking Positions
- * @author shung for Pangolin
+ * @title WarpDefi Staking Positions
+ * @author WarpDefi
  *
- * @notice Pangolin Staking Positions is a unique staking solution. It utilizes the Sunshine and
+ * @notice WarpDefi Staking Positions is a unique staking solution. It utilizes the Sunshine and
  *         Rainbows (SAR) algorithm, which distributes rewards as a function of balance and staking
  *         duration. See README and the Proofs paper to see how SAR works. In this implementation,
  *         the staking token is the same as the reward token, and staking information is recorded
@@ -160,7 +160,7 @@ contract PangolinStakingPositions is ERC721Enumerable, PangolinStakingPositionsF
         address newAdmin,
         ITokenMetadata newTokenMetadata
     )
-        ERC721("Pangolin Staking Positions", "PNG-POS")
+        ERC721("WarpDefi Staking Positions", "PNG-POS")
         PangolinStakingPositionsFunding(newRewardsToken, newAdmin)
     {
         tokenMetadata = newTokenMetadata;

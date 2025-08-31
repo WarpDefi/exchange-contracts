@@ -7,7 +7,7 @@ import "./GenericErrors.sol";
 
 /**
  * @title PangoChef Funding
- * @author Shung for Pangolin
+ * @author WarpDefi
  * @notice A contract that is only the reward funding part of `PangoChef`.
  * @dev The pools of the inheriting contract must call `_claim()` to check their rewards since the
  *      last time they made the same call. Then, based on the reward amount, the pool shall

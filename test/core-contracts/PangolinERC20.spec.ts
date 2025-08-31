@@ -41,7 +41,7 @@ describe("PangolinERC20", () => {
 
   it("name, symbol, decimals, totalSupply, balanceOf, DOMAIN_SEPARATOR, PERMIT_TYPEHASH", async () => {
     const name = await token.name();
-    expect(name).to.eq("Pangolin Liquidity");
+    expect(name).to.eq("WarpDefi Liquidity");
     expect(await token.symbol()).to.eq("PGL");
     expect(await token.decimals()).to.eq(18);
     expect(await token.totalSupply()).to.eq(TOTAL_SUPPLY);

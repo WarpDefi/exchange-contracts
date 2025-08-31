@@ -12,7 +12,7 @@ interface IPangoChef {
 }
 
 /**
- * @author shung for Pangolin
+ * @author WarpDefi
  * @notice
  *
  * Funder -> RewardFundingForwarder -> PangoChef

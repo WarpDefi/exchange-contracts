@@ -22,7 +22,7 @@ describe('PoolCreation', function () {
 
     beforeEach(async function () {
         // deploy some Tokens for test
-        this.png = await this.PNG.deploy(TOTAL_SUPPLY, AIRDROP_SUPPLY, "PNG", "Pangolin");
+        this.png = await this.PNG.deploy(TOTAL_SUPPLY, AIRDROP_SUPPLY, "PNG", "WarpDefi");
         await this.png.deployed();
         this.wavax = await this.WAVAX.deploy(TOTAL_SUPPLY, AIRDROP_SUPPLY, "WAVAX", "Wrapped Avax");
         await this.wavax.deployed();
@@ -54,7 +54,7 @@ describe('PoolCreation', function () {
         });
         it("Create same pair 2 times", async function() {
             await expect(this.factory.createPair(this.png.address, this.wavax.address)).to.emit(this.factory, "PairCreated");
-            await expect(this.factory.createPair(this.png.address, this.wavax.address)).to.be.revertedWith("Pangolin: PAIR_EXISTS");
+            await expect(this.factory.createPair(this.png.address, this.wavax.address)).to.be.revertedWith("WarpDefi: PAIR_EXISTS");
         });
         it("Create some pairs", async function() {
             await expect(this.factory.createPair(this.png.address, this.wavax.address)).to.emit(this.factory, "PairCreated");
@@ -64,7 +64,7 @@ describe('PoolCreation', function () {
             await expect(this.factory.createPair(this.naterc20.address, this.png.address)).to.emit(this.factory, "PairCreated");
         });
         it("Create Pair with Zero address", async function() {
-            await expect(this.factory.createPair(this.naterc20.address, ZERO_ADDRESS)).to.be.revertedWith("Pangolin: ZERO_ADDRESS");
+            await expect(this.factory.createPair(this.naterc20.address, ZERO_ADDRESS)).to.be.revertedWith("WarpDefi: ZERO_ADDRESS");
         });
         it("Create Pair and AddLiquidity", async function() {
             await expect(this.factory.createPair(this.png.address, this.wavax.address)).to.emit(this.factory, "PairCreated");

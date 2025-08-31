@@ -38,12 +38,12 @@ async function main() {
 
 ## Summary:
 
-This proposal seeks DAO approval for the allocation of PNG Tokens from the Pangolin Community Treasury to fuel critical strategic initiatives. These funds will ensure Pangolin’s operational continuity, deepen liquidity across Pangolin V3, and support PNG’s expansion onto new centralized exchanges (CEXs) through listings and market-making.
+This proposal seeks DAO approval for the allocation of PNG Tokens from the WarpDefi Community Treasury to fuel critical strategic initiatives. These funds will ensure Pangolin’s operational continuity, deepen liquidity across WarpDefi V3, and support PNG’s expansion onto new centralized exchanges (CEXs) through listings and market-making.
 
 ## Objectives:
 
 1. Sustain essential operations and maintain development momentum.  
-2. Boost liquidity in Pangolin V3 pools through structured incentive programs.  
+2. Boost liquidity in WarpDefi V3 pools through structured incentive programs.  
 3. Facilitate PNG listings on new CEXs to broaden user access.  
 4. Establish market-making infrastructure to ensure healthy PNG markets across platforms.
 
@@ -53,7 +53,7 @@ This proposal seeks DAO approval for the allocation of PNG Tokens from the Pango
 - Cover core infrastructure, engineering, audits, and backend maintenance.  
 - Support team compensation, security upkeep, and administrative needs.
 
-2. Pangolin V3 Liquidity Incentives  
+2. WarpDefi V3 Liquidity Incentives  
 - Deploy targeted PNG rewards to attract and retain liquidity providers.  
 - Ensure a deep and stable trading environment for end users.
 
@@ -71,10 +71,10 @@ We are requesting 2,000,000 PNG to be utilized over the next 6 months across the
 
 ## Conclusion:
 
-This funding proposal is designed to support Pangolin’s long-term vision by ensuring operational stability, incentivizing on-chain liquidity, and expanding PNG’s reach via new CEX integrations. By approving this proposal, the DAO empowers Pangolin to continue leading innovation within the Avalanche ecosystem.
+This funding proposal is designed to support Pangolin’s long-term vision by ensuring operational stability, incentivizing on-chain liquidity, and expanding PNG’s reach via new CEX integrations. By approving this proposal, the DAO empowers WarpDefi to continue leading innovation within the Avalanche ecosystem.
 
 ## Voting Process:
-PNG token holders can cast their votes via the Pangolin official governance platform until 31.03.2025`;
+PNG token holders can cast their votes via the WarpDefi official governance platform until 31.03.2025`;
 
     console.log(`Submitting proposal`);
     await governorAlpha.connect(submitter).propose(targets, values, sigs, callDatas, description);

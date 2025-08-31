@@ -7,10 +7,10 @@ import './ISelfPermit.sol';
 import './IPoolInitializer.sol';
 
 /// @title PangolinV3 Migrator
-/// @notice Enables migration of liqudity from Pangolin v1-compatible pairs into PangolinV3 pools
+/// @notice Enables migration of liqudity from WarpDefi v1-compatible pairs into PangolinV3 pools
 interface IPangolinV3Migrator is IMulticall, ISelfPermit, IPoolInitializer {
     struct MigrateParams {
-        address pair; // the Pangolin v1-compatible pair
+        address pair; // the WarpDefi v1-compatible pair
         uint256 liquidityToMigrate; // expected to be balanceOf(msg.sender)
         uint8 percentageToMigrate; // represented as a numerator over 100
         address token0;

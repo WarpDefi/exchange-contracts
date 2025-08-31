@@ -6,8 +6,8 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./GenericErrors.sol";
 
 /**
- * @title Pangolin Staking Positions Funding
- * @author Shung for Pangolin
+ * @title WarpDefi Staking Positions Funding
+ * @author WarpDefi
  * @notice A contract that is only the rewards part of `StakingRewards`.
  * @dev The inheriting contract must call `_claim()` to check its reward since the last time the
  *      same call was made. Then, based on the reward amount, the inheriting contract shall

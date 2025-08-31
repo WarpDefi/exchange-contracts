@@ -58,7 +58,7 @@ describe('FeeCollector', function() {
             ethers.utils.parseEther('100000000'), // _maxSupply
             ethers.utils.parseEther('100000000'), // initialSupply
             'PNG', // _symbol
-            'Pangolin Token', // _name
+            'WarpDefi Token', // _name
         );
         await png.deployed();
 

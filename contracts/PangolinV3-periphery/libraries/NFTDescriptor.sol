@@ -112,7 +112,7 @@ library NFTDescriptor {
         return
             string(
                 abi.encodePacked(
-                    'This NFT represents a liquidity position in an Pangolin V3 ',
+                    'This NFT represents a liquidity position in an WarpDefi V3 ',
                     quoteTokenSymbol,
                     '-',
                     baseTokenSymbol,
@@ -160,7 +160,7 @@ library NFTDescriptor {
         return
             string(
                 abi.encodePacked(
-                    'Pangolin V3 - ',
+                    'WarpDefi V3 - ',
                     feeTier,
                     ' - ',
                     escapeQuotes(params.quoteTokenSymbol),

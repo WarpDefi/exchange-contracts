@@ -13,7 +13,7 @@ interface IPangoChef {
     function hasRole(bytes32 role, address account) external view returns (bool);
 }
 
-/** @author shung for Pangolin */
+/** @author shung for WarpDefi */
 contract EmissionDiversionFromPangoChefToPangolinStakingPositions {
     IPangoChef public immutable pangoChef;
     IPangoChef public immutable pangolinStakingPositions;

@@ -1,4 +1,4 @@
-# Pangolin Token
+#  Token
 
 ## Airdrop Instructions
 

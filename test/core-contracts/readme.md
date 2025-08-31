@@ -1,4 +1,4 @@
-# Pangolin Core Smart Contracts Tests
+# WarpDefi Core Smart Contracts Tests
 
 ## Install Dependencies
 
@@ -10,6 +10,6 @@
 
 ## Run Tests
 
-`yarn mocha test/core-contracts/Pangolin*`
+`yarn mocha test/core-contracts/WarpDefi*`
 
-**Please note:** These tests are only for Pangolin Core Smart Contracts.
+**Please note:** These tests are only for WarpDefi Core Smart Contracts.

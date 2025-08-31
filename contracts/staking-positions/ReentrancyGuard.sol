@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 /**
  * @title ReentrancyGuard
- * @author Shung for Pangolin
+ * @author WarpDefi
  * @author Modified from Solmate
  *         (https://github.com/Rari-Capital/solmate/blob/main/src/utils/ReentrancyGuard.sol)
  */
