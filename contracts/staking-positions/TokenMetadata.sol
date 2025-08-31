@@ -104,7 +104,7 @@ contract TokenMetadata is AccessControlEnumerable {
         uint256 earned = parseEther(pangolinStakingPositions.positionPendingRewards(positionId));
         balance = parseEther(balance);
 
-        uint256 balanceLevel = getExponent(balance, 404); // level 6 is reached at ~60k PNG.
+        uint256 balanceLevel = getExponent(balance, 404); // level 6 is reached at ~60k WARP.
         uint256 durationLevel = getExponent((block.timestamp - entryTime), 2 hours + 40 minutes); // level 10 is reached in ~900 days.
 
         string memory svg;

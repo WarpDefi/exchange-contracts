@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.15;
 
-import "./PangoChef.sol";
+import "./WarpDefiChef.sol";
 
 contract RewarderViaMultiplierForPangoChefOnSongbird is IRewarder {
     using SafeTransferLib for ERC20;
@@ -18,12 +18,12 @@ contract RewarderViaMultiplierForPangoChefOnSongbird is IRewarder {
     mapping(address => mapping(uint256 => uint256)) private rewardDebts;
 
     /// @dev Previous sum of entry times to check if staking duration was reset.
-    mapping(uint256 => mapping(address => PangoChef.ValueVariables)) private usersValueVariables;
+    mapping(uint256 => mapping(address => WarpDefiChef.ValueVariables)) private usersValueVariables;
 
     /// @param _rewardTokens The address of each additional reward token
-    /// @param _rewardMultipliers The amount of each additional reward token to be claimable for every 1 base reward (PNG) being claimed
-    /// @param _baseRewardTokenDecimals The decimal precision of the base reward (PNG) being emitted
-    /// @param _chefV2 The address of the chef contract where the base reward (PNG) is being emitted
+    /// @param _rewardMultipliers The amount of each additional reward token to be claimable for every 1 base reward (WARP) being claimed
+    /// @param _baseRewardTokenDecimals The decimal precision of the base reward (WARP) being emitted
+    /// @param _chefV2 The address of the chef contract where the base reward (WARP) is being emitted
     /// @notice Each reward multiplier should have a precision matching that individual token
     constructor (
         ERC20[] memory _rewardTokens,
@@ -67,10 +67,10 @@ contract RewarderViaMultiplierForPangoChefOnSongbird is IRewarder {
         uint256 newBalance
     ) onlyMCV2 override external {
 
-        // In Songbird PangoChef, `compoundToPoolZero` calls `onReward` with `destructiveAction == true`. This is invalid.
+        // In Songbird WarpDefiChef, `compoundToPoolZero` calls `onReward` with `destructiveAction == true`. This is invalid.
         // The following block detects the improper `destructiveAction == true`, and overrides it with `false`.
-        PangoChef.ValueVariables memory newUserValueVariables = PangoChef(CHEF_V2).getUser(pid, user).valueVariables;
-        PangoChef.ValueVariables memory previousUserValueVariables = usersValueVariables[pid][user];
+        WarpDefiChef.ValueVariables memory newUserValueVariables = WarpDefiChef(CHEF_V2).getUser(pid, user).valueVariables;
+        WarpDefiChef.ValueVariables memory previousUserValueVariables = usersValueVariables[pid][user];
         usersValueVariables[pid][user] = newUserValueVariables;
         if (destructiveAction && newBalance != 0) {
             bool equalBalance = newUserValueVariables.balance == previousUserValueVariables.balance;

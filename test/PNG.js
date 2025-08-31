@@ -1,4 +1,4 @@
-// test/PNG.js
+// test/WARP.js
 // Load dependencies
 const { expect } = require('chai');
 const { ethers } = require('hardhat');
@@ -11,15 +11,15 @@ const UINT96_MAX = ethers.BigNumber.from("2").pow("96").sub("1");
 
 // Start test block
 // Only tests for the new features added by shung
-describe('PNG', function () {
+describe('WARP', function () {
 
   before(async function () {
     [ this.admin, ] = await ethers.getSigners();
-    this.PNG = await ethers.getContractFactory("Png");
+    this.WARP = await ethers.getContractFactory("Png");
   });
 
   beforeEach(async function () {
-    this.png = await this.PNG.deploy(TOTAL_SUPPLY, AIRDROP_SUPPLY, "PNG", "WarpDefi");
+    this.png = await this.WARP.deploy(TOTAL_SUPPLY, AIRDROP_SUPPLY, "WARP", "WarpDefi");
     await this.png.deployed();
   });
 
@@ -38,7 +38,7 @@ describe('PNG', function () {
       expect(await this.png.totalSupply()).to.equal(AIRDROP_SUPPLY);
     });
     it('arg 3: symbol', async function () {
-      expect(await this.png.symbol()).to.equal("PNG");
+      expect(await this.png.symbol()).to.equal("WARP");
     });
     it('arg 4: name', async function () {
       expect(await this.png.name()).to.equal("WarpDefi");

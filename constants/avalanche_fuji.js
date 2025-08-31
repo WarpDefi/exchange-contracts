@@ -1,5 +1,5 @@
 exports.WRAPPED_NATIVE_TOKEN = "0xd00ae08403B9bbb9124bB305C09058E32C39A48c";
-exports.PNG_SYMBOL = "PNG";
+exports.PNG_SYMBOL = "WARP";
 exports.PNG_NAME = "WarpDefi";
 exports.TOTAL_SUPPLY = 230000000; // 230M
 exports.AIRDROP_AMOUNT = 11500000; // 11.5M or 5% of max supply
@@ -20,7 +20,7 @@ exports.VESTER_ALLOCATIONS = [
   },
   {
     recipient: "chef", // MiniChef
-    allocation: 6053, // 57.5% LPs & PNG Staking
+    allocation: 6053, // 57.5% LPs & WARP Staking
     isMiniChef: true
   }
 ];

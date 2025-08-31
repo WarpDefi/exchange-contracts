@@ -25,7 +25,7 @@ async function main() {
     await feeCollector.deployed();
     console.log("Fee Collector deployed at: " + feeCollector.address);
 
-    // Deploy DummyERC20 for diverting some PNG emissions to PNG staking
+    // Deploy DummyERC20 for diverting some WARP emissions to WARP staking
     const DummyERC20 = await ethers.getContractFactory("DummyERC20");
     const dummyERC20 = await DummyERC20.deploy(
         "Dummy ERC20",

@@ -110,7 +110,7 @@ async function main() {
      * GOVERNANCE *
      **************/
 
-    // Deploy PNG
+    // Deploy WARP
     const png = await deploy("Png", [
         ethers.utils.parseUnits(TOTAL_SUPPLY.toString(), 18),
         ethers.utils.parseUnits(INITIAL_MINT.toString(), 18),
@@ -151,7 +151,7 @@ async function main() {
     await factory.createPair(png.address, nativeToken);
     await confirmTransactionCount();
 
-    const chef = await deploy("PangoChef", [
+    const chef = await deploy("WarpDefiChef", [
         png.address,
         deployer.address,
         factory.address,
@@ -249,13 +249,13 @@ async function main() {
 
     await png.grantRole(MINTER_ROLE, vester.address);
     await confirmTransactionCount();
-    console.log("Gave PNG minting role to TreasuryVester.");
+    console.log("Gave WARP minting role to TreasuryVester.");
 
     await png.grantRole(DEFAULT_ADMIN_ROLE, foundation.address);
     await confirmTransactionCount();
     await png.renounceRole(DEFAULT_ADMIN_ROLE, deployer.address);
     await confirmTransactionCount();
-    console.log("Renounced PNG admin role to multisig.");
+    console.log("Renounced WARP admin role to multisig.");
 
     await png.transfer(
         airdrop.address,
@@ -314,11 +314,11 @@ async function main() {
     await confirmTransactionCount();
     await chef.grantRole(DEFAULT_ADMIN_ROLE, foundation.address);
     await confirmTransactionCount();
-    console.log("Added TreasuryVester as PangoChef funder.");
+    console.log("Added TreasuryVester as WarpDefiChef funder.");
 
     await chef.setWeights(["0"], [WETH_PNG_FARM_ALLOCATION]);
     await confirmTransactionCount();
-    console.log("Gave 30x weight to PNG-NATIVE_TOKEN");
+    console.log("Gave 30x weight to WARP-NATIVE_TOKEN");
 
     await chef.renounceRole(FUNDER_ROLE, deployer.address);
     await confirmTransactionCount();
@@ -326,7 +326,7 @@ async function main() {
     await confirmTransactionCount();
     await chef.renounceRole(DEFAULT_ADMIN_ROLE, deployer.address);
     await confirmTransactionCount();
-    console.log("Transferred PangoChef ownership to Multisig.");
+    console.log("Transferred WarpDefiChef ownership to Multisig.");
 
     /************************* *
      * STAKING POSITIONS ROLES *

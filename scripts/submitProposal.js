@@ -38,14 +38,14 @@ async function main() {
 
 ## Summary:
 
-This proposal seeks DAO approval for the allocation of PNG Tokens from the WarpDefi Community Treasury to fuel critical strategic initiatives. These funds will ensure Pangolin’s operational continuity, deepen liquidity across WarpDefi V3, and support PNG’s expansion onto new centralized exchanges (CEXs) through listings and market-making.
+This proposal seeks DAO approval for the allocation of WARP Tokens from the WarpDefi Community Treasury to fuel critical strategic initiatives. These funds will ensure Pangolin’s operational continuity, deepen liquidity across WarpDefi V3, and support WARP’s expansion onto new centralized exchanges (CEXs) through listings and market-making.
 
 ## Objectives:
 
 1. Sustain essential operations and maintain development momentum.  
 2. Boost liquidity in WarpDefi V3 pools through structured incentive programs.  
-3. Facilitate PNG listings on new CEXs to broaden user access.  
-4. Establish market-making infrastructure to ensure healthy PNG markets across platforms.
+3. Facilitate WARP listings on new CEXs to broaden user access.  
+4. Establish market-making infrastructure to ensure healthy WARP markets across platforms.
 
 ## Strategic Use of Funds:
 
@@ -54,12 +54,12 @@ This proposal seeks DAO approval for the allocation of PNG Tokens from the WarpD
 - Support team compensation, security upkeep, and administrative needs.
 
 2. WarpDefi V3 Liquidity Incentives  
-- Deploy targeted PNG rewards to attract and retain liquidity providers.  
+- Deploy targeted WARP rewards to attract and retain liquidity providers.  
 - Ensure a deep and stable trading environment for end users.
 
 3. Centralized Exchange Listings  
 - Fund listing fees, liquidity support, and co-marketing activities for upcoming CEX integrations.  
-- Expand PNG exposure to new markets and global users.
+- Expand WARP exposure to new markets and global users.
 
 4. Market-Making Operations  
 - Establish and fund dedicated market-making accounts.  
@@ -67,14 +67,14 @@ This proposal seeks DAO approval for the allocation of PNG Tokens from the WarpD
 
 ## Requested 6-Month Budget:
 
-We are requesting 2,000,000 PNG to be utilized over the next 6 months across the strategic areas mentioned above. All expenditures will follow transparent processes.
+We are requesting 2,000,000 WARP to be utilized over the next 6 months across the strategic areas mentioned above. All expenditures will follow transparent processes.
 
 ## Conclusion:
 
-This funding proposal is designed to support Pangolin’s long-term vision by ensuring operational stability, incentivizing on-chain liquidity, and expanding PNG’s reach via new CEX integrations. By approving this proposal, the DAO empowers WarpDefi to continue leading innovation within the Avalanche ecosystem.
+This funding proposal is designed to support Pangolin’s long-term vision by ensuring operational stability, incentivizing on-chain liquidity, and expanding WARP’s reach via new CEX integrations. By approving this proposal, the DAO empowers WarpDefi to continue leading innovation within the Avalanche ecosystem.
 
 ## Voting Process:
-PNG token holders can cast their votes via the WarpDefi official governance platform until 31.03.2025`;
+WARP token holders can cast their votes via the WarpDefi official governance platform until 31.03.2025`;
 
     console.log(`Submitting proposal`);
     await governorAlpha.connect(submitter).propose(targets, values, sigs, callDatas, description);

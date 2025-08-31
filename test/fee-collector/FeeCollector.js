@@ -57,7 +57,7 @@ describe('FeeCollector', function() {
         png = await _Token.deploy(
             ethers.utils.parseEther('100000000'), // _maxSupply
             ethers.utils.parseEther('100000000'), // initialSupply
-            'PNG', // _symbol
+            'WARP', // _symbol
             'WarpDefi Token', // _name
         );
         await png.deployed();
@@ -402,14 +402,14 @@ describe('FeeCollector', function() {
             )).not.to.be.reverted;
             await expect(png.transfer).to.have.callCount(0);
         });
-        it('User can harvest pair involving WAVAX and PNG', async function() {
+        it('User can harvest pair involving WAVAX and WARP', async function() {
             await expect(feeCollector.connect(userWithHarvestRole).harvest(
                 [pair_WAVAX_PNG.address],
                 false,
                 0,
             )).not.to.be.reverted;
             // png.transfer 0: burn
-            // png.transfer 1: wavax-png pair sending PNG back to FeeCollector
+            // png.transfer 1: wavax-png pair sending WARP back to FeeCollector
             expect(png.transfer.getCall(2).args[0]).to.equal(stakingRewards.address);
             expect(png.transfer.getCall(2).args[1]).to.be.gt(0);
             expect(png.transfer.getCall(3).args[0]).to.equal(TREASURY_ADDRESS);
@@ -423,8 +423,8 @@ describe('FeeCollector', function() {
                 false,
                 0,
             )).not.to.be.reverted;
-            // png.transfer 0: wavax-png pair sending PNG back to FeeCollector
-            // png.transfer 1: wavax-png pair sending PNG back to FeeCollector
+            // png.transfer 0: wavax-png pair sending WARP back to FeeCollector
+            // png.transfer 1: wavax-png pair sending WARP back to FeeCollector
             expect(png.transfer.getCall(2).args[0]).to.equal(stakingRewards.address);
             expect(png.transfer.getCall(2).args[1]).to.be.gt(0);
             expect(png.transfer.getCall(3).args[0]).to.equal(TREASURY_ADDRESS);
@@ -438,8 +438,8 @@ describe('FeeCollector', function() {
                 false,
                 0,
             )).not.to.be.reverted;
-            // png.transfer 0: wavax-png pair sending PNG back to FeeCollector
-            // png.transfer 1: wavax-png pair sending PNG back to FeeCollector
+            // png.transfer 0: wavax-png pair sending WARP back to FeeCollector
+            // png.transfer 1: wavax-png pair sending WARP back to FeeCollector
             expect(png.transfer.getCall(2).args[0]).to.equal(stakingRewards.address);
             expect(png.transfer.getCall(2).args[1]).to.be.gt(0);
             expect(png.transfer.getCall(3).args[0]).to.equal(TREASURY_ADDRESS);

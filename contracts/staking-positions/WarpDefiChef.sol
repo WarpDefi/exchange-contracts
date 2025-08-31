@@ -17,12 +17,12 @@ contract SafeExternalCalls {
 }
 
 /**
- * @title PangoChef
+ * @title WarpDefiChef
  * @author WarpDefi
- * @notice PangoChef is a MiniChef alternative that utilizes the Sunshine and Rainbows algorithm
+ * @notice WarpDefiChef is a MiniChef alternative that utilizes the Sunshine and Rainbows algorithm
  *         for distributing rewards from pools to stakers.
  */
-contract PangoChef is PangoChefFunding, ReentrancyGuard {
+contract WarpDefiChef is PangoChefFunding, ReentrancyGuard {
     using SafeTransferLib for ERC20;
     using EnumerableSet for EnumerableSet.UintSet;
 
@@ -110,8 +110,8 @@ contract PangoChef is PangoChefFunding, ReentrancyGuard {
         PoolType poolType;
         // An external contract that distributes additional rewards.
         IRewarder rewarder;
-        // The address that is paired with PNG. It is zero address if the pool token is not a
-        // liquidity pool token, or if the liquidity pool do not have PNG as one of the reserves.
+        // The address that is paired with WARP. It is zero address if the pool token is not a
+        // liquidity pool token, or if the liquidity pool do not have WARP as one of the reserves.
         address rewardPair;
         // Two variables that specify the total shares (i.e.: “value”) in the pool.
         ValueVariables valueVariables;
@@ -170,8 +170,8 @@ contract PangoChef is PangoChefFunding, ReentrancyGuard {
     event RewarderSet(uint256 indexed poolId, address indexed rewarder);
 
     /**
-     * @notice Constructor to create and initialize PangoChef contract.
-     * @param newRewardsToken The token distributed as reward (i.e.: PNG).
+     * @notice Constructor to create and initialize WarpDefiChef contract.
+     * @param newRewardsToken The token distributed as reward (i.e.: WARP).
      * @param newAdmin The initial owner of the contract.
      * @param newFactory The WarpDefi factory that creates and records AMM pairs.
      * @param newWrappedNativeToken The contract for wrapping and unwrapping the native gas token.
@@ -182,7 +182,7 @@ contract PangoChef is PangoChefFunding, ReentrancyGuard {
         IPangolinFactory newFactory,
         address newWrappedNativeToken
     ) PangoChefFunding(newRewardsToken, newAdmin) {
-        // Get WAVAX-PNG (or WETH-PNG, etc.) liquidity token.
+        // Get WAVAX-WARP (or WETH-WARP, etc.) liquidity token.
         address poolZeroPair = newFactory.getPair(newRewardsToken, newWrappedNativeToken);
 
         // Check pair exists, which implies `newRewardsToken != 0 && newWrappedNativeToken != 0`.
@@ -194,7 +194,7 @@ contract PangoChef is PangoChefFunding, ReentrancyGuard {
 
         safeExternalCalls = SafeExternalCalls(new SafeExternalCalls());
 
-        // Initialize pool zero with WAVAX-PNG liquidity token.
+        // Initialize pool zero with WAVAX-WARP liquidity token.
         _initializePool(poolZeroPair, PoolType.ERC20_POOL);
     }
 
@@ -251,8 +251,8 @@ contract PangoChef is PangoChefFunding, ReentrancyGuard {
     /**
      * @notice External function to stake to a pool using the rewards of the pool.
      * @dev This function only works if the staking token is a WarpDefi liquidity token (PGL), and
-     *      one of its reserves is the rewardsToken (PNG). The user must supply sufficient amount
-     *      of the other reserve to be combined with PNG. The rewards and the user supplied pair
+     *      one of its reserves is the rewardsToken (WARP). The user must supply sufficient amount
+     *      of the other reserve to be combined with WARP. The rewards and the user supplied pair
      *      token is then used to mint a liquidity pool token, which must be the same token as the
      *      staking token.
      * @param poolId The identifier of the pool to compound.
@@ -281,10 +281,10 @@ contract PangoChef is PangoChefFunding, ReentrancyGuard {
     }
 
     /**
-     * @notice External function to stake to a compoundable pool (e.g.: PNG-WAVAX PGL) using the
+     * @notice External function to stake to a compoundable pool (e.g.: WARP-WAVAX PGL) using the
      *         rewards of any other ERC20_POOL.
      * @dev The user must supply sufficient amount of the gas token (e.g.: AVAX/WAVAX) to be
-     *      paired with the rewardsToken (e.g.:PNG).
+     *      paired with the rewardsToken (e.g.:WARP).
      * @param harvestPoolId The identifier of the pool to harvest the rewards from.
      * @param compoundPoolId The identifier of the pool to stake the rewards into.
      * @param slippage A struct defining the minimum and maximum amounts of tokens that can be
@@ -687,7 +687,7 @@ contract PangoChef is PangoChefFunding, ReentrancyGuard {
         address poolToken = pool.tokenOrRecipient;
         address rewardPair = pool.rewardPair;
 
-        // Ensure the pool token is a WarpDefi pair token containing PNG as one of the pairs.
+        // Ensure the pool token is a WarpDefi pair token containing WARP as one of the pairs.
         if (rewardPair == address(0)) revert InvalidType();
 
         // Get token amounts from the pool.
@@ -729,7 +729,7 @@ contract PangoChef is PangoChefFunding, ReentrancyGuard {
         // Transfer reward tokens from the contract to the pair contract.
         rewardsToken.safeTransfer(poolToken, rewardAmount);
 
-        // Mint liquidity tokens to the PangoChef and return the amount minted.
+        // Mint liquidity tokens to the WarpDefiChef and return the amount minted.
         poolTokenAmount = IPangolinPair(poolToken).mint(address(this));
     }
 

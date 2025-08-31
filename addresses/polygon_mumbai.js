@@ -1,6 +1,6 @@
 exports.ADDRESSES=[
     {
-      "address": "0x4828a3D98E428e73184374845f23C40eB76bA695", // PNG
+      "address": "0x4828a3D98E428e73184374845f23C40eB76bA695", // WARP
       "args": [
         {
           "type": "BigNumber",

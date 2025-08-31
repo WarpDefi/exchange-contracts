@@ -1,4 +1,4 @@
-// test/PangoChef.js
+// test/WarpDefiChef.js
 // Load dependencies
 const { expect } = require("chai");
 const { ethers, network } = require("hardhat");
@@ -8,7 +8,7 @@ const ZERO_ADDRESS = ethers.constants.AddressZero;
 const PERIOD_DURATION = 86400;
 
 // Start test block
-describe("PangoChef.sol", function () {
+describe("WarpDefiChef.sol", function () {
   before(async function () {
     // Get all signers
     this.signers = await ethers.getSigners();
@@ -37,13 +37,13 @@ describe("PangoChef.sol", function () {
     await this.wavax.deployed();
     this.alt_wavax = await this.wavax.connect(this.unauthorized);
 
-    // Deploy PNG ERC20 token for rewards.
-    this.png = await this.WarpDefi.deploy(PNG_SUPPLY, PNG_SUPPLY, "PNG", "WarpDefi");
+    // Deploy WARP ERC20 token for rewards.
+    this.png = await this.WarpDefi.deploy(PNG_SUPPLY, PNG_SUPPLY, "WARP", "WarpDefi");
     await this.png.deployed();
     this.alt_png = await this.png.connect(this.unauthorized);
 
     // Deploy another ERC20 token.
-    this.another_token = await this.WarpDefi.deploy(PNG_SUPPLY, PNG_SUPPLY, "PNG", "WarpDefi");
+    this.another_token = await this.WarpDefi.deploy(PNG_SUPPLY, PNG_SUPPLY, "WARP", "WarpDefi");
     await this.another_token.deployed();
     this.alt_another_token = await this.another_token.connect(this.unauthorized);
 
@@ -56,7 +56,7 @@ describe("PangoChef.sol", function () {
     await this.router.deployed();
     this.alt_router = await this.router.connect(this.unauthorized);
 
-    // Create PNG-WAVAX pair.
+    // Create WARP-WAVAX pair.
     await this.factory.createPair(this.wavax.address, this.png.address);
     let pgl_address = await this.factory.getPair(this.wavax.address, this.png.address);
     this.pgl = await this.Pair.attach(pgl_address);
@@ -68,7 +68,7 @@ describe("PangoChef.sol", function () {
     this.another_pgl = await this.Pair.attach(another_pgl_address);
     this.alt_another_pgl = await this.another_pgl.connect(this.unauthorized);
 
-    // Deploy PangoChef.
+    // Deploy WarpDefiChef.
     this.chef = await this.Chef.deploy(this.png.address, this.admin.address, this.factory.address, this.wavax.address);
     await this.chef.deployed();
     this.alt_chef = await this.chef.connect(this.unauthorized);

@@ -50,11 +50,11 @@ describe("AllocationVester.sol", function () {
   });
 
   beforeEach(async function () {
-    // deploy PNG and send TOTAL_SUPPLY to admin
+    // deploy WARP and send TOTAL_SUPPLY to admin
     this.png = await this.Png.deploy(
       TOTAL_SUPPLY,
       TOTAL_SUPPLY,
-      "PNG",
+      "WARP",
       "WarpDefi"
     );
     await this.png.deployed();

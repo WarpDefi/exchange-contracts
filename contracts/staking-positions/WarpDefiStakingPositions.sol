@@ -113,8 +113,8 @@ contract PangolinStakingPositions is ERC721Enumerable, PangolinStakingPositionsF
      *      with all NFTs with mutable state, because NFT marketplaces do not have a standard
      *      method for “slippage control”. This allows a malicious actor utilizing MEV to
      *      devalue the NFT token in the same block as someone buying the NFT. For example, if a
-     *      position has 5 PNG tokens, and someone makes a transaction to buy its NFT, the owner
-     *      of the position can withdraw all PNG in the position, resulting in buyer to buy a
+     *      position has 5 WARP tokens, and someone makes a transaction to buy its NFT, the owner
+     *      of the position can withdraw all WARP in the position, resulting in buyer to buy a
      *      position with 0 balance instead of 5. By using `approvalPauseDuration` we simply
      *      disable transfers made by non-owners (i.e.: marketplace contract) for a period.
      */
@@ -160,7 +160,7 @@ contract PangolinStakingPositions is ERC721Enumerable, PangolinStakingPositionsF
         address newAdmin,
         ITokenMetadata newTokenMetadata
     )
-        ERC721("WarpDefi Staking Positions", "PNG-POS")
+        ERC721("WarpDefi Staking Positions", "WARP-POS")
         PangolinStakingPositionsFunding(newRewardsToken, newAdmin)
     {
         tokenMetadata = newTokenMetadata;

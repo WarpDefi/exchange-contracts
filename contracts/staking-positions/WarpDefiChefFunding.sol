@@ -6,9 +6,9 @@ import "@rari-capital/solmate/src/utils/SafeTransferLib.sol";
 import "./GenericErrors.sol";
 
 /**
- * @title PangoChef Funding
+ * @title WarpDefiChef Funding
  * @author WarpDefi
- * @notice A contract that is only the reward funding part of `PangoChef`.
+ * @notice A contract that is only the reward funding part of `WarpDefiChef`.
  * @dev The pools of the inheriting contract must call `_claim()` to check their rewards since the
  *      last time they made the same call. Then, based on the reward amount, the pool shall
  *      determine the distribution to stakers. It uses the same algorithm as Synthetix’

@@ -14,14 +14,14 @@ describe('CommunityTreasury', function () {
     before(async function () {
         [this.addr1, this.addr2] = await ethers.getSigners();
 
-        this.PNG = await ethers.getContractFactory("Png");
+        this.WARP = await ethers.getContractFactory("Png");
         this.Community = await ethers.getContractFactory('CommunityTreasury')
 
     });
 
     beforeEach(async function () {
-        // PNG
-        this.png = await this.PNG.deploy(OWNER_ADDRESS);
+        // WARP
+        this.png = await this.WARP.deploy(OWNER_ADDRESS);
         await this.png.deployed();
 
         // Community Treasury
@@ -37,7 +37,7 @@ describe('CommunityTreasury', function () {
     //       Constructor
     //////////////////////////////
     describe("Constructor", function () {
-        it('PNG', async function () {
+        it('WARP', async function () {
             expect(await this.community.png()).to.equal(this.png.address);
         });
 

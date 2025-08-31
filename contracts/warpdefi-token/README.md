@@ -5,7 +5,7 @@
 Generate a CSV file with at least two columns. Its first four lines will be discarded, so the CSV must start from the fifth line. The fifth line must be a header. One of the columns should have a header titled `address`, and the othe other column should have a header titled `allocated amount`. They should list the airdrop recipient EVM address and the corresponding airdrop amount in its smallest denominator (e.g. wei). An address must not repeat. Below is the `head` of an example airdrop file.
 
 ```csv
-Airdrop name,PNG holders 1,Airdrop id,77e7ce13-175c-59cc-9851-9e6f91d523b8
+Airdrop name,WARP holders 1,Airdrop id,77e7ce13-175c-59cc-9851-9e6f91d523b8
 Days transfers,423
 Days lp,423
 Days stake,209

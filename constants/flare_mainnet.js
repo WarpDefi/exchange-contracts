@@ -23,6 +23,6 @@ exports.VESTER_ALLOCATIONS = [
   },
   {
     recipient: "chef", // MiniChef
-    allocation: 6559, // 61% LPs & PNG Staking
+    allocation: 6559, // 61% LPs & WARP Staking
   }
 ];

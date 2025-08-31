@@ -1,5 +1,5 @@
 exports.WRAPPED_NATIVE_TOKEN;
-exports.PNG_SYMBOL = "PNG";
+exports.PNG_SYMBOL = "WARP";
 exports.PNG_NAME = "WarpDefi";
 exports.TOTAL_SUPPLY = 230000000; // two-hundred-and-thirty million.
 exports.INITIAL_MINT = 9200000; // nine-million and two-hundred thousand. 1% initial airdrop, 1% feature airdrop, 2% protocol-owned liquidity.
@@ -22,6 +22,6 @@ exports.VESTER_ALLOCATIONS = [
   },
   {
     recipient: "chef", // MiniChef
-    allocation: 5261, // 50.5% LPs & PNG Staking
+    allocation: 5261, // 50.5% LPs & WARP Staking
   }
 ];

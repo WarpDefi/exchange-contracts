@@ -14,7 +14,7 @@ describe('PoolCreation', function () {
         [ this.admin, this.unprivileged ] = await ethers.getSigners();
         this.PangolinFactory = await ethers.getContractFactory("PangolinFactory");
         this.PangolinRouter = await ethers.getContractFactory("PangolinRouter");
-        this.PNG = await ethers.getContractFactory("Png");
+        this.WARP = await ethers.getContractFactory("Png");
         this.WAVAX = await ethers.getContractFactory("Png");
         this.NATERC20 = await ethers.getContractFactory("Png");
         this.JBXERC20 = await ethers.getContractFactory("Png");
@@ -22,7 +22,7 @@ describe('PoolCreation', function () {
 
     beforeEach(async function () {
         // deploy some Tokens for test
-        this.png = await this.PNG.deploy(TOTAL_SUPPLY, AIRDROP_SUPPLY, "PNG", "WarpDefi");
+        this.png = await this.WARP.deploy(TOTAL_SUPPLY, AIRDROP_SUPPLY, "WARP", "WarpDefi");
         await this.png.deployed();
         this.wavax = await this.WAVAX.deploy(TOTAL_SUPPLY, AIRDROP_SUPPLY, "WAVAX", "Wrapped Avax");
         await this.wavax.deployed();

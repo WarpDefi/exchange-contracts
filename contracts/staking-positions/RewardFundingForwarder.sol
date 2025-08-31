@@ -15,7 +15,7 @@ interface IPangoChef {
  * @author WarpDefi
  * @notice
  *
- * Funder -> RewardFundingForwarder -> PangoChef
+ * Funder -> RewardFundingForwarder -> WarpDefiChef
  *               OR
  * Funder -> RewardFundingForwarder -> PangolinStakingPositions
  *

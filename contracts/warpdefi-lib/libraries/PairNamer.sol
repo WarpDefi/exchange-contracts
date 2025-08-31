@@ -6,7 +6,7 @@ import './SafeERC20Namer.sol';
 
 // produces names for pairs of tokens using WarpDefi's naming scheme
 library PairNamer {
-    string private constant TOKEN_SYMBOL_PREFIX = 'PNG:';
+    string private constant TOKEN_SYMBOL_PREFIX = 'WARP:';
     string private constant TOKEN_SEPARATOR = ':';
 
     // produces a pair descriptor in the format of `${prefix}${name0}:${name1}${suffix}`
@@ -28,7 +28,7 @@ library PairNamer {
             );
     }
 
-    // produces a pair symbol in the format of `PNG:${symbol0}:${symbol1}${suffix}`
+    // produces a pair symbol in the format of `WARP:${symbol0}:${symbol1}${suffix}`
     function pairSymbol(
         address token0,
         address token1,

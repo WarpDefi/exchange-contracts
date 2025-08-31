@@ -17,7 +17,7 @@ contract MerkledropToStakingCompliant is Ownable, Pausable {
     using ECDSA for bytes;
 
     mapping(address => uint96) public claimedAmounts;
-    IERC20 public immutable PNG;
+    IERC20 public immutable WARP;
     IPangolinStakingPositions public immutable SAR;
     bytes32 public merkleRoot;
     string public complianceMessage = "By signing this transaction, I hereby acknowledge that I am not a US resident or citizen. (Citizens or residents of the United States of America are not allowed to the PSB token airdrop due to applicable law.)";
@@ -33,7 +33,7 @@ contract MerkledropToStakingCompliant is Ownable, Pausable {
         require(initialOwner != address(0), "invalid initial owner");
         _transferOwnership(initialOwner);
         IERC20(airdropToken).approve(stakingPositions, type(uint256).max);
-        PNG = IERC20(airdropToken);
+        WARP = IERC20(airdropToken);
         SAR = IPangolinStakingPositions(stakingPositions);
         _pause();
     }

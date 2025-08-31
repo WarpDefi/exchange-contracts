@@ -25,8 +25,8 @@ async function main() {
         value: ethers.utils.parseEther('1000.0')
     });
 
-    const PNG = await ethers.getContractFactory("Png");
-    const png = await PNG.attach(PNG_ADDRESS);
+    const WARP = await ethers.getContractFactory("Png");
+    const png = await WARP.attach(PNG_ADDRESS);
 
     const USDTe = await ethers.getContractFactory("Png");
     const usdte = await USDTe.attach(USDTe_ADDRESS);
@@ -39,7 +39,7 @@ async function main() {
     const MiniChef = await ethers.getContractFactory("MiniChefV2");
     const miniChef = await MiniChef.attach(MINICHEF_V2_ADDRESS);
 
-    // Deploy Rewarder (PNG rewards @ 2x)
+    // Deploy Rewarder (WARP rewards @ 2x)
     console.log(`Deploying single rewarder ...`);
     const rewarderViaMultiplier1 = await RewarderViaMultiplier.deploy(
         [PNG_ADDRESS], // LOOT
@@ -51,7 +51,7 @@ async function main() {
     console.log(`Deployed single rewarder:`, rewarderViaMultiplier1.address);
     console.log();
 
-    // Fund PNG rewarder
+    // Fund WARP rewarder
     console.log(`Funding single rewarder ...`);
     await png.connect(multisigSigner).transfer(
         rewarderViaMultiplier1.address,
@@ -61,7 +61,7 @@ async function main() {
     console.log();
 
 
-    // Deploy double rewarder (PNG @ 1.5x and USDT.e @ 1x)
+    // Deploy double rewarder (WARP @ 1.5x and USDT.e @ 1x)
     console.log(`Deploying double rewarder ...`);
     const rewarderViaMultiplier2 = await RewarderViaMultiplier.deploy(
         [PNG_ADDRESS, USDTe_ADDRESS],
@@ -73,7 +73,7 @@ async function main() {
     console.log(`Deployed double rewarder:`, rewarderViaMultiplier2.address);
     console.log();
 
-    // Fund double rewarder (PNG and USDT.e)
+    // Fund double rewarder (WARP and USDT.e)
     console.log(`Funding double Rewarder ...`);
     await png.connect(multisigSigner).transfer(
         rewarderViaMultiplier2.address,

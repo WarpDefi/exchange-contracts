@@ -10,7 +10,7 @@ These files are in scope:
 
 * [`PangolinStakingPositions.sol`](./PangolinStakingPositions.sol)
 * [`PangolinStakingPositionsFunding.sol`](./PangolinStakingPositionsFunding.sol)
-* [`PangoChef.sol`](./PangoChef.sol)
+* [`WarpDefiChef.sol`](./WarpDefiChef.sol)
 * [`PangoChefFunding.sol`](./PangoChefFunding.sol)
 * [`ReentrancyGuard.sol`](./ReentrancyGuard.sol)
 
@@ -72,9 +72,9 @@ In this repository, there are two implementations of SAR algorithm.
 ### `PangolinStakingPositions`
 
 [`PangolinStakingPositions`](./PangolinStakingPositions.sol) is a single-sided staking solution in
-which both the staking and reward tokens are the same token (i.e.: PNG). The rewards come from AMM
-revenue. The revenue tokens get converted to PNG through `FeeCollector` (`SushiMaker` equivalent),
-and then PNG is added to `PangolinStakingPositions` as reward. In this implementation of SAR, we also
+which both the staking and reward tokens are the same token (i.e.: WARP). The rewards come from AMM
+revenue. The revenue tokens get converted to WARP through `FeeCollector` (`SushiMaker` equivalent),
+and then WARP is added to `PangolinStakingPositions` as reward. In this implementation of SAR, we also
 track positions instead of users, which allows leveraging the NFT technology.
 
 This implementation allows us to add an extra `compound()` (🟢) function to the core SAR
@@ -88,7 +88,7 @@ same. Note that the compounding function is not just for convenience, it is also
 Since all positions are NFTs, this implementation opens the door for derivatives. This would allow
 stakers to “leverage their loyalty”. Because a position which has double the staking duration than
 average would also have double the APR. This would render such a position more valuable than the
-amount of PNG it holds.
+amount of WARP it holds.
 
 However, due to lack of standardized slippage control for NFTs, mutable NFTs can be frontrun on
 secondary marketplaces. To alleviate this issue we simply disable spending approvals for an NFT
@@ -97,25 +97,25 @@ marketplaces from executing `transferFrom()` function of NFTs to process the tra
 tries to frontrun a buyer by withdrawing the staked balance from the NFT position, the transaction
 will revert.
 
-`PangolinStakingPositions` is written specifically for PNG, which has a total supply of
+`PangolinStakingPositions` is written specifically for WARP, which has a total supply of
 `230_000_000e18`, and reverts on failed transactions.
 
-### `PangoChef`
+### `WarpDefiChef`
 
-[`PangoChef`](./PangoChef.sol) is a MiniChef analogue that uses SAR algorithm.
+[`WarpDefiChef`](./WarpDefiChef.sol) is a MiniChef analogue that uses SAR algorithm.
 
 In this implementation, there can be infinite amount of pools which separately utilize the SAR
 algorithm. So each pool has its own total staked balance and average staking duration.
 
-PangoChef distributes global rewards to pools based on Synthetix’s staking algorithm, such that
+WarpDefiChef distributes global rewards to pools based on Synthetix’s staking algorithm, such that
 pool operations and updating rewards stays in constant time as the number of pools increase. Then each
 pool separately utilizes the SAR algorithm to distribute its reward allocation to users.
 
-PangoChef requires a Uniswap V2 factory and a wrapped native token address to be defined in
+WarpDefiChef requires a Uniswap V2 factory and a wrapped native token address to be defined in
 the constructor. Although it accepts any ERC20 token to be staked, it is mainly intended for
 WarpDefi liquidity pool tokens.
 
-PangolinStakingPosition had a simple compounding mechanism. In PangoChef, compounding requires
+PangolinStakingPosition had a simple compounding mechanism. In WarpDefiChef, compounding requires
 that (1) pool’s staking token is a liquidity pool pair token of the factory defined in the
 constructor, and (2) one of the tokens in the pair is `rewardsToken`. Given these requirements are satisfied for a pool,
 compounding works as follows.
@@ -129,7 +129,7 @@ compounding works as follows.
 
 Another version of compounding is also possible for any ERC20 pool. In this version, harvested rewards
 from any pool are paired with wrapped version of the native gas token, and staked to pool zero. In
-PangoChef, pool zero (`poolId == 0`) is reserved for `WRAPPED_NATIVE_TOKEN-REWARDS_TOKEN` liquidity
+WarpDefiChef, pool zero (`poolId == 0`) is reserved for `WRAPPED_NATIVE_TOKEN-REWARDS_TOKEN` liquidity
 pool token, and it is created during construction.
 
 * 🟢 `compoundToPoolZero()`:
@@ -156,7 +156,7 @@ they withdraw or harvest at least once from all of those three pools. This mecha
 Violation of this principle would be a critical vulnerability. Another major bug would be the lock count
 getting stuck at non-zero without a way to bring it back to zero again.
 
-Another feature of PangoChef is rewarder. Rewarder is an external contract that can be defined
+Another feature of WarpDefiChef is rewarder. Rewarder is an external contract that can be defined
 for any pool. Rewarder allows distributing extra token rewards. One issue with Rewarder is that
 it can allow a malicious owner to create DOS on withdraw functions. To prevent this, usually
 there is an emergency exit function that lacks the rewarder hook. We did not want to have an exit
@@ -167,11 +167,11 @@ DOS on exit by rewarder, and user’s gaming a time-based rewarder, we decided t
 call to rewarder in emergency exit. Low-level calls do not cause revert if the external contract
 call reverts. So that should solve both the issues.
 
-Yet another feature of PangoChef is relayer pools. That is an alternative type of pool to ERC20 pools,
+Yet another feature of WarpDefiChef is relayer pools. That is an alternative type of pool to ERC20 pools,
 and the only purpose of the pool is to divert its share of rewards to a single address. This can
 allow us to divert emissions to partners, or have a separate contract that manages ERC721 staking.
 
-`PangoChef` is mainly written for PangolinPair tokens. The total staked amount limit of
+`WarpDefiChef` is mainly written for PangolinPair tokens. The total staked amount limit of
 `type(uint104).max` is likely to be sufficient for most pair tokens. Weird tokens (rebasing tokens,
 fee-on-transfer tokens, and quintillion-supply meme tokens) are not supported.
 
@@ -183,7 +183,7 @@ there should be no truncation. The same reasoning goes for the use of unchecked 
 
 As an example regarding input sanitization, there is a limit of `type(uint96).max` on total
 rewards that can be added. This limit is *unlikely* to be reached (*unlikely*, because even
-though PNG supply fits 96 bits, the limit can theoretically be reached by rewards getting cycled
+though WARP supply fits 96 bits, the limit can theoretically be reached by rewards getting cycled
 back to the contract), but it allows us to determine for certain or only with assumptions about
 `block.timestamp`, that calculations cannot overflow.
 

@@ -23,9 +23,9 @@ contract RewarderViaMultiplierForPangoChef is IRewarder {
     mapping(address => mapping(uint256 => uint256)) private rewardDebts;
 
     /// @param _rewardTokens The address of each additional reward token
-    /// @param _rewardMultipliers The amount of each additional reward token to be claimable for every 1 base reward (PNG) being claimed
-    /// @param _baseRewardTokenDecimals The decimal precision of the base reward (PNG) being emitted
-    /// @param _chefV2 The address of the chef contract where the base reward (PNG) is being emitted
+    /// @param _rewardMultipliers The amount of each additional reward token to be claimable for every 1 base reward (WARP) being claimed
+    /// @param _baseRewardTokenDecimals The decimal precision of the base reward (WARP) being emitted
+    /// @param _chefV2 The address of the chef contract where the base reward (WARP) is being emitted
     /// @notice Each reward multiplier should have a precision matching that individual token
     constructor (
         IERC20[] memory _rewardTokens,
