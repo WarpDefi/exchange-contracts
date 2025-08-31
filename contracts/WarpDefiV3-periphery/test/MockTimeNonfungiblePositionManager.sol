@@ -11,13 +11,13 @@ contract MockTimeNonfungiblePositionManager is NonfungiblePositionManager {
         address _factory,
         address _WETH9,
         address _tokenDescriptor,
-        address _pangolinv3Rewarder
+        address _warpdefiv3Rewarder
     )
         NonfungiblePositionManager(
             _factory,
             _WETH9,
             _tokenDescriptor,
-            _pangolinv3Rewarder
+            _warpdefiv3Rewarder
         )
     {}
 

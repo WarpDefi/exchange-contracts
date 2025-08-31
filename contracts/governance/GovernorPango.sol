@@ -1,11 +1,11 @@
 pragma solidity =0.8.15;
 
-import "./interfaces/IPangolinStakingPositions.sol";
+import "./interfaces/IWarpDefiStakingPositions.sol";
 import "./interfaces/ITimelock.sol";
 
 // SPDX-License-Identifier: MIT
 /*
- * @notice GovernorPango is an adaptation of GovernorAlpha intended to work with PangolinStakingPositions NFTs
+ * @notice GovernorPango is an adaptation of GovernorAlpha intended to work with WarpDefiStakingPositions NFTs
  *         on an evm compatible blockchain. The proposal lifecycle is the same as GovernorAlpha but additional
  *         restrictions are imposed:
  *
@@ -33,8 +33,8 @@ contract GovernorPango {
     /// @notice Associated Timelock contract
     ITimelock public immutable TIMELOCK;
 
-    /// @notice Associated PangolinStakingPositions contract
-    IPangolinStakingPositions public immutable PANGOLIN_STAKING_POSITIONS;
+    /// @notice Associated WarpDefiStakingPositions contract
+    IWarpDefiStakingPositions public immutable WARPDEFI_STAKING_POSITIONS;
 
     /// @notice The total number of proposals
     uint256 public proposalCount;
@@ -137,7 +137,7 @@ contract GovernorPango {
 
     constructor(
         address _TIMELOCK,
-        address _PANGOLIN_STAKING_POSITIONS,
+        address _WARPDEFI_STAKING_POSITIONS,
         uint96 _PROPOSAL_THRESHOLD,
         uint96 _PROPOSAL_THRESHOLD_MIN,
         uint96 _PROPOSAL_THRESHOLD_MAX
@@ -146,7 +146,7 @@ contract GovernorPango {
         if (_PROPOSAL_THRESHOLD < _PROPOSAL_THRESHOLD_MIN) revert InvalidAction();
         if (_PROPOSAL_THRESHOLD > _PROPOSAL_THRESHOLD_MAX) revert InvalidAction();
         TIMELOCK = ITimelock(_TIMELOCK);
-        PANGOLIN_STAKING_POSITIONS = IPangolinStakingPositions(_PANGOLIN_STAKING_POSITIONS);
+        WARPDEFI_STAKING_POSITIONS = IWarpDefiStakingPositions(_WARPDEFI_STAKING_POSITIONS);
         PROPOSAL_THRESHOLD = _PROPOSAL_THRESHOLD;
         PROPOSAL_THRESHOLD_MIN = _PROPOSAL_THRESHOLD_MIN;
         PROPOSAL_THRESHOLD_MAX = _PROPOSAL_THRESHOLD_MAX;
@@ -338,7 +338,7 @@ contract GovernorPango {
      * @notice Ensure the NFT is owned by `msg.sender` and revert when not satisfied.
      */
     function _verifyOwnership(uint256 nftId) private view {
-        if (PANGOLIN_STAKING_POSITIONS.ownerOf(nftId) != msg.sender) revert InvalidOwner();
+        if (WARPDEFI_STAKING_POSITIONS.ownerOf(nftId) != msg.sender) revert InvalidOwner();
     }
 
     /*
@@ -347,7 +347,7 @@ contract GovernorPango {
      */
     function _getNftValueAt(uint256 nftId, uint40 timestamp) private view returns (uint96) {
         if (nftId <= 0) revert InvalidNFT();
-        IPangolinStakingPositions.Position memory position = PANGOLIN_STAKING_POSITIONS.positions(nftId);
+        IWarpDefiStakingPositions.Position memory position = WARPDEFI_STAKING_POSITIONS.positions(nftId);
         if (position.lastUpdate < timestamp) {
             return position.valueVariables.balance;
         } else {

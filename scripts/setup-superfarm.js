@@ -1,7 +1,7 @@
 const { ethers, network } = require('hardhat');
 
 const {
-    PANGOLIN_GNOSIS_SAFE,
+    WARPDEFI_GNOSIS_SAFE,
     MINICHEF_V2_ADDRESS,
     PNG_ADDRESS,
 } = require("./mainnet-constants");
@@ -14,10 +14,10 @@ async function main() {
 
     await network.provider.request({
         method: "hardhat_impersonateAccount",
-        params: [PANGOLIN_GNOSIS_SAFE]
+        params: [WARPDEFI_GNOSIS_SAFE]
     });
 
-    const multisigSigner = await ethers.provider.getSigner(PANGOLIN_GNOSIS_SAFE);
+    const multisigSigner = await ethers.provider.getSigner(WARPDEFI_GNOSIS_SAFE);
 
     // Ensure multisig has AVAX to pay for gas
     await user1.sendTransaction({

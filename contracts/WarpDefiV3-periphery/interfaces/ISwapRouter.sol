@@ -2,11 +2,11 @@
 pragma solidity >=0.7.5;
 pragma abicoder v2;
 
-import '../../PangolinV3-core/interfaces/callback/IPangolinV3SwapCallback.sol';
+import '../../WarpDefiV3-core/interfaces/callback/IWarpDefiV3SwapCallback.sol';
 
 /// @title Router token swapping functionality
-/// @notice Functions for swapping tokens via PangolinV3
-interface ISwapRouter is IPangolinV3SwapCallback {
+/// @notice Functions for swapping tokens via WarpDefiV3
+interface ISwapRouter is IWarpDefiV3SwapCallback {
     struct ExactInputSingleParams {
         address tokenIn;
         address tokenOut;

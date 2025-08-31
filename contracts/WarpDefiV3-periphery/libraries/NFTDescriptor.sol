@@ -2,10 +2,10 @@
 pragma solidity >=0.7.0 <0.8.0;
 pragma abicoder v2;
 
-import '../../PangolinV3-core/interfaces/IPangolinV3Pool.sol';
-import '../../PangolinV3-core/libraries/TickMath.sol';
-import '../../PangolinV3-core/libraries/BitMath.sol';
-import '../../PangolinV3-core/libraries/FullMath.sol';
+import '../../WarpDefiV3-core/interfaces/IWarpDefiV3Pool.sol';
+import '../../WarpDefiV3-core/libraries/TickMath.sol';
+import '../../WarpDefiV3-core/libraries/BitMath.sol';
+import '../../WarpDefiV3-core/libraries/FullMath.sol';
 import 'openzeppelin-contracts-solc-0.7/utils/Strings.sol';
 import 'openzeppelin-contracts-solc-0.7/math/SafeMath.sol';
 import 'openzeppelin-contracts-solc-0.7/math/SignedSafeMath.sol';

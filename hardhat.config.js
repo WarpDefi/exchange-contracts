@@ -2,12 +2,12 @@ require("@nomiclabs/hardhat-waffle");
 require("@nomiclabs/hardhat-ethers");
 require("@nomiclabs/hardhat-etherscan");
 require('hardhat-contract-sizer');
-const { CHAINS } = require("@pangolindex/sdk");
+const { CHAINS } = require("@warpdefidex/sdk");
 require("dotenv").config();
 const fs = require("fs");
 const path = require("path");
 
-// Create hardhat networks from @pangolindex/sdk
+// Create hardhat networks from @warpdefidex/sdk
 let networksFromSdk = {};
 for (const chain of Object.values(CHAINS)) {
   networksFromSdk[chain.id] = {
@@ -149,7 +149,7 @@ module.exports = {
           },
         },
       },
-      "contracts/PangolinV3-periphery/NonfungiblePositionManager.sol": {
+      "contracts/WarpDefiV3-periphery/NonfungiblePositionManager.sol": {
         version: "0.7.6",
         settings: {
           optimizer: {

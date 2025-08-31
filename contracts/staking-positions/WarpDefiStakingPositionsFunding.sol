@@ -14,7 +14,7 @@ import "./GenericErrors.sol";
  *      determine the distribution to stakers. The purpose of this architecture is to separate the
  *      logic of funding from the staking and reward distribution.
  */
-abstract contract PangolinStakingPositionsFunding is AccessControlEnumerable, GenericErrors {
+abstract contract WarpDefiStakingPositionsFunding is AccessControlEnumerable, GenericErrors {
     /** @notice The rewards given out per second during a reward period. */
     uint80 private _rewardRate;
 
@@ -55,7 +55,7 @@ abstract contract PangolinStakingPositionsFunding is AccessControlEnumerable, Ge
     event PeriodDurationUpdated(uint256 newDuration);
 
     /**
-     * @notice Constructor to create PangolinStakingPositionsFunding contract.
+     * @notice Constructor to create WarpDefiStakingPositionsFunding contract.
      * @param newRewardsToken The token used for both for staking and reward.
      * @param newAdmin The initial owner of the contract.
      */

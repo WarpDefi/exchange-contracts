@@ -4,28 +4,28 @@ const chai = require('chai');
 chai.use(smock.matchers);
 const { expect } = chai;
 
-describe('PangolinRouterSupportingFees', function() {
+describe('WarpDefiRouterSupportingFees', function() {
     const BIPS = 10_000;
 
     let OWNER, user1, user2, user3;
-    let PangolinRouterSupportingFees, PangolinFactory, PangolinPair, _Token, _Wavax;
-    let router, pangolinFactory;
+    let WarpDefiRouterSupportingFees, WarpDefiFactory, WarpDefiPair, _Token, _Wavax;
+    let router, warpdefiFactory;
     let wavax, tokenA, tokenB;
 
     before(async function() {
         [ OWNER, user1, user2, user3 ] = await ethers.getSigners();
 
-        PangolinRouterSupportingFees = await ethers.getContractFactory('PangolinRouterSupportingFees');
-        PangolinFactory = await ethers.getContractFactory('PangolinFactory');
-        PangolinPair = await ethers.getContractFactory('PangolinPair');
+        WarpDefiRouterSupportingFees = await ethers.getContractFactory('WarpDefiRouterSupportingFees');
+        WarpDefiFactory = await ethers.getContractFactory('WarpDefiFactory');
+        WarpDefiPair = await ethers.getContractFactory('WarpDefiPair');
 
         _Token = await smock.mock('Png');
         _Wavax = await smock.mock('WAVAX');
     });
 
     beforeEach(async function() {
-        pangolinFactory = await PangolinFactory.deploy(OWNER.address);
-        await pangolinFactory.deployed();
+        warpdefiFactory = await WarpDefiFactory.deploy(OWNER.address);
+        await warpdefiFactory.deployed();
 
         wavax = await _Wavax.deploy();
         await wavax.deployed();
@@ -46,8 +46,8 @@ describe('PangolinRouterSupportingFees', function() {
         );
         await tokenB.deployed();
 
-        router = await PangolinRouterSupportingFees.deploy(
-            pangolinFactory.address,
+        router = await WarpDefiRouterSupportingFees.deploy(
+            warpdefiFactory.address,
             wavax.address,
             OWNER.address,
         );
@@ -453,7 +453,7 @@ describe('PangolinRouterSupportingFees', function() {
                 let pair, actualAmountOut;
 
                 beforeEach(async function() {
-                    pair = await createPair(tokenA, tokenB, pangolinFactory);
+                    pair = await createPair(tokenA, tokenB, warpdefiFactory);
                     await addLiquidity(pair, tokenA, liquidityA, tokenB, liquidityB, OWNER, OWNER);
                     await approve(OWNER, tokenA, router.address);
                     await tokenB.transfer(router.address, previousFeesB);
@@ -510,7 +510,7 @@ describe('PangolinRouterSupportingFees', function() {
                 let pair, desiredAmountOut, actualAmountOut;
 
                 beforeEach(async function() {
-                    pair = await createPair(tokenA, tokenB, pangolinFactory);
+                    pair = await createPair(tokenA, tokenB, warpdefiFactory);
                     await addLiquidity(pair, tokenA, liquidityA, tokenB, liquidityB, OWNER, OWNER);
                     await approve(OWNER, tokenA, router.address);
                     await tokenB.transfer(router.address, previousFeesB);
@@ -565,7 +565,7 @@ describe('PangolinRouterSupportingFees', function() {
                 let pair, actualAmountOut;
 
                 beforeEach(async function() {
-                    pair = await createPair(wavax, tokenB, pangolinFactory);
+                    pair = await createPair(wavax, tokenB, warpdefiFactory);
                     await depositWAVAX(OWNER, liquidityW);
                     await addLiquidity(pair, wavax, liquidityW, tokenB, liquidityB, OWNER, OWNER);
                     await tokenB.transfer(router.address, previousFeesB);
@@ -627,7 +627,7 @@ describe('PangolinRouterSupportingFees', function() {
                 let receipt, avaxBefore;
 
                 beforeEach(async function() {
-                    pair = await createPair(tokenA, wavax, pangolinFactory);
+                    pair = await createPair(tokenA, wavax, warpdefiFactory);
                     await depositWAVAX(OWNER, liquidityW.add(previousFeesW));
                     await addLiquidity(pair, tokenA, liquidityA, wavax, liquidityW, OWNER, OWNER);
                     await approve(OWNER, tokenA, router.address);
@@ -679,7 +679,7 @@ describe('PangolinRouterSupportingFees', function() {
                 let receipt, avaxBefore;
 
                 beforeEach(async function() {
-                    pair = await createPair(tokenA, wavax, pangolinFactory);
+                    pair = await createPair(tokenA, wavax, warpdefiFactory);
                     await depositWAVAX(OWNER, liquidityW.add(previousFeesW));
                     await addLiquidity(pair, tokenA, liquidityA, wavax, liquidityW, OWNER, OWNER);
                     await approve(OWNER, tokenA, router.address);
@@ -732,7 +732,7 @@ describe('PangolinRouterSupportingFees', function() {
                 let pair, desiredAmountOut, actualAmountOut;
 
                 beforeEach(async function() {
-                    pair = await createPair(wavax, tokenB, pangolinFactory);
+                    pair = await createPair(wavax, tokenB, warpdefiFactory);
                     await depositWAVAX(OWNER, liquidityW);
                     await addLiquidity(pair, wavax, liquidityW, tokenB, liquidityB, OWNER, OWNER);
                     await tokenB.transfer(router.address, previousFeesB);
@@ -791,7 +791,7 @@ describe('PangolinRouterSupportingFees', function() {
                 let pair, actualAmountOut;
 
                 beforeEach(async function() {
-                    pair = await createPair(tokenA, tokenB, pangolinFactory);
+                    pair = await createPair(tokenA, tokenB, warpdefiFactory);
                     await addLiquidity(pair, tokenA, liquidityA, tokenB, liquidityB, OWNER, OWNER);
                     await approve(OWNER, tokenA, router.address);
                     await tokenB.transfer(router.address, previousFeesB);
@@ -848,7 +848,7 @@ describe('PangolinRouterSupportingFees', function() {
                 let pair, actualAmountOut;
 
                 beforeEach(async function() {
-                    pair = await createPair(wavax, tokenB, pangolinFactory);
+                    pair = await createPair(wavax, tokenB, warpdefiFactory);
                     await depositWAVAX(OWNER, liquidityW);
                     await addLiquidity(pair, wavax, liquidityW, tokenB, liquidityB, OWNER, OWNER);
                     await tokenB.transfer(router.address, previousFeesB);
@@ -910,7 +910,7 @@ describe('PangolinRouterSupportingFees', function() {
                 let receipt, avaxBefore;
 
                 beforeEach(async function() {
-                    pair = await createPair(tokenA, wavax, pangolinFactory);
+                    pair = await createPair(tokenA, wavax, warpdefiFactory);
                     await depositWAVAX(OWNER, liquidityW.add(previousFeesW));
                     await addLiquidity(pair, tokenA, liquidityA, wavax, liquidityW, OWNER, OWNER);
                     await approve(OWNER, tokenA, router.address);
@@ -1004,10 +1004,10 @@ describe('PangolinRouterSupportingFees', function() {
     });
 
     // Helpers
-    async function createPair(tokenA, tokenB, factory = pangolinFactory) {
+    async function createPair(tokenA, tokenB, factory = warpdefiFactory) {
         await factory.createPair(tokenA.address, tokenB.address);
         const address = await factory.getPair(tokenA.address, tokenB.address);
-        return PangolinPair.attach(address);
+        return WarpDefiPair.attach(address);
     }
     async function addLiquidity(pair, tokenA, amountA, tokenB, amountB, user, to = user) {
         await tokenA.connect(user).transfer(pair.address, amountA);

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 pragma solidity >=0.6.0 <0.8.0;
 
-import '../../PangolinV3-core/interfaces/IPangolinV3Pool.sol';
+import '../../WarpDefiV3-core/interfaces/IWarpDefiV3Pool.sol';
 
 library PoolTicksCounter {
     /// @dev This function counts the number of initialized ticks that would incur a gas cost between tickBefore and tickAfter.
@@ -9,7 +9,7 @@ library PoolTicksCounter {
     /// direction of the swap. If we are swapping upwards (tickAfter > tickBefore) we don't want to count tickBefore but we do
     /// want to count tickAfter. The opposite is true if we are swapping downwards.
     function countInitializedTicksCrossed(
-        IPangolinV3Pool self,
+        IWarpDefiV3Pool self,
         int24 tickBefore,
         int24 tickAfter
     ) internal view returns (uint32 initializedTicksCrossed) {

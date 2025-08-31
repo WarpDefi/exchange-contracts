@@ -5,9 +5,9 @@ import {
   PositionValueTest,
   SwapRouter,
   MockTimeNonfungiblePositionManager,
-  IPangolinV3Pool,
+  IWarpDefiV3Pool,
   TestERC20,
-  IPangolinV3Factory,
+  IWarpDefiV3Factory,
 } from "../../typechain";
 import { FeeAmount, MaxUint128, TICK_SPACINGS } from "./shared/constants";
 import { getMaxTick, getMinTick } from "./shared/ticks";
@@ -20,7 +20,7 @@ import snapshotGasCost from "./shared/snapshotGasCost";
 
 import { expect } from "./shared/expect";
 
-import { abi as IPangolinV3PoolABI } from "../../artifacts/contracts/PangolinV3-core/interfaces/IPangolinV3Pool.sol/IPangolinV3Pool.json";
+import { abi as IWarpDefiV3PoolABI } from "../../artifacts/contracts/WarpDefiV3-core/interfaces/IWarpDefiV3Pool.sol/IWarpDefiV3Pool.json";
 
 describe("PositionValue", async () => {
   const [...wallets] = waffle.provider.getWallets();
@@ -29,7 +29,7 @@ describe("PositionValue", async () => {
     tokens: [TestERC20, TestERC20, TestERC20];
     nft: MockTimeNonfungiblePositionManager;
     router: SwapRouter;
-    factory: IPangolinV3Factory;
+    factory: IWarpDefiV3Factory;
   }> = async (wallets, provider) => {
     const { nft, router, tokens, factory } = await completeFixture(
       wallets,
@@ -84,7 +84,7 @@ describe("PositionValue", async () => {
   let positionValue: PositionValueTest;
   let nft: MockTimeNonfungiblePositionManager;
   let router: SwapRouter;
-  let factory: IPangolinV3Factory;
+  let factory: IWarpDefiV3Factory;
 
   let amountDesired: BigNumberish;
 
@@ -109,7 +109,7 @@ describe("PositionValue", async () => {
       [tokens[0].address, tokens[1].address],
       FeeAmount.MEDIUM
     );
-    pool = new ethers.Contract(poolAddress, IPangolinV3PoolABI, wallets[0]);
+    pool = new ethers.Contract(poolAddress, IWarpDefiV3PoolABI, wallets[0]);
   });
 
   describe("#total", () => {

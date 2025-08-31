@@ -6,7 +6,7 @@ const {
     COMMUNITY_TREASURY_ADDRESS,
     TIMELOCK_ADDRESS,
     GOVERNOR_ADDRESS,
-    PANGOLIN_MULTISIG,
+    WARPDEFI_MULTISIG,
 } = require("./mainnet-constants");
 const { BigNumber } = require('ethers');
 
@@ -154,7 +154,7 @@ async function main() {
             poolConfig.map(entry => entry[1]),
             poolConfig.map(entry => ethers.constants.AddressZero)
         ]),
-        ethers.utils.defaultAbiCoder.encode(['address'], [PANGOLIN_MULTISIG])
+        ethers.utils.defaultAbiCoder.encode(['address'], [WARPDEFI_MULTISIG])
     ];
 
     const description =

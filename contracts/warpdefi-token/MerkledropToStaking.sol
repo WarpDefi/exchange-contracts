@@ -7,14 +7,14 @@ import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-interface IPangolinStakingPositions is IERC721 {
+interface IWarpDefiStakingPositions is IERC721 {
     function mint(uint256 amount) external returns (uint256 positionId);
 }
 
 contract MerkledropToStaking is Ownable, Pausable {
     mapping(address => uint96) public claimedAmounts;
     IERC20 public immutable WARP;
-    IPangolinStakingPositions public immutable SAR;
+    IWarpDefiStakingPositions public immutable SAR;
     bytes32 public merkleRoot;
 
     event Claimed(address indexed from, address indexed to, uint96 indexed amount);
@@ -27,7 +27,7 @@ contract MerkledropToStaking is Ownable, Pausable {
         _transferOwnership(initialOwner);
         IERC20(airdropToken).approve(stakingPositions, type(uint256).max);
         WARP = IERC20(airdropToken);
-        SAR = IPangolinStakingPositions(stakingPositions);
+        SAR = IWarpDefiStakingPositions(stakingPositions);
         _pause();
     }
 

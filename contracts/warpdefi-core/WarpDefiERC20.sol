@@ -1,9 +1,9 @@
 pragma solidity =0.5.16;
 
-import './interfaces/IPangolinERC20.sol';
+import './interfaces/IWarpDefiERC20.sol';
 import './libraries/SafeMath.sol';
 
-contract PangolinERC20 is IPangolinERC20 {
+contract WarpDefiERC20 is IWarpDefiERC20 {
     using SafeMath for uint;
 
     string public constant name = 'WarpDefi Liquidity';

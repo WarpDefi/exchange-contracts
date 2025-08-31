@@ -12,12 +12,12 @@ interface IMiniChefV2 {
     function userInfo(uint pid, address user) external view returns (IMiniChefV2.UserInfo memory);
 }
 
-interface IPangolinPair {
+interface IWarpDefiPair {
     function totalSupply() external view returns (uint);
     function balanceOf(address owner) external view returns (uint);
 }
 
-interface IPangolinERC20 {
+interface IWarpDefiERC20 {
     function balanceOf(address owner) external view returns (uint);
     function getCurrentVotes(address account) external view returns (uint);
     function delegates(address account) external view returns (address);
@@ -29,13 +29,13 @@ interface IStakingRewards {
 }
 
 // SPDX-License-Identifier: MIT
-contract PangolinVoteCalculator is Ownable {
+contract WarpDefiVoteCalculator is Ownable {
 
-    IPangolinERC20 png;
+    IWarpDefiERC20 png;
     IMiniChefV2 miniChef;
 
     constructor(address _png, address _miniChef) {
-        png = IPangolinERC20(_png);
+        png = IWarpDefiERC20(_png);
         miniChef = IMiniChefV2(_miniChef);
     }
 
@@ -47,7 +47,7 @@ contract PangolinVoteCalculator is Ownable {
             if (pids[i] >= lpTokens.length) continue;
 
             address pglAddress = lpTokens[pids[i]];
-            IPangolinPair pair = IPangolinPair(pglAddress);
+            IWarpDefiPair pair = IWarpDefiPair(pglAddress);
 
             uint pair_total_PNG = png.balanceOf(pglAddress);
             uint pair_total_PGL = pair.totalSupply(); // Could initially be 0 in rare pre-mint situations

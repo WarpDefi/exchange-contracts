@@ -12,7 +12,7 @@ import './IPeripheryImmutableState.sol';
 import '../libraries/PoolAddress.sol';
 
 /// @title Non-fungible token for positions
-/// @notice Wraps PangolinV3 positions in a non-fungible token interface which allows for them to be transferred
+/// @notice Wraps WarpDefiV3 positions in a non-fungible token interface which allows for them to be transferred
 /// and authorized.
 interface INonfungiblePositionManager is
     IPoolInitializer,
@@ -42,10 +42,10 @@ interface INonfungiblePositionManager is
     /// @param amount0 The amount of token0 owed to the position that was collected
     /// @param amount1 The amount of token1 owed to the position that was collected
     event Collect(uint256 indexed tokenId, address recipient, uint256 amount0, uint256 amount1);
-    /// @notice Emitted when PangolinV3 Rewarder is called and notified of the reward amount
-    /// @dev This only notifies that the PangolinV3 Rewarder is called. Except some edge cases (which will be documented in PangolinV3
+    /// @notice Emitted when WarpDefiV3 Rewarder is called and notified of the reward amount
+    /// @dev This only notifies that the WarpDefiV3 Rewarder is called. Except some edge cases (which will be documented in WarpDefiV3
     /// Rewarder), this event is a good indicator of the rewards being claimed. However, it is not certain as it depends on
-    /// PangolinV3 Rewarder implementation to decide whether to send the rewards.
+    /// WarpDefiV3 Rewarder implementation to decide whether to send the rewards.
     /// @param tokenId The ID of the token for which the reward is being claimed
     /// @param recipient The address of the account that received the reward
     event ClaimReward(uint256 indexed tokenId, address recipient);

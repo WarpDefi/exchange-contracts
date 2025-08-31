@@ -12,8 +12,8 @@ describe('PoolCreation', function () {
 
     before(async function () {
         [ this.admin, this.unprivileged ] = await ethers.getSigners();
-        this.PangolinFactory = await ethers.getContractFactory("PangolinFactory");
-        this.PangolinRouter = await ethers.getContractFactory("PangolinRouter");
+        this.WarpDefiFactory = await ethers.getContractFactory("WarpDefiFactory");
+        this.WarpDefiRouter = await ethers.getContractFactory("WarpDefiRouter");
         this.WARP = await ethers.getContractFactory("Png");
         this.WAVAX = await ethers.getContractFactory("Png");
         this.NATERC20 = await ethers.getContractFactory("Png");
@@ -31,10 +31,10 @@ describe('PoolCreation', function () {
         this.jbxerc20 = await this.JBXERC20.deploy(TOTAL_SUPPLY, AIRDROP_SUPPLY, "JBX", "JBXERC20");
         await this.jbxerc20.deployed();
         //Deploy Factory
-        this.factory = await this.PangolinFactory.deploy(this.admin.address);
+        this.factory = await this.WarpDefiFactory.deploy(this.admin.address);
         await this.factory.deployed();
         //Deploy Router
-        this.router = await this.PangolinRouter.deploy(this.factory.address, this.wavax.address);
+        this.router = await this.WarpDefiRouter.deploy(this.factory.address, this.wavax.address);
         await this.router.deployed();
         //Deadline parameter
         this.deadline = Math.floor(Date.now()/1000) + 1000000;

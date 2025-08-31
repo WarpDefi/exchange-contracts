@@ -4,8 +4,8 @@ import { deployContract } from "ethereum-waffle";
 import { expandTo18Decimals } from "./utilities";
 
 import ERC20 from "../../../build/ERC20.json";
-import PangolinFactory from "../../../build/PangolinFactory.json";
-import PangolinPair from "../../../build/PangolinPair.json";
+import WarpDefiFactory from "../../../build/WarpDefiFactory.json";
+import WarpDefiPair from "../../../build/WarpDefiPair.json";
 
 interface FactoryFixture {
   factory: Contract;
@@ -21,7 +21,7 @@ export async function factoryFixture(
 ): Promise<FactoryFixture> {
   const factory = await deployContract(
     wallet,
-    PangolinFactory,
+    WarpDefiFactory,
     [wallet.address],
     overrides
   );
@@ -57,7 +57,7 @@ export async function pairFixture(
   const pairAddress = await factory.getPair(tokenA.address, tokenB.address);
   const pair = new Contract(
     pairAddress,
-    JSON.stringify(PangolinPair.abi),
+    JSON.stringify(WarpDefiPair.abi),
     provider
   ).connect(wallet);
 

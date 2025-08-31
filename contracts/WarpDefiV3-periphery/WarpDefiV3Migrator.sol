@@ -2,22 +2,22 @@
 pragma solidity =0.7.6;
 pragma abicoder v2;
 
-import '../PangolinV3-core/libraries/LowGasSafeMath.sol';
-import '../pangolin-core/interfaces/IPangolinPair.sol';
+import '../WarpDefiV3-core/libraries/LowGasSafeMath.sol';
+import '../warpdefi-core/interfaces/IWarpDefiPair.sol';
 
 import './interfaces/INonfungiblePositionManager.sol';
 
 import './libraries/TransferHelper.sol';
 
-import './interfaces/IPangolinV3Migrator.sol';
+import './interfaces/IWarpDefiV3Migrator.sol';
 import './base/PeripheryImmutableState.sol';
 import './base/Multicall.sol';
 import './base/SelfPermit.sol';
 import './interfaces/external/IWETH9.sol';
 import './base/PoolInitializer.sol';
 
-/// @title PangolinV3 Migrator
-contract PangolinV3Migrator is IPangolinV3Migrator, PeripheryImmutableState, PoolInitializer, Multicall, SelfPermit {
+/// @title WarpDefiV3 Migrator
+contract WarpDefiV3Migrator is IWarpDefiV3Migrator, PeripheryImmutableState, PoolInitializer, Multicall, SelfPermit {
     using LowGasSafeMath for uint256;
 
     address public immutable nonfungiblePositionManager;
@@ -39,10 +39,10 @@ contract PangolinV3Migrator is IPangolinV3Migrator, PeripheryImmutableState, Poo
         require(params.percentageToMigrate <= 100, 'Percentage too large');
 
         // burn v1 liquidity to this address
-        IPangolinPair(params.pair).transferFrom(msg.sender, params.pair, params.liquidityToMigrate);
-        (uint256 amount0V1, uint256 amount1V1) = IPangolinPair(params.pair).burn(address(this));
+        IWarpDefiPair(params.pair).transferFrom(msg.sender, params.pair, params.liquidityToMigrate);
+        (uint256 amount0V1, uint256 amount1V1) = IWarpDefiPair(params.pair).burn(address(this));
 
-        // calculate the amounts to migrate to pangolinv3
+        // calculate the amounts to migrate to warpdefiv3
         uint256 amount0V1ToMigrate = amount0V1.mul(params.percentageToMigrate) / 100;
         uint256 amount1V1ToMigrate = amount1V1.mul(params.percentageToMigrate) / 100;
 
@@ -50,7 +50,7 @@ contract PangolinV3Migrator is IPangolinV3Migrator, PeripheryImmutableState, Poo
         TransferHelper.safeApprove(params.token0, nonfungiblePositionManager, amount0V1ToMigrate);
         TransferHelper.safeApprove(params.token1, nonfungiblePositionManager, amount1V1ToMigrate);
 
-        // mint pangolinv3 position
+        // mint warpdefiv3 position
         (, , uint256 amount0V2, uint256 amount1V2) =
             INonfungiblePositionManager(nonfungiblePositionManager).mint(
                 INonfungiblePositionManager.MintParams({

@@ -5,10 +5,10 @@ import "../libraries/SafeCast.sol";
 import "../libraries/TickMath.sol";
 
 import "../interfaces/IERC20Minimal.sol";
-import "../interfaces/callback/IPangolinV3SwapCallback.sol";
-import "../interfaces/IPangolinV3Pool.sol";
+import "../interfaces/callback/IWarpDefiV3SwapCallback.sol";
+import "../interfaces/IWarpDefiV3Pool.sol";
 
-contract TestPangolinV3Router is IPangolinV3SwapCallback {
+contract TestWarpDefiV3Router is IWarpDefiV3SwapCallback {
     using SafeCast for uint256;
 
     // flash swaps for an exact amount of token0 in the output pool
@@ -20,7 +20,7 @@ contract TestPangolinV3Router is IPangolinV3SwapCallback {
     ) external {
         address[] memory pools = new address[](1);
         pools[0] = poolInput;
-        IPangolinV3Pool(poolOutput).swap(
+        IWarpDefiV3Pool(poolOutput).swap(
             recipient,
             false,
             -amount0Out.toInt256(),
@@ -38,7 +38,7 @@ contract TestPangolinV3Router is IPangolinV3SwapCallback {
     ) external {
         address[] memory pools = new address[](1);
         pools[0] = poolInput;
-        IPangolinV3Pool(poolOutput).swap(
+        IWarpDefiV3Pool(poolOutput).swap(
             recipient,
             true,
             -amount1Out.toInt256(),
@@ -49,7 +49,7 @@ contract TestPangolinV3Router is IPangolinV3SwapCallback {
 
     event SwapCallback(int256 amount0Delta, int256 amount1Delta);
 
-    function pangolinv3SwapCallback(
+    function warpdefiv3SwapCallback(
         int256 amount0Delta,
         int256 amount1Delta,
         bytes calldata data
@@ -64,14 +64,14 @@ contract TestPangolinV3Router is IPangolinV3SwapCallback {
         if (pools.length == 1) {
             // get the address and amount of the token that we need to pay
             address tokenToBePaid = amount0Delta > 0
-                ? IPangolinV3Pool(msg.sender).token0()
-                : IPangolinV3Pool(msg.sender).token1();
+                ? IWarpDefiV3Pool(msg.sender).token0()
+                : IWarpDefiV3Pool(msg.sender).token1();
             int256 amountToBePaid = amount0Delta > 0
                 ? amount0Delta
                 : amount1Delta;
 
-            bool zeroForOne = tokenToBePaid == IPangolinV3Pool(pools[0]).token1();
-            IPangolinV3Pool(pools[0]).swap(
+            bool zeroForOne = tokenToBePaid == IWarpDefiV3Pool(pools[0]).token1();
+            IWarpDefiV3Pool(pools[0]).swap(
                 msg.sender,
                 zeroForOne,
                 -amountToBePaid,
@@ -82,13 +82,13 @@ contract TestPangolinV3Router is IPangolinV3SwapCallback {
             );
         } else {
             if (amount0Delta > 0) {
-                IERC20Minimal(IPangolinV3Pool(msg.sender).token0()).transferFrom(
+                IERC20Minimal(IWarpDefiV3Pool(msg.sender).token0()).transferFrom(
                     payer,
                     msg.sender,
                     uint256(amount0Delta)
                 );
             } else {
-                IERC20Minimal(IPangolinV3Pool(msg.sender).token1()).transferFrom(
+                IERC20Minimal(IWarpDefiV3Pool(msg.sender).token1()).transferFrom(
                     payer,
                     msg.sender,
                     uint256(amount1Delta)

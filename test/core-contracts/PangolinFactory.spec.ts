@@ -5,7 +5,7 @@ import { solidity, MockProvider, createFixtureLoader } from "ethereum-waffle";
 import { getCreate2Address } from "./shared/utilities";
 import { factoryFixture } from "./shared/fixtures";
 
-import PangolinPair from "../../build/PangolinPair.json";
+import WarpDefiPair from "../../build/WarpDefiPair.json";
 
 const AddressZero = ethers.constants.AddressZero;
 
@@ -16,7 +16,7 @@ const TEST_ADDRESSES: [string, string] = [
   "0x2000000000000000000000000000000000000000",
 ];
 
-describe("PangolinFactory", () => {
+describe("WarpDefiFactory", () => {
   const provider = new MockProvider({
     ganacheOptions: {
       hardfork: "istanbul",
@@ -40,7 +40,7 @@ describe("PangolinFactory", () => {
   });
 
   async function createPair(tokens: [string, string]) {
-    const bytecode = `0x${PangolinPair.evm.bytecode.object}`;
+    const bytecode = `0x${WarpDefiPair.evm.bytecode.object}`;
     const create2Address = getCreate2Address(factory.address, tokens, bytecode);
     await expect(factory.createPair(...tokens))
       .to.emit(factory, "PairCreated")
@@ -63,7 +63,7 @@ describe("PangolinFactory", () => {
 
     const pair = new Contract(
       create2Address,
-      JSON.stringify(PangolinPair.abi),
+      JSON.stringify(WarpDefiPair.abi),
       provider
     );
     expect(await pair.factory()).to.eq(factory.address);

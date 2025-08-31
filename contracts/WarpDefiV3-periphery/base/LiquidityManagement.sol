@@ -2,9 +2,9 @@
 pragma solidity =0.7.6;
 pragma abicoder v2;
 
-import '../../PangolinV3-core/interfaces/IPangolinV3Factory.sol';
-import '../../PangolinV3-core/interfaces/callback/IPangolinV3MintCallback.sol';
-import '../../PangolinV3-core/libraries/TickMath.sol';
+import '../../WarpDefiV3-core/interfaces/IWarpDefiV3Factory.sol';
+import '../../WarpDefiV3-core/interfaces/callback/IWarpDefiV3MintCallback.sol';
+import '../../WarpDefiV3-core/libraries/TickMath.sol';
 
 import '../libraries/PoolAddress.sol';
 import '../libraries/CallbackValidation.sol';
@@ -14,15 +14,15 @@ import './PeripheryPayments.sol';
 import './PeripheryImmutableState.sol';
 
 /// @title Liquidity management functions
-/// @notice Internal functions for safely managing liquidity in PangolinV3
-abstract contract LiquidityManagement is IPangolinV3MintCallback, PeripheryImmutableState, PeripheryPayments {
+/// @notice Internal functions for safely managing liquidity in WarpDefiV3
+abstract contract LiquidityManagement is IWarpDefiV3MintCallback, PeripheryImmutableState, PeripheryPayments {
     struct MintCallbackData {
         PoolAddress.PoolKey poolKey;
         address payer;
     }
 
-    /// @inheritdoc IPangolinV3MintCallback
-    function pangolinv3MintCallback(
+    /// @inheritdoc IWarpDefiV3MintCallback
+    function warpdefiv3MintCallback(
         uint256 amount0Owed,
         uint256 amount1Owed,
         bytes calldata data
@@ -54,13 +54,13 @@ abstract contract LiquidityManagement is IPangolinV3MintCallback, PeripheryImmut
             uint128 liquidity,
             uint256 amount0,
             uint256 amount1,
-            IPangolinV3Pool pool
+            IWarpDefiV3Pool pool
         )
     {
         PoolAddress.PoolKey memory poolKey =
             PoolAddress.PoolKey({token0: params.token0, token1: params.token1, fee: params.fee});
 
-        pool = IPangolinV3Pool(PoolAddress.computeAddress(factory, poolKey));
+        pool = IWarpDefiV3Pool(PoolAddress.computeAddress(factory, poolKey));
 
         // compute the liquidity amount
         {

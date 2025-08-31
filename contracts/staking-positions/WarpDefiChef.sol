@@ -5,14 +5,14 @@ import "./PangoChefFunding.sol";
 import "./ReentrancyGuard.sol";
 
 import "./interfaces/IWAVAX.sol";
-import "./interfaces/IPangolinFactory.sol";
-import "./interfaces/IPangolinPair.sol";
+import "./interfaces/IWarpDefiFactory.sol";
+import "./interfaces/IWarpDefiPair.sol";
 import "./interfaces/IRewarder.sol";
 
 /** @dev We call this contract with try/catch to figure out if pair is an actual pair. */
 contract SafeExternalCalls {
     function getReserveTokenAddresses(address pair) external view returns (address, address) {
-        return (IPangolinPair(pair).token0(), IPangolinPair(pair).token1());
+        return (IWarpDefiPair(pair).token0(), IWarpDefiPair(pair).token1());
     }
 }
 
@@ -128,7 +128,7 @@ contract WarpDefiChef is PangoChefFunding, ReentrancyGuard {
     mapping(uint256 => mapping(address => EnumerableSet.UintSet)) private lockedPools;
 
     /** @notice The UNI-V2 factory that creates pair tokens. */
-    IPangolinFactory public immutable factory;
+    IWarpDefiFactory public immutable factory;
 
     /** @notice The contract for wrapping and unwrapping the native gas token (e.g.: WETH). */
     address public immutable wrappedNativeToken;
@@ -179,7 +179,7 @@ contract WarpDefiChef is PangoChefFunding, ReentrancyGuard {
     constructor(
         address newRewardsToken,
         address newAdmin,
-        IPangolinFactory newFactory,
+        IWarpDefiFactory newFactory,
         address newWrappedNativeToken
     ) PangoChefFunding(newRewardsToken, newAdmin) {
         // Get WAVAX-WARP (or WETH-WARP, etc.) liquidity token.
@@ -691,7 +691,7 @@ contract WarpDefiChef is PangoChefFunding, ReentrancyGuard {
         if (rewardPair == address(0)) revert InvalidType();
 
         // Get token amounts from the pool.
-        (uint256 reserve0, uint256 reserve1, ) = IPangolinPair(poolToken).getReserves();
+        (uint256 reserve0, uint256 reserve1, ) = IWarpDefiPair(poolToken).getReserves();
 
         // Get the reward token’s pair’s amount from the reserves.
         uint256 pairAmount = address(rewardsToken) < rewardPair
@@ -730,7 +730,7 @@ contract WarpDefiChef is PangoChefFunding, ReentrancyGuard {
         rewardsToken.safeTransfer(poolToken, rewardAmount);
 
         // Mint liquidity tokens to the WarpDefiChef and return the amount minted.
-        poolTokenAmount = IPangolinPair(poolToken).mint(address(this));
+        poolTokenAmount = IWarpDefiPair(poolToken).mint(address(this));
     }
 
     /**

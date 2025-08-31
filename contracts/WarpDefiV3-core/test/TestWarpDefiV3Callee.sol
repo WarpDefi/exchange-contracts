@@ -6,16 +6,16 @@ import "../interfaces/IERC20Minimal.sol";
 import "../libraries/SafeCast.sol";
 import "../libraries/TickMath.sol";
 
-import "../interfaces/callback/IPangolinV3MintCallback.sol";
-import "../interfaces/callback/IPangolinV3SwapCallback.sol";
-import "../interfaces/callback/IPangolinV3FlashCallback.sol";
+import "../interfaces/callback/IWarpDefiV3MintCallback.sol";
+import "../interfaces/callback/IWarpDefiV3SwapCallback.sol";
+import "../interfaces/callback/IWarpDefiV3FlashCallback.sol";
 
-import "../interfaces/IPangolinV3Pool.sol";
+import "../interfaces/IWarpDefiV3Pool.sol";
 
-contract TestPangolinV3Callee is
-    IPangolinV3MintCallback,
-    IPangolinV3SwapCallback,
-    IPangolinV3FlashCallback
+contract TestWarpDefiV3Callee is
+    IWarpDefiV3MintCallback,
+    IWarpDefiV3SwapCallback,
+    IWarpDefiV3FlashCallback
 {
     using SafeCast for uint256;
 
@@ -25,7 +25,7 @@ contract TestPangolinV3Callee is
         address recipient,
         uint160 sqrtPriceLimitX96
     ) external {
-        IPangolinV3Pool(pool).swap(
+        IWarpDefiV3Pool(pool).swap(
             recipient,
             true,
             amount0In.toInt256(),
@@ -40,7 +40,7 @@ contract TestPangolinV3Callee is
         address recipient,
         uint160 sqrtPriceLimitX96
     ) external {
-        IPangolinV3Pool(pool).swap(
+        IWarpDefiV3Pool(pool).swap(
             recipient,
             true,
             -amount1Out.toInt256(),
@@ -55,7 +55,7 @@ contract TestPangolinV3Callee is
         address recipient,
         uint160 sqrtPriceLimitX96
     ) external {
-        IPangolinV3Pool(pool).swap(
+        IWarpDefiV3Pool(pool).swap(
             recipient,
             false,
             amount1In.toInt256(),
@@ -70,7 +70,7 @@ contract TestPangolinV3Callee is
         address recipient,
         uint160 sqrtPriceLimitX96
     ) external {
-        IPangolinV3Pool(pool).swap(
+        IWarpDefiV3Pool(pool).swap(
             recipient,
             false,
             -amount0Out.toInt256(),
@@ -84,7 +84,7 @@ contract TestPangolinV3Callee is
         uint160 sqrtPriceX96,
         address recipient
     ) external {
-        IPangolinV3Pool(pool).swap(
+        IWarpDefiV3Pool(pool).swap(
             recipient,
             true,
             type(int256).max,
@@ -98,7 +98,7 @@ contract TestPangolinV3Callee is
         uint160 sqrtPriceX96,
         address recipient
     ) external {
-        IPangolinV3Pool(pool).swap(
+        IWarpDefiV3Pool(pool).swap(
             recipient,
             false,
             type(int256).max,
@@ -109,7 +109,7 @@ contract TestPangolinV3Callee is
 
     event SwapCallback(int256 amount0Delta, int256 amount1Delta);
 
-    function pangolinv3SwapCallback(
+    function warpdefiv3SwapCallback(
         int256 amount0Delta,
         int256 amount1Delta,
         bytes calldata data
@@ -119,13 +119,13 @@ contract TestPangolinV3Callee is
         emit SwapCallback(amount0Delta, amount1Delta);
 
         if (amount0Delta > 0) {
-            IERC20Minimal(IPangolinV3Pool(msg.sender).token0()).transferFrom(
+            IERC20Minimal(IWarpDefiV3Pool(msg.sender).token0()).transferFrom(
                 sender,
                 msg.sender,
                 uint256(amount0Delta)
             );
         } else if (amount1Delta > 0) {
-            IERC20Minimal(IPangolinV3Pool(msg.sender).token1()).transferFrom(
+            IERC20Minimal(IWarpDefiV3Pool(msg.sender).token1()).transferFrom(
                 sender,
                 msg.sender,
                 uint256(amount1Delta)
@@ -143,7 +143,7 @@ contract TestPangolinV3Callee is
         int24 tickUpper,
         uint128 amount
     ) external {
-        IPangolinV3Pool(pool).mint(
+        IWarpDefiV3Pool(pool).mint(
             recipient,
             tickLower,
             tickUpper,
@@ -154,7 +154,7 @@ contract TestPangolinV3Callee is
 
     event MintCallback(uint256 amount0Owed, uint256 amount1Owed);
 
-    function pangolinv3MintCallback(
+    function warpdefiv3MintCallback(
         uint256 amount0Owed,
         uint256 amount1Owed,
         bytes calldata data
@@ -163,13 +163,13 @@ contract TestPangolinV3Callee is
 
         emit MintCallback(amount0Owed, amount1Owed);
         if (amount0Owed > 0)
-            IERC20Minimal(IPangolinV3Pool(msg.sender).token0()).transferFrom(
+            IERC20Minimal(IWarpDefiV3Pool(msg.sender).token0()).transferFrom(
                 sender,
                 msg.sender,
                 amount0Owed
             );
         if (amount1Owed > 0)
-            IERC20Minimal(IPangolinV3Pool(msg.sender).token1()).transferFrom(
+            IERC20Minimal(IWarpDefiV3Pool(msg.sender).token1()).transferFrom(
                 sender,
                 msg.sender,
                 amount1Owed
@@ -186,7 +186,7 @@ contract TestPangolinV3Callee is
         uint256 pay0,
         uint256 pay1
     ) external {
-        IPangolinV3Pool(pool).flash(
+        IWarpDefiV3Pool(pool).flash(
             recipient,
             amount0,
             amount1,
@@ -194,7 +194,7 @@ contract TestPangolinV3Callee is
         );
     }
 
-    function pangolinv3FlashCallback(
+    function warpdefiv3FlashCallback(
         uint256 fee0,
         uint256 fee1,
         bytes calldata data
@@ -207,13 +207,13 @@ contract TestPangolinV3Callee is
         );
 
         if (pay0 > 0)
-            IERC20Minimal(IPangolinV3Pool(msg.sender).token0()).transferFrom(
+            IERC20Minimal(IWarpDefiV3Pool(msg.sender).token0()).transferFrom(
                 sender,
                 msg.sender,
                 pay0
             );
         if (pay1 > 0)
-            IERC20Minimal(IPangolinV3Pool(msg.sender).token1()).transferFrom(
+            IERC20Minimal(IWarpDefiV3Pool(msg.sender).token1()).transferFrom(
                 sender,
                 msg.sender,
                 pay1

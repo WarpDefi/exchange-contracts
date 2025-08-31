@@ -15,7 +15,7 @@ describe("FullMath", () => {
   let fullMath: FullMathTest;
   before("deploy FullMathTest", async () => {
     const factory = await ethers.getContractFactory(
-      "contracts/PangolinV3-core/test/FullMathTest.sol:FullMathTest"
+      "contracts/WarpDefiV3-core/test/FullMathTest.sol:FullMathTest"
     );
     fullMath = (await factory.deploy()) as FullMathTest;
   });

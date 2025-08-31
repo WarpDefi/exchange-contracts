@@ -3,11 +3,11 @@ pragma solidity =0.7.6;
 
 import "openzeppelin-contracts-solc-0.7/proxy/Clones.sol";
 
-import "../interfaces/IPangolinV3Pool.sol";
+import "../interfaces/IWarpDefiV3Pool.sol";
 
-import "./MockTimePangolinV3Pool.sol";
+import "./MockTimeWarpDefiV3Pool.sol";
 
-contract MockTimePangolinV3PoolDeployer {
+contract MockTimeWarpDefiV3PoolDeployer {
     address public immutable implementation;
 
     // struct Parameters {
@@ -44,8 +44,8 @@ contract MockTimePangolinV3PoolDeployer {
             implementation,
             keccak256(abi.encode(token0, token1, fee))
         );
-        IPangolinV3Pool(pool).initialize(token0, token1, fee, tickSpacing);
-        MockTimePangolinV3Pool(pool).setFactory(factory);
+        IWarpDefiV3Pool(pool).initialize(token0, token1, fee, tickSpacing);
+        MockTimeWarpDefiV3Pool(pool).setFactory(factory);
         emit PoolDeployed(pool);
         // delete parameters;
     }

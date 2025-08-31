@@ -17,7 +17,7 @@ interface IPangoChef {
  *
  * Funder -> RewardFundingForwarder -> WarpDefiChef
  *               OR
- * Funder -> RewardFundingForwarder -> PangolinStakingPositions
+ * Funder -> RewardFundingForwarder -> WarpDefiStakingPositions
  *
  * Funder is any contract that was written for Synthetix' StakingRewards, or for MiniChef.
  * RewardFundingForwarder provides compatibility for these old funding contracts.

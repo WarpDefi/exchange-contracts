@@ -46,8 +46,8 @@ async function main() {
     const initBalance = await deployer.getBalance();
     console.log("Balance:", ethers.utils.formatEther(initBalance) + "\n");
 
-    const pangolinPairFactory = await ethers.getContractFactory("PangolinPair");
-    const pangolinPairInitHash = ethers.utils.keccak256(pangolinPairFactory.bytecode);
+    const warpdefiPairFactory = await ethers.getContractFactory("WarpDefiPair");
+    const warpdefiPairInitHash = ethers.utils.keccak256(warpdefiPairFactory.bytecode);
 
     if (USE_GNOSIS_SAFE) {
         console.log("✅ Using Gnosis Safe.");
@@ -141,8 +141,8 @@ async function main() {
         foundation.address,
         TIMELOCK_DELAY,
     ]);
-    const factory = await deploy("PangolinFactory", [deployer.address]);
-    const router = await deploy("PangolinRouter", [
+    const factory = await deploy("WarpDefiFactory", [deployer.address]);
+    const router = await deploy("WarpDefiRouter", [
         factory.address,
         nativeToken,
     ]);
@@ -160,7 +160,7 @@ async function main() {
     const chefFundForwarder = await deploy("RewardFundingForwarder", [chef.address]);
 
     const stakingMetadata = await deploy("TokenMetadata", [foundation.address, PNG_SYMBOL]);
-    const staking = await deploy("PangolinStakingPositions", [
+    const staking = await deploy("WarpDefiStakingPositions", [
         png.address,
         deployer.address,
         stakingMetadata.address
@@ -218,7 +218,7 @@ async function main() {
     const feeCollector = await deploy("FeeCollector", [
         nativeToken,
         factory.address,
-        pangolinPairInitHash,
+        warpdefiPairInitHash,
         staking.address,
         ethers.constants.AddressZero,
         "0",
@@ -298,7 +298,7 @@ async function main() {
 
     await factory.setFeeToSetter(foundation.address);
     await confirmTransactionCount();
-    console.log("Transferred PangolinFactory ownership to Multisig.");
+    console.log("Transferred WarpDefiFactory ownership to Multisig.");
 
     /*******************
      * PANGOCHEF ROLES *
@@ -340,13 +340,13 @@ async function main() {
     await confirmTransactionCount();
     await staking.grantRole(DEFAULT_ADMIN_ROLE, foundation.address);
     await confirmTransactionCount();
-    console.log("Added FeeCollector as PangolinStakingPosition funder.");
+    console.log("Added FeeCollector as WarpDefiStakingPosition funder.");
 
     await staking.renounceRole(FUNDER_ROLE, deployer.address);
     await confirmTransactionCount();
     await staking.renounceRole(DEFAULT_ADMIN_ROLE, deployer.address);
     await confirmTransactionCount();
-    console.log("Transferred PangolinStakingPositions ownership to Multisig.");
+    console.log("Transferred WarpDefiStakingPositions ownership to Multisig.");
 
     const endBalance = await deployer.getBalance();
     console.log(

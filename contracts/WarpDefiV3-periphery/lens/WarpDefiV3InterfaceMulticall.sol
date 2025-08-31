@@ -2,8 +2,8 @@
 pragma solidity =0.7.6;
 pragma abicoder v2;
 
-/// @notice A fork of Multicall2 specifically tailored for the PangolinV3 Interface
-contract PangolinV3InterfaceMulticall {
+/// @notice A fork of Multicall2 specifically tailored for the WarpDefiV3 Interface
+contract WarpDefiV3InterfaceMulticall {
     struct Call {
         address target;
         uint256 gasLimit;

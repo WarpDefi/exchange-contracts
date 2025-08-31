@@ -14,7 +14,7 @@ const overrides = {
   gasLimit: 9999999,
 };
 
-describe("PangolinPair", () => {
+describe("WarpDefiPair", () => {
   const provider = new MockProvider({
     ganacheOptions: {
       hardfork: "istanbul",

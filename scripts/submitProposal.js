@@ -38,7 +38,7 @@ async function main() {
 
 ## Summary:
 
-This proposal seeks DAO approval for the allocation of WARP Tokens from the WarpDefi Community Treasury to fuel critical strategic initiatives. These funds will ensure Pangolin’s operational continuity, deepen liquidity across WarpDefi V3, and support WARP’s expansion onto new centralized exchanges (CEXs) through listings and market-making.
+This proposal seeks DAO approval for the allocation of WARP Tokens from the WarpDefi Community Treasury to fuel critical strategic initiatives. These funds will ensure WarpDefi’s operational continuity, deepen liquidity across WarpDefi V3, and support WARP’s expansion onto new centralized exchanges (CEXs) through listings and market-making.
 
 ## Objectives:
 
@@ -71,7 +71,7 @@ We are requesting 2,000,000 WARP to be utilized over the next 6 months across th
 
 ## Conclusion:
 
-This funding proposal is designed to support Pangolin’s long-term vision by ensuring operational stability, incentivizing on-chain liquidity, and expanding WARP’s reach via new CEX integrations. By approving this proposal, the DAO empowers WarpDefi to continue leading innovation within the Avalanche ecosystem.
+This funding proposal is designed to support ’s long-term vision by ensuring operational stability, incentivizing on-chain liquidity, and expanding WARP’s reach via new CEX integrations. By approving this proposal, the DAO empowers WarpDefi to continue leading innovation within the Avalanche ecosystem.
 
 ## Voting Process:
 WARP token holders can cast their votes via the WarpDefi official governance platform until 31.03.2025`;

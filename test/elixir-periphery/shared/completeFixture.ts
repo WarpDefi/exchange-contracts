@@ -8,12 +8,12 @@ import {
   MockTimeSwapRouter,
   NonfungibleTokenPositionDescriptor,
   TestERC20,
-  IPangolinV3Factory,
+  IWarpDefiV3Factory,
 } from "../../../typechain";
 
 const completeFixture: Fixture<{
   weth9: IWETH9;
-  factory: IPangolinV3Factory;
+  factory: IWarpDefiV3Factory;
   router: MockTimeSwapRouter;
   nft: MockTimeNonfungiblePositionManager;
   nftDescriptor: NonfungibleTokenPositionDescriptor;

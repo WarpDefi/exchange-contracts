@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPLv3
 pragma solidity ^0.8.0;
 
-interface IPangolinPair {
+interface IWarpDefiPair {
     function token0() external view returns (address);
 
     function token1() external view returns (address);

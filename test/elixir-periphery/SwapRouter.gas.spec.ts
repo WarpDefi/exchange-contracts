@@ -1,9 +1,9 @@
-import { abi as IPangolinV3PoolABI } from "../../artifacts/contracts/PangolinV3-core/interfaces/IPangolinV3Pool.sol/IPangolinV3Pool.json";
+import { abi as IWarpDefiV3PoolABI } from "../../artifacts/contracts/WarpDefiV3-core/interfaces/IWarpDefiV3Pool.sol/IWarpDefiV3Pool.json";
 import { Fixture } from "ethereum-waffle";
 import { BigNumber, constants, ContractTransaction, Wallet } from "ethers";
 import { ethers, waffle, network } from "hardhat";
 import {
-  IPangolinV3Pool,
+  IWarpDefiV3Pool,
   IWETH9,
   MockTimeSwapRouter,
   TestERC20,
@@ -26,7 +26,7 @@ describe("SwapRouter gas tests", function () {
     weth9: IWETH9;
     router: MockTimeSwapRouter;
     tokens: [TestERC20, TestERC20, TestERC20];
-    pools: [IPangolinV3Pool, IPangolinV3Pool, IPangolinV3Pool];
+    pools: [IWarpDefiV3Pool, IWarpDefiV3Pool, IWarpDefiV3Pool];
   }> = async (wallets, provider) => {
     const { weth9, factory, router, tokens, nft } = await completeFixture(
       wallets,
@@ -108,8 +108,8 @@ describe("SwapRouter gas tests", function () {
     ]);
 
     const pools = poolAddresses.map(
-      (poolAddress) => new ethers.Contract(poolAddress, IPangolinV3PoolABI, wallet)
-    ) as [IPangolinV3Pool, IPangolinV3Pool, IPangolinV3Pool];
+      (poolAddress) => new ethers.Contract(poolAddress, IWarpDefiV3PoolABI, wallet)
+    ) as [IWarpDefiV3Pool, IWarpDefiV3Pool, IWarpDefiV3Pool];
 
     return {
       weth9,
@@ -122,7 +122,7 @@ describe("SwapRouter gas tests", function () {
   let weth9: IWETH9;
   let router: MockTimeSwapRouter;
   let tokens: [TestERC20, TestERC20, TestERC20];
-  let pools: [IPangolinV3Pool, IPangolinV3Pool, IPangolinV3Pool];
+  let pools: [IWarpDefiV3Pool, IWarpDefiV3Pool, IWarpDefiV3Pool];
 
   let loadFixture: ReturnType<typeof waffle.createFixtureLoader>;
 

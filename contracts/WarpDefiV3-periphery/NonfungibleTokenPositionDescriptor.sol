@@ -2,8 +2,8 @@
 pragma solidity =0.7.6;
 pragma abicoder v2;
 
-import '../PangolinV3-core/interfaces/IPangolinV3Pool.sol';
-import '../pangolin-lib/libraries/SafeERC20Namer.sol';
+import '../WarpDefiV3-core/interfaces/IWarpDefiV3Pool.sol';
+import '../warpdefi-lib/libraries/SafeERC20Namer.sol';
 
 import './libraries/ChainId.sol';
 import './interfaces/INonfungiblePositionManager.sol';
@@ -44,8 +44,8 @@ contract NonfungibleTokenPositionDescriptor is INonfungibleTokenPositionDescript
         (, , address token0, address token1, uint24 fee, int24 tickLower, int24 tickUpper, , , , , ) =
             positionManager.positions(tokenId);
 
-        IPangolinV3Pool pool =
-            IPangolinV3Pool(
+        IWarpDefiV3Pool pool =
+            IWarpDefiV3Pool(
                 PoolAddress.computeAddress(
                     positionManager.factory(),
                     PoolAddress.PoolKey({token0: token0, token1: token1, fee: fee})

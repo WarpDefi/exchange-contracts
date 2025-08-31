@@ -14,14 +14,14 @@ interface IPangoChef {
 }
 
 /** @author shung for WarpDefi */
-contract EmissionDiversionFromPangoChefToPangolinStakingPositions {
+contract EmissionDiversionFromPangoChefToWarpDefiStakingPositions {
     IPangoChef public immutable pangoChef;
-    IPangoChef public immutable pangolinStakingPositions;
+    IPangoChef public immutable warpdefiStakingPositions;
     address public immutable rewardsToken;
     bytes32 private constant FUNDER_ROLE = keccak256("FUNDER_ROLE");
 
     modifier onlyFunder() {
-        require(pangolinStakingPositions.hasRole(FUNDER_ROLE, msg.sender), "unauthorized");
+        require(warpdefiStakingPositions.hasRole(FUNDER_ROLE, msg.sender), "unauthorized");
         _;
     }
 
@@ -34,16 +34,16 @@ contract EmissionDiversionFromPangoChefToPangolinStakingPositions {
         );
         IERC20(newRewardsToken).approve(newStakingPositions, type(uint256).max);
         pangoChef = IPangoChef(newPangoChef);
-        pangolinStakingPositions = IPangoChef(newStakingPositions);
+        warpdefiStakingPositions = IPangoChef(newStakingPositions);
         rewardsToken = newRewardsToken;
     }
 
     function claimAndAddReward(uint256 poolId) external onlyFunder {
         uint256 amount = pangoChef.claim(poolId);
-        pangolinStakingPositions.addReward(amount);
+        warpdefiStakingPositions.addReward(amount);
     }
 
     function notifyRewardAmount(uint256 amount) external onlyFunder {
-        pangolinStakingPositions.addReward(amount);
+        warpdefiStakingPositions.addReward(amount);
     }
 }

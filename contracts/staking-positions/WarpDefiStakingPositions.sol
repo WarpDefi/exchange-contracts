@@ -2,10 +2,10 @@
 pragma solidity 0.8.15;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
-import "./PangolinStakingPositionsFunding.sol";
+import "./WarpDefiStakingPositionsFunding.sol";
 
 interface ITokenMetadata {
-    function tokenURI(PangolinStakingPositions pangolinStakingPositions, uint256 tokenId)
+    function tokenURI(WarpDefiStakingPositions warpdefiStakingPositions, uint256 tokenId)
         external
         view
         returns (string memory);
@@ -52,7 +52,7 @@ interface ITokenMetadata {
  *      - `totalStaked` fits 96 bits.
  *      - `totalRewardAdded` fits 96 bits.
  */
-contract PangolinStakingPositions is ERC721Enumerable, PangolinStakingPositionsFunding {
+contract WarpDefiStakingPositions is ERC721Enumerable, WarpDefiStakingPositionsFunding {
     struct ValueVariables {
         // The amount of tokens staked in the position or the contract.
         uint96 balance;
@@ -150,7 +150,7 @@ contract PangolinStakingPositions is ERC721Enumerable, PangolinStakingPositionsF
     }
 
     /**
-     * @notice Constructor to create and initialize PangolinStakingPositions contract.
+     * @notice Constructor to create and initialize WarpDefiStakingPositions contract.
      * @param newRewardsToken The token used for both for staking and reward.
      * @param newAdmin The initial owner of the contract.
      * @param newTokenMetadata The contract that constructs tokenURIs for position NFTs.
@@ -161,7 +161,7 @@ contract PangolinStakingPositions is ERC721Enumerable, PangolinStakingPositionsF
         ITokenMetadata newTokenMetadata
     )
         ERC721("WarpDefi Staking Positions", "WARP-POS")
-        PangolinStakingPositionsFunding(newRewardsToken, newAdmin)
+        WarpDefiStakingPositionsFunding(newRewardsToken, newAdmin)
     {
         tokenMetadata = newTokenMetadata;
     }

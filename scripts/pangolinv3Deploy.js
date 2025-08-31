@@ -22,9 +22,9 @@ async function main() {
 
     //const poolDeployer = new ethers.Wallet(process.env.IMPLEMENTATION_DEPLOYER_PRIVATE_KEY, ethers.provider);
     //await deployer.sendTransaction({ to: poolDeployer.address, value: implementationDeployCost });
-    //const poolFactory = await ethers.getContractFactory("PangolinV3Pool");
+    //const poolFactory = await ethers.getContractFactory("WarpDefiV3Pool");
     //const pool = await poolFactory.connect(poolDeployer).deploy();
-    //console.log("Deployed `PangolinV3Pool` Implementation: " + pool.address);
+    //console.log("Deployed `WarpDefiV3Pool` Implementation: " + pool.address);
 
     const POOL_IMPLEMENTATION = "0xB1C039631628f4BAcC57A6f8af878Ed6136C0872";
     //const POOL_IMPLEMENTATION = pool.address;
@@ -40,9 +40,9 @@ async function main() {
     const WETH_ADDRESS = "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7";
     //const WETH_ADDRESS = WETH_ADDRESS;
 
-    const factoryFactory = await ethers.getContractFactory('PangolinV3Factory');
+    const factoryFactory = await ethers.getContractFactory('WarpDefiV3Factory');
     const factory = await factoryFactory.deploy(POOL_IMPLEMENTATION);
-    console.log("Deployed `PangolinV3Factory`: " + factory.address);
+    console.log("Deployed `WarpDefiV3Factory`: " + factory.address);
 
     await delay(2000);
 
@@ -74,21 +74,21 @@ async function main() {
 
     await delay(2000);
 
-    const migratorFactory = await ethers.getContractFactory('PangolinV3Migrator');
+    const migratorFactory = await ethers.getContractFactory('WarpDefiV3Migrator');
     const migrator = await migratorFactory.deploy(factory.address, WETH_ADDRESS, nftManager.address);
-    console.log("Deployed `PangolinV3Migrator`: " + migrator.address);
+    console.log("Deployed `WarpDefiV3Migrator`: " + migrator.address);
 
     await delay(2000);
 
-    const multicallFactory = await ethers.getContractFactory('PangolinV3InterfaceMulticall');
+    const multicallFactory = await ethers.getContractFactory('WarpDefiV3InterfaceMulticall');
     const multicall = await multicallFactory.deploy();
-    console.log("Deployed `PangolinV3InterfaceMulticall`: " + multicall.address);
+    console.log("Deployed `WarpDefiV3InterfaceMulticall`: " + multicall.address);
 
     await delay(2000);
 
-    const quoterFactory = await ethers.getContractFactory('PangolinV3Quoter');
+    const quoterFactory = await ethers.getContractFactory('WarpDefiV3Quoter');
     const quoter = await quoterFactory.deploy(factory.address, WETH_ADDRESS);
-    console.log("Deployed `PangolinV3Quoter`: " + quoter.address);
+    console.log("Deployed `WarpDefiV3Quoter`: " + quoter.address);
 
     await delay(2000);
 

@@ -3,7 +3,7 @@ pragma solidity >=0.5.0;
 
 /// @title Permissioned pool actions
 /// @notice Contains pool methods that may only be called by the factory owner
-interface IPangolinV3PoolOwnerActions {
+interface IWarpDefiV3PoolOwnerActions {
     /// @notice Initialize the pool to set immutable parameters
     /// @param _token0 The first of the two tokens of the pool, sorted by address
     /// @param _token1 The second of the two tokens of the pool, sorted by address

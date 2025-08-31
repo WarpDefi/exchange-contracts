@@ -3,21 +3,21 @@ pragma solidity =0.7.6;
 
 import "openzeppelin-contracts-solc-0.7/proxy/Clones.sol";
 
-import "./interfaces/IPangolinV3Factory.sol";
-import "./interfaces/IPangolinV3Pool.sol";
+import "./interfaces/IWarpDefiV3Factory.sol";
+import "./interfaces/IWarpDefiV3Pool.sol";
 
-/// @title Canonical PangolinV3 factory
-/// @notice Deploys PangolinV3 pools and manages ownership and control over pool protocol fees
-contract PangolinV3Factory is IPangolinV3Factory {
-    /// @inheritdoc IPangolinV3Factory
+/// @title Canonical WarpDefiV3 factory
+/// @notice Deploys WarpDefiV3 pools and manages ownership and control over pool protocol fees
+contract WarpDefiV3Factory is IWarpDefiV3Factory {
+    /// @inheritdoc IWarpDefiV3Factory
     address public immutable override implementation;
 
-    /// @inheritdoc IPangolinV3Factory
+    /// @inheritdoc IWarpDefiV3Factory
     address public override owner;
 
-    /// @inheritdoc IPangolinV3Factory
+    /// @inheritdoc IWarpDefiV3Factory
     mapping(uint24 => int24) public override feeAmountTickSpacing;
-    /// @inheritdoc IPangolinV3Factory
+    /// @inheritdoc IWarpDefiV3Factory
     mapping(address => mapping(address => mapping(uint24 => address)))
         public
         override getPool;
@@ -38,7 +38,7 @@ contract PangolinV3Factory is IPangolinV3Factory {
         emit FeeAmountEnabled(8000, 200);
     }
 
-    /// @inheritdoc IPangolinV3Factory
+    /// @inheritdoc IWarpDefiV3Factory
     function createPool(
         address tokenA,
         address tokenB,
@@ -56,21 +56,21 @@ contract PangolinV3Factory is IPangolinV3Factory {
             implementation,
             keccak256(abi.encode(token0, token1, fee))
         );
-        IPangolinV3Pool(pool).initialize(token0, token1, fee, tickSpacing);
+        IWarpDefiV3Pool(pool).initialize(token0, token1, fee, tickSpacing);
         getPool[token0][token1][fee] = pool;
         // populate mapping in the reverse direction, deliberate choice to avoid the cost of comparing addresses
         getPool[token1][token0][fee] = pool;
         emit PoolCreated(token0, token1, fee, tickSpacing, pool);
     }
 
-    /// @inheritdoc IPangolinV3Factory
+    /// @inheritdoc IWarpDefiV3Factory
     function setOwner(address _owner) external override {
         require(msg.sender == owner);
         emit OwnerChanged(owner, _owner);
         owner = _owner;
     }
 
-    /// @inheritdoc IPangolinV3Factory
+    /// @inheritdoc IWarpDefiV3Factory
     function enableFeeAmount(uint24 fee, int24 tickSpacing) public override {
         require(msg.sender == owner);
         require(fee >= 10 && fee <= 30000);
@@ -86,17 +86,17 @@ contract PangolinV3Factory is IPangolinV3Factory {
 
     function setFee(address _pool, uint24 _fee) external {
         require(msg.sender == owner, "AUTH");
-        IPangolinV3Pool(_pool).setFee(_fee);
+        IWarpDefiV3Pool(_pool).setFee(_fee);
     }
 
     function getFee(address _pool) external view returns (uint24) {
-        uint24 _fee = IPangolinV3Pool(_pool).fee();
+        uint24 _fee = IWarpDefiV3Pool(_pool).fee();
         return _fee;
     }
 
     function setFeeProtocol(address pool, uint8 feeProtocol0, uint8 feeProtocol1) external {
         require(msg.sender == owner, "AUTH");
-        IPangolinV3Pool(pool).setFeeProtocol(feeProtocol0, feeProtocol1);
+        IWarpDefiV3Pool(pool).setFeeProtocol(feeProtocol0, feeProtocol1);
     }
 
     function collectProtocol(
@@ -106,6 +106,6 @@ contract PangolinV3Factory is IPangolinV3Factory {
         uint128 amount1Requested
     ) external {
         require(msg.sender == owner, "AUTH");
-        IPangolinV3Pool(pool).collectProtocol(recipient, amount0Requested, amount1Requested);
+        IWarpDefiV3Pool(pool).collectProtocol(recipient, amount0Requested, amount1Requested);
     }
 }

@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
-interface IPangolinPair {
+interface IWarpDefiPair {
     function token0() external view returns (address);
     function token1() external view returns (address);
     function burn(address to) external returns (uint amount0, uint amount1);
@@ -177,13 +177,13 @@ contract FeeCollector is AccessControl, Pausable {
         address token1,
         uint256 amount1
     ) {
-        token0 = IPangolinPair(pair).token0();
-        token1 = IPangolinPair(pair).token1();
+        token0 = IWarpDefiPair(pair).token0();
+        token1 = IWarpDefiPair(pair).token1();
 
         require(pairFor(token0, token1) == pair, "Invalid pair");
 
         IERC20(pair).safeTransfer(pair, balance);
-        (amount0, amount1) = IPangolinPair(pair).burn(address(this));
+        (amount0, amount1) = IWarpDefiPair(pair).burn(address(this));
     }
 
     /// @notice Swap a token for the specified output token
@@ -201,9 +201,9 @@ contract FeeCollector is AccessControl, Pausable {
     /// @notice For a list of liquidity pairs, withdraws all liquidity and swaps it to a specified token
     /// @param liquidityPairs - list of all the pairs to pull
     /// @param outputToken - the token into which all liquidity will be swapped
-    function _convertLiquidity(IPangolinPair[] memory liquidityPairs, address outputToken) private {
+    function _convertLiquidity(IWarpDefiPair[] memory liquidityPairs, address outputToken) private {
         for (uint256 i; i < liquidityPairs.length; ++i) {
-            IPangolinPair liquidityPair = liquidityPairs[i];
+            IWarpDefiPair liquidityPair = liquidityPairs[i];
             uint256 pglBalance = liquidityPair.balanceOf(address(this));
             if (pglBalance > 0) {
                 (
@@ -228,7 +228,7 @@ contract FeeCollector is AccessControl, Pausable {
     /// @param claimMiniChef - whether to also harvest additional rewards accrued via MiniChef
     /// @param minFinalBalance - required min png balance after the buybacks (slippage control)
     function harvest(
-        IPangolinPair[] calldata liquidityPairs,
+        IWarpDefiPair[] calldata liquidityPairs,
         bool claimMiniChef,
         uint256 minFinalBalance
     ) external whenNotPaused onlyRole(HARVEST_ROLE) {
@@ -283,9 +283,9 @@ contract FeeCollector is AccessControl, Pausable {
         IERC20(tokenA).safeTransfer(pairAB, amountIn);
 
         if (tokenA < tokenB) {
-            IPangolinPair(pairAB).swap(0, amountOutAB, address(this), new bytes(0));
+            IWarpDefiPair(pairAB).swap(0, amountOutAB, address(this), new bytes(0));
         } else {
-            IPangolinPair(pairAB).swap(amountOutAB, 0, address(this), new bytes(0));
+            IWarpDefiPair(pairAB).swap(amountOutAB, 0, address(this), new bytes(0));
         }
     }
 
@@ -299,27 +299,27 @@ contract FeeCollector is AccessControl, Pausable {
         IERC20(tokenA).safeTransfer(pairAB, amountIn);
 
         if (tokenA < tokenB) {
-            IPangolinPair(pairAB).swap(0, amountOutAB, pairBC, new bytes(0));
+            IWarpDefiPair(pairAB).swap(0, amountOutAB, pairBC, new bytes(0));
         } else {
-            IPangolinPair(pairAB).swap(amountOutAB, 0, pairBC, new bytes(0));
+            IWarpDefiPair(pairAB).swap(amountOutAB, 0, pairBC, new bytes(0));
         }
 
         if (tokenB < tokenC) {
-            IPangolinPair(pairBC).swap(0, amountOutBC, address(this), new bytes(0));
+            IWarpDefiPair(pairBC).swap(0, amountOutBC, address(this), new bytes(0));
         } else {
-            IPangolinPair(pairBC).swap(amountOutBC, 0, address(this), new bytes(0));
+            IWarpDefiPair(pairBC).swap(amountOutBC, 0, address(this), new bytes(0));
         }
     }
 
-    // Simplified from PangolinLibrary
-    // Combines PangolinLibrary.getAmountOut and PangolinLibrary.getReserves
+    // Simplified from WarpDefiLibrary
+    // Combines WarpDefiLibrary.getAmountOut and WarpDefiLibrary.getReserves
     function getAmountOut(
         uint256 amountIn,
         address pair,
         address tokenA,
         address tokenB
     ) internal view returns (uint256 amountOut) {
-        (uint256 reserve0, uint256 reserve1,) = IPangolinPair(pair).getReserves();
+        (uint256 reserve0, uint256 reserve1,) = IWarpDefiPair(pair).getReserves();
         (uint256 reserveIn, uint256 reserveOut) = tokenA < tokenB ? (reserve0, reserve1) : (reserve1, reserve0);
 
         uint256 amountInWithFee = amountIn * 997;
@@ -328,7 +328,7 @@ contract FeeCollector is AccessControl, Pausable {
         amountOut = numerator / denominator;
     }
 
-    // Migrated from PangolinLibrary
+    // Migrated from WarpDefiLibrary
     // calculates the CREATE2 address for a WarpDefi pair without making any external calls
     function pairFor(address tokenA, address tokenB) private view returns (address pair) {
         (address token0, address token1) = tokenA < tokenB ? (tokenA, tokenB) : (tokenB, tokenA);

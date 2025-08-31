@@ -1,17 +1,17 @@
 pragma solidity 0.8.13;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "../pangolin-lib/libraries/TransferHelper.sol";
-import "./libraries/PangolinLibrary8.sol";
+import "../warpdefi-lib/libraries/TransferHelper.sol";
+import "./libraries/WarpDefiLibrary8.sol";
 
 import "./interfaces/IERC20.sol";
-import "./interfaces/IPangolinRouterSupportingFees.sol";
+import "./interfaces/IWarpDefiRouterSupportingFees.sol";
 import "./interfaces/IWAVAX.sol";
 
 // SPDX-License-Identifier: MIT
 
 // @dev Router allowing percent fees to be charged on the output token of a swap
-contract PangolinRouterSupportingFees is IPangolinRouterSupportingFees, Ownable {
+contract WarpDefiRouterSupportingFees is IWarpDefiRouterSupportingFees, Ownable {
     address public immutable override FACTORY;
     address public immutable override WAVAX;
 
@@ -51,11 +51,11 @@ contract PangolinRouterSupportingFees is IPangolinRouterSupportingFees, Ownable 
     function _swap(uint256[] memory amounts, address[] memory path) internal {
         for (uint256 i; i < path.length - 1; ++i) {
             (address input, address output) = (path[i], path[i + 1]);
-            (address token0,) = PangolinLibrary8.sortTokens(input, output);
+            (address token0,) = WarpDefiLibrary8.sortTokens(input, output);
             uint256 amountOut = amounts[i + 1];
             (uint256 amount0Out, uint256 amount1Out) = input == token0 ? (uint(0), amountOut) : (amountOut, uint(0));
-            address to = i < path.length - 2 ? PangolinLibrary8.pairFor(FACTORY, output, path[i + 2]) : address(this);
-            IPangolinPair(PangolinLibrary8.pairFor(FACTORY, input, output)).swap(
+            address to = i < path.length - 2 ? WarpDefiLibrary8.pairFor(FACTORY, output, path[i + 2]) : address(this);
+            IWarpDefiPair(WarpDefiLibrary8.pairFor(FACTORY, input, output)).swap(
                 amount0Out, amount1Out, to, new bytes(0)
             );
         }
@@ -68,11 +68,11 @@ contract PangolinRouterSupportingFees is IPangolinRouterSupportingFees, Ownable 
         uint256 feeCut,
         uint256 feeTotalAmount
     ) internal {
-        uint256 pangolinFeeAmount = feeTotalAmount * feeCut / BIPS;
-        uint256 partnerFeeAmount = feeTotalAmount - pangolinFeeAmount;
+        uint256 warpdefiFeeAmount = feeTotalAmount * feeCut / BIPS;
+        uint256 partnerFeeAmount = feeTotalAmount - warpdefiFeeAmount;
 
-        if (pangolinFeeAmount > 0) {
-            emit ProtocolFee(partnerFeeTo, tokenOut, pangolinFeeAmount);
+        if (warpdefiFeeAmount > 0) {
+            emit ProtocolFee(partnerFeeTo, tokenOut, warpdefiFeeAmount);
         }
         if (partnerFeeAmount > 0) {
             TransferHelper.safeTransfer(tokenOut, partnerFeeTo, partnerFeeAmount);
@@ -87,11 +87,11 @@ contract PangolinRouterSupportingFees is IPangolinRouterSupportingFees, Ownable 
         uint256 feeCut,
         uint256 feeTotalAmount
     ) internal {
-        uint256 pangolinFeeAmount = feeTotalAmount * feeCut / BIPS;
-        uint256 partnerFeeAmount = feeTotalAmount - pangolinFeeAmount;
+        uint256 warpdefiFeeAmount = feeTotalAmount * feeCut / BIPS;
+        uint256 partnerFeeAmount = feeTotalAmount - warpdefiFeeAmount;
 
-        if (pangolinFeeAmount > 0) {
-            emit ProtocolFee(partnerFeeTo, WAVAX, pangolinFeeAmount);
+        if (warpdefiFeeAmount > 0) {
+            emit ProtocolFee(partnerFeeTo, WAVAX, warpdefiFeeAmount);
         }
         if (partnerFeeAmount > 0) {
             TransferHelper.safeTransfer(WAVAX, partnerFeeTo, partnerFeeAmount);
@@ -111,7 +111,7 @@ contract PangolinRouterSupportingFees is IPangolinRouterSupportingFees, Ownable 
         FeeInfo storage feeInfo = feeInfos[feeTo];
         require(feeInfo.initialized, "Invalid partner");
 
-        amounts = PangolinLibrary8.getAmountsOut(FACTORY, amountIn, path);
+        amounts = WarpDefiLibrary8.getAmountsOut(FACTORY, amountIn, path);
 
         uint256 feeTotalAmount;
         uint256 userAmountOut;
@@ -125,7 +125,7 @@ contract PangolinRouterSupportingFees is IPangolinRouterSupportingFees, Ownable 
         require(userAmountOut >= amountOutMin, "INSUFFICIENT_OUTPUT_AMOUNT");
 
         TransferHelper.safeTransferFrom(
-            path[0], msg.sender, PangolinLibrary8.pairFor(FACTORY, path[0], path[1]), amountIn
+            path[0], msg.sender, WarpDefiLibrary8.pairFor(FACTORY, path[0], path[1]), amountIn
         );
 
         _swap(amounts, path);
@@ -145,12 +145,12 @@ contract PangolinRouterSupportingFees is IPangolinRouterSupportingFees, Ownable 
         uint256 feeTotalAmount = amountOut * feeInfo.feeTotal / BIPS;
 
         // Adjust amountOut to include fee
-        amounts = PangolinLibrary8.getAmountsIn(FACTORY, amountOut + feeTotalAmount, path);
+        amounts = WarpDefiLibrary8.getAmountsIn(FACTORY, amountOut + feeTotalAmount, path);
         uint256 amountIn = amounts[0];
         require(amountIn <= amountInMax, "EXCESSIVE_INPUT_AMOUNT");
 
         TransferHelper.safeTransferFrom(
-            path[0], msg.sender, PangolinLibrary8.pairFor(FACTORY, path[0], path[1]), amountIn
+            path[0], msg.sender, WarpDefiLibrary8.pairFor(FACTORY, path[0], path[1]), amountIn
         );
 
         _swap(amounts, path);
@@ -168,7 +168,7 @@ contract PangolinRouterSupportingFees is IPangolinRouterSupportingFees, Ownable 
         FeeInfo storage feeInfo = feeInfos[feeTo];
         require(feeInfo.initialized, "Invalid partner");
 
-        amounts = PangolinLibrary8.getAmountsOut(FACTORY, msg.value, path);
+        amounts = WarpDefiLibrary8.getAmountsOut(FACTORY, msg.value, path);
 
         uint256 amountOut = amounts[amounts.length - 1];
         uint256 feeTotalAmount = amountOut * feeInfo.feeTotal / BIPS;
@@ -177,7 +177,7 @@ contract PangolinRouterSupportingFees is IPangolinRouterSupportingFees, Ownable 
         require(userAmountOut >= amountOutMin, "INSUFFICIENT_OUTPUT_AMOUNT");
 
         IWAVAX(WAVAX).deposit{value: msg.value}();
-        assert(IWAVAX(WAVAX).transfer(PangolinLibrary8.pairFor(FACTORY, WAVAX, path[1]), msg.value));
+        assert(IWAVAX(WAVAX).transfer(WarpDefiLibrary8.pairFor(FACTORY, WAVAX, path[1]), msg.value));
 
         _swap(amounts, path);
         _distribute(userAmountOut, path[path.length - 1], to, feeTo, feeInfo.feeCut, feeTotalAmount);
@@ -198,12 +198,12 @@ contract PangolinRouterSupportingFees is IPangolinRouterSupportingFees, Ownable 
         uint256 feeTotalAmount = amountOut * feeInfo.feeTotal / BIPS;
 
         // Adjust amountOut to include fee
-        amounts = PangolinLibrary8.getAmountsIn(FACTORY, amountOut + feeTotalAmount, path);
+        amounts = WarpDefiLibrary8.getAmountsIn(FACTORY, amountOut + feeTotalAmount, path);
         uint256 amountIn = amounts[0];
         require(amountIn <= amountInMax, "EXCESSIVE_INPUT_AMOUNT");
 
         TransferHelper.safeTransferFrom(
-            path[0], msg.sender, PangolinLibrary8.pairFor(FACTORY, path[0], path[1]), amountIn
+            path[0], msg.sender, WarpDefiLibrary8.pairFor(FACTORY, path[0], path[1]), amountIn
         );
 
         _swap(amounts, path);
@@ -222,7 +222,7 @@ contract PangolinRouterSupportingFees is IPangolinRouterSupportingFees, Ownable 
         FeeInfo storage feeInfo = feeInfos[feeTo];
         require(feeInfo.initialized, "Invalid partner");
 
-        amounts = PangolinLibrary8.getAmountsOut(FACTORY, amountIn, path);
+        amounts = WarpDefiLibrary8.getAmountsOut(FACTORY, amountIn, path);
 
         uint256 feeTotalAmount;
         uint256 userAmountOut;
@@ -236,7 +236,7 @@ contract PangolinRouterSupportingFees is IPangolinRouterSupportingFees, Ownable 
         require(userAmountOut >= amountOutMin, "INSUFFICIENT_OUTPUT_AMOUNT");
 
         TransferHelper.safeTransferFrom(
-            path[0], msg.sender, PangolinLibrary8.pairFor(FACTORY, path[0], path[1]), amounts[0]
+            path[0], msg.sender, WarpDefiLibrary8.pairFor(FACTORY, path[0], path[1]), amounts[0]
         );
 
         _swap(amounts, path);
@@ -257,12 +257,12 @@ contract PangolinRouterSupportingFees is IPangolinRouterSupportingFees, Ownable 
         uint256 feeTotalAmount = amountOut * feeInfo.feeTotal / BIPS;
 
         // Adjust amountOut to include fee
-        amounts = PangolinLibrary8.getAmountsIn(FACTORY, amountOut + feeTotalAmount, path);
+        amounts = WarpDefiLibrary8.getAmountsIn(FACTORY, amountOut + feeTotalAmount, path);
         uint256 amountIn = amounts[0];
         require(amountIn <= msg.value, "EXCESSIVE_INPUT_AMOUNT");
 
         IWAVAX(WAVAX).deposit{value: amountIn}();
-        assert(IWAVAX(WAVAX).transfer(PangolinLibrary8.pairFor(FACTORY, WAVAX, path[1]), amountIn));
+        assert(IWAVAX(WAVAX).transfer(WarpDefiLibrary8.pairFor(FACTORY, WAVAX, path[1]), amountIn));
 
         _swap(amounts, path);
         _distribute(amountOut, path[path.length - 1], to, feeTo, feeInfo.feeCut, feeTotalAmount);
@@ -277,18 +277,18 @@ contract PangolinRouterSupportingFees is IPangolinRouterSupportingFees, Ownable 
     function _swapSupportingFeeOnTransferTokens(address[] memory path) internal {
         for (uint256 i; i < path.length - 1; ++i) {
             (address input, address output) = (path[i], path[i + 1]);
-            (address token0,) = PangolinLibrary8.sortTokens(input, output);
-            IPangolinPair pair = IPangolinPair(PangolinLibrary8.pairFor(FACTORY, input, output));
+            (address token0,) = WarpDefiLibrary8.sortTokens(input, output);
+            IWarpDefiPair pair = IWarpDefiPair(WarpDefiLibrary8.pairFor(FACTORY, input, output));
             uint256 amountInput;
             uint256 amountOutput;
             { // scope to avoid stack too deep errors
             (uint256 reserve0, uint256 reserve1,) = pair.getReserves();
             (uint256 reserveInput, uint256 reserveOutput) = input == token0 ? (reserve0, reserve1) : (reserve1, reserve0);
             amountInput = IERC20(input).balanceOf(address(pair)) - reserveInput;
-            amountOutput = PangolinLibrary8.getAmountOut(amountInput, reserveInput, reserveOutput);
+            amountOutput = WarpDefiLibrary8.getAmountOut(amountInput, reserveInput, reserveOutput);
             }
             (uint256 amount0Out, uint256 amount1Out) = input == token0 ? (uint(0), amountOutput) : (amountOutput, uint(0));
-            address to = i < path.length - 2 ? PangolinLibrary8.pairFor(FACTORY, output, path[i + 2]) : address(this);
+            address to = i < path.length - 2 ? WarpDefiLibrary8.pairFor(FACTORY, output, path[i + 2]) : address(this);
             pair.swap(amount0Out, amount1Out, to, new bytes(0));
         }
     }
@@ -301,7 +301,7 @@ contract PangolinRouterSupportingFees is IPangolinRouterSupportingFees, Ownable 
         address feeTo
     ) external ensure(deadline) {
         TransferHelper.safeTransferFrom(
-            path[0], msg.sender, PangolinLibrary8.pairFor(FACTORY, path[0], path[1]), amountIn
+            path[0], msg.sender, WarpDefiLibrary8.pairFor(FACTORY, path[0], path[1]), amountIn
         );
         address tokenOut = path[path.length - 1];
         uint256 balanceBefore = IERC20(tokenOut).balanceOf(to);
@@ -329,7 +329,7 @@ contract PangolinRouterSupportingFees is IPangolinRouterSupportingFees, Ownable 
     ) external payable ensure(deadline) {
         require(path[0] == WAVAX, "INVALID_PATH");
         IWAVAX(WAVAX).deposit{value: msg.value}();
-        assert(IWAVAX(WAVAX).transfer(PangolinLibrary8.pairFor(FACTORY, WAVAX, path[1]), msg.value));
+        assert(IWAVAX(WAVAX).transfer(WarpDefiLibrary8.pairFor(FACTORY, WAVAX, path[1]), msg.value));
         address tokenOut = path[path.length - 1];
         uint256 balanceBefore = IERC20(tokenOut).balanceOf(to);
         uint256 amountOut = IERC20(tokenOut).balanceOf(address(this));
@@ -357,7 +357,7 @@ contract PangolinRouterSupportingFees is IPangolinRouterSupportingFees, Ownable 
     ) external ensure(deadline) {
         require(path[path.length - 1] == WAVAX, "INVALID_PATH");
         TransferHelper.safeTransferFrom(
-            path[0], msg.sender, PangolinLibrary8.pairFor(FACTORY, path[0], path[1]), amountIn
+            path[0], msg.sender, WarpDefiLibrary8.pairFor(FACTORY, path[0], path[1]), amountIn
         );
         uint256 amountOut = IERC20(WAVAX).balanceOf(address(this));
         _swapSupportingFeeOnTransferTokens(path);
@@ -480,7 +480,7 @@ contract PangolinRouterSupportingFees is IPangolinRouterSupportingFees, Ownable 
 
     // **** LIBRARY FUNCTIONS ****
     function quote(uint256 amountA, uint256 reserveA, uint256 reserveB) public pure returns (uint256 amountB) {
-        return PangolinLibrary8.quote(amountA, reserveA, reserveB);
+        return WarpDefiLibrary8.quote(amountA, reserveA, reserveB);
     }
 
     function getAmountOut(uint256 amountIn, uint256 reserveIn, uint256 reserveOut)
@@ -488,7 +488,7 @@ contract PangolinRouterSupportingFees is IPangolinRouterSupportingFees, Ownable 
         pure
         returns (uint256 amountOut)
     {
-        return PangolinLibrary8.getAmountOut(amountIn, reserveIn, reserveOut);
+        return WarpDefiLibrary8.getAmountOut(amountIn, reserveIn, reserveOut);
     }
 
     function getAmountIn(uint256 amountOut, uint256 reserveIn, uint256 reserveOut)
@@ -496,7 +496,7 @@ contract PangolinRouterSupportingFees is IPangolinRouterSupportingFees, Ownable 
         pure
         returns (uint256 amountIn)
     {
-        return PangolinLibrary8.getAmountIn(amountOut, reserveIn, reserveOut);
+        return WarpDefiLibrary8.getAmountIn(amountOut, reserveIn, reserveOut);
     }
 
     function getAmountsOut(uint256 amountIn, address[] memory path)
@@ -504,7 +504,7 @@ contract PangolinRouterSupportingFees is IPangolinRouterSupportingFees, Ownable 
         view
         returns (uint256[] memory amounts)
     {
-        return PangolinLibrary8.getAmountsOut(FACTORY, amountIn, path);
+        return WarpDefiLibrary8.getAmountsOut(FACTORY, amountIn, path);
     }
 
     function getAmountsIn(uint256 amountOut, address[] memory path)
@@ -512,7 +512,7 @@ contract PangolinRouterSupportingFees is IPangolinRouterSupportingFees, Ownable 
         view
         returns (uint256[] memory amounts)
     {
-        return PangolinLibrary8.getAmountsIn(FACTORY, amountOut, path);
+        return WarpDefiLibrary8.getAmountsIn(FACTORY, amountOut, path);
     }
 
 }

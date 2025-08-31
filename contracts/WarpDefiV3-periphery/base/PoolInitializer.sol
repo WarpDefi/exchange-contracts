@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 pragma solidity =0.7.6;
 
-import '../../PangolinV3-core/interfaces/IPangolinV3Factory.sol';
-import '../../PangolinV3-core/interfaces/IPangolinV3Pool.sol';
+import '../../WarpDefiV3-core/interfaces/IWarpDefiV3Factory.sol';
+import '../../WarpDefiV3-core/interfaces/IWarpDefiV3Pool.sol';
 
 import './PeripheryImmutableState.sol';
 import '../interfaces/IPoolInitializer.sol';
@@ -17,15 +17,15 @@ abstract contract PoolInitializer is IPoolInitializer, PeripheryImmutableState {
         uint160 sqrtPriceX96
     ) external payable override returns (address pool) {
         require(token0 < token1);
-        pool = IPangolinV3Factory(factory).getPool(token0, token1, fee);
+        pool = IWarpDefiV3Factory(factory).getPool(token0, token1, fee);
 
         if (pool == address(0)) {
-            pool = IPangolinV3Factory(factory).createPool(token0, token1, fee);
-            IPangolinV3Pool(pool).initialize(sqrtPriceX96);
+            pool = IWarpDefiV3Factory(factory).createPool(token0, token1, fee);
+            IWarpDefiV3Pool(pool).initialize(sqrtPriceX96);
         } else {
-            (uint160 sqrtPriceX96Existing, , , , , , ) = IPangolinV3Pool(pool).slot0();
+            (uint160 sqrtPriceX96Existing, , , , , , ) = IWarpDefiV3Pool(pool).slot0();
             if (sqrtPriceX96Existing == 0) {
-                IPangolinV3Pool(pool).initialize(sqrtPriceX96);
+                IWarpDefiV3Pool(pool).initialize(sqrtPriceX96);
             }
         }
     }

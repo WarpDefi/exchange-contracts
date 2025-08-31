@@ -1,6 +1,6 @@
 pragma solidity >=0.6.2;
 
-interface IPangolinRouter {
+interface IWarpDefiRouter {
     function factory() external pure returns (address);
     function WAVAX() external pure returns (address);
 

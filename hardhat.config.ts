@@ -5,7 +5,7 @@ import "hardhat-contract-sizer";
 import "hardhat-typechain";
 import "hardhat-watcher";
 
-import { CHAINS } from "@pangolindex/sdk";
+import { CHAINS } from "@warpdefidex/sdk";
 require("dotenv").config();
 const fs = require("fs");
 const path = require("path");
@@ -48,7 +48,7 @@ const LOWEST_OPTIMIZER_COMPILER_SETTINGS = {
   },
 };
 
-// Create hardhat networks from @pangolindex/sdk
+// Create hardhat networks from @warpdefidex/sdk
 let networksFromSdk: any = {};
 for (const chain of Object.values(CHAINS)) {
   networksFromSdk[chain.id] = {
@@ -150,15 +150,15 @@ module.exports = {
           },
         },
       },
-      "contracts/PangolinV3-periphery/NonfungiblePositionManager.sol":
+      "contracts/WarpDefiV3-periphery/NonfungiblePositionManager.sol":
         CUSTOM_OPTIMIZER_COMPILER_SETTINGS,
-      "contracts/PangolinV3-periphery/test/MockTimeNonfungiblePositionManager.sol":
+      "contracts/WarpDefiV3-periphery/test/MockTimeNonfungiblePositionManager.sol":
         CUSTOM_OPTIMIZER_COMPILER_SETTINGS,
-      "contracts/PangolinV3-periphery/test/NFTDescriptorTest.sol":
+      "contracts/WarpDefiV3-periphery/test/NFTDescriptorTest.sol":
         LOWEST_OPTIMIZER_COMPILER_SETTINGS,
-      "contracts/PangolinV3-periphery/NonfungibleTokenPositionDescriptor.sol":
+      "contracts/WarpDefiV3-periphery/NonfungibleTokenPositionDescriptor.sol":
         LOWEST_OPTIMIZER_COMPILER_SETTINGS,
-      "contracts/PangolinV3-periphery/libraries/NFTDescriptor.sol":
+      "contracts/WarpDefiV3-periphery/libraries/NFTDescriptor.sol":
         LOWEST_OPTIMIZER_COMPILER_SETTINGS,
     },
     contractSizer: {

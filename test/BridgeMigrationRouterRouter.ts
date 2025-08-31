@@ -39,8 +39,8 @@ describe("BridgeMigrationRouter", async function() {
         const bridgeTokenFactory = await ethers.getContractFactory("BridgeToken")
         owner = await getOwnerAccount()
         WAVAX = await getWAVAXContract()
-        const factory = await ethers.getContractAt("PangolinFactory", fixture.Factory)
-        const router = await ethers.getContractAt("PangolinRouter", fixture.Router)
+        const factory = await ethers.getContractAt("WarpDefiFactory", fixture.Factory)
+        const router = await ethers.getContractAt("WarpDefiRouter", fixture.Router)
 
         await fundWAVAX(owner, BigNumber.from(10).pow(28))
         await fundToken(owner, fixture.Tokens.WARP, BigNumber.from(10).pow(25))
@@ -111,7 +111,7 @@ describe("BridgeMigrationRouter", async function() {
         account = accountGenerator()
         //this is necessary, the asserts funds the account on the assumption it has 0 WAVAX
         await WAVAX.connect(account).withdraw(await WAVAX.balanceOf(account.address))
-        factory = await ethers.getContractFactory("PangolinBridgeMigrationRouter")
+        factory = await ethers.getContractFactory("WarpDefiBridgeMigrationRouter")
         migrationRouter = await factory.connect(owner).deploy()
         await migrationRouter.deployed()
         await fundWAVAX(account, BigNumber.from(10).pow(26))

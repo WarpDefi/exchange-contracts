@@ -2,10 +2,10 @@
 pragma solidity >=0.7.5;
 pragma abicoder v2;
 
-/// @title IPangolinV3Rewarder - PangolinV3 Rewarder interface
-/// @notice PangolinV3Rewarder is the reward manager contract for PangolinV3. It works with NonfungiblePositionManager.
+/// @title IWarpDefiV3Rewarder - WarpDefiV3 Rewarder interface
+/// @notice WarpDefiV3Rewarder is the reward manager contract for WarpDefiV3. It works with NonfungiblePositionManager.
 /// It does not need to do any calculation, and it trusts the amounts notified by NonfungiblePositionManager.
-interface IPangolinV3Rewarder {
+interface IWarpDefiV3Rewarder {
     /// @notice Send `rewardOwed` to the `recipient`
     /// @param recipient The address to which the reward should be sent
     /// rewardOwed The amount of reward the will be sent

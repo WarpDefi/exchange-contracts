@@ -13,7 +13,7 @@ describe("GovernorPango", function () {
     // Factories
     let GovernorPango;
     // Contracts
-    let governorPango, _timelock, _pangolinStakingPositions;
+    let governorPango, _timelock, _warpdefiStakingPositions;
 
     const PROPOSAL_THRESHOLD = ethers.utils.parseUnits('1000000', 18);
     const PROPOSAL_THRESHOLD_MIN = ethers.utils.parseUnits('500000', 18);
@@ -45,11 +45,11 @@ describe("GovernorPango", function () {
         _timelock.delay.returns(TIMELOCK_DELAY);
         _timelock.queuedTransactions.returns(false);
 
-        _pangolinStakingPositions = await smock.fake("PangolinStakingPositions");
+        _warpdefiStakingPositions = await smock.fake("WarpDefiStakingPositions");
 
         governorPango = await GovernorPango.deploy(
             _timelock.address,
-            _pangolinStakingPositions.address,
+            _warpdefiStakingPositions.address,
             PROPOSAL_THRESHOLD,
             PROPOSAL_THRESHOLD_MIN,
             PROPOSAL_THRESHOLD_MAX,
@@ -61,8 +61,8 @@ describe("GovernorPango", function () {
         it("stores timelock", async function () {
             expect(await governorPango.TIMELOCK()).to.equal(_timelock.address);
         });
-        it("stores pangolin staking positions", async function () {
-            expect(await governorPango.PANGOLIN_STAKING_POSITIONS()).to.equal(_pangolinStakingPositions.address);
+        it("stores warpdefi staking positions", async function () {
+            expect(await governorPango.WARPDEFI_STAKING_POSITIONS()).to.equal(_warpdefiStakingPositions.address);
         });
         it("stores proposal threshold", async function () {
             expect(await governorPango.PROPOSAL_THRESHOLD()).to.equal(PROPOSAL_THRESHOLD);
@@ -76,7 +76,7 @@ describe("GovernorPango", function () {
         it("invalid proposal threshold range", async function () {
             await expect(GovernorPango.deploy(
                 _timelock.address,
-                _pangolinStakingPositions.address,
+                _warpdefiStakingPositions.address,
                 PROPOSAL_THRESHOLD,
                 PROPOSAL_THRESHOLD_MAX,
                 PROPOSAL_THRESHOLD_MIN
@@ -85,7 +85,7 @@ describe("GovernorPango", function () {
         it("proposal threshold below range", async function () {
             await expect(GovernorPango.deploy(
                 _timelock.address,
-                _pangolinStakingPositions.address,
+                _warpdefiStakingPositions.address,
                 PROPOSAL_THRESHOLD_MIN.sub(1),
                 PROPOSAL_THRESHOLD_MIN,
                 PROPOSAL_THRESHOLD_MAX
@@ -94,7 +94,7 @@ describe("GovernorPango", function () {
         it("proposal threshold above range", async function () {
             await expect(GovernorPango.deploy(
                 _timelock.address,
-                _pangolinStakingPositions.address,
+                _warpdefiStakingPositions.address,
                 PROPOSAL_THRESHOLD_MAX.add(1),
                 PROPOSAL_THRESHOLD_MIN,
                 PROPOSAL_THRESHOLD_MAX
@@ -116,19 +116,19 @@ describe("GovernorPango", function () {
                 PROPOSER_NFT_ID
             ];
 
-            _pangolinStakingPositions.ownerOf.whenCalledWith(PROPOSER_NFT_ID).returns(signerA.address);
-            _pangolinStakingPositions.positions.whenCalledWith(PROPOSER_NFT_ID).returns(createPosition());
+            _warpdefiStakingPositions.ownerOf.whenCalledWith(PROPOSER_NFT_ID).returns(signerA.address);
+            _warpdefiStakingPositions.positions.whenCalledWith(PROPOSER_NFT_ID).returns(createPosition());
         });
 
         it("cannot propose without owning the NFT", async function() {
-            _pangolinStakingPositions.ownerOf.whenCalledWith(PROPOSER_NFT_ID).returns(ethers.constants.AddressZero);
+            _warpdefiStakingPositions.ownerOf.whenCalledWith(PROPOSER_NFT_ID).returns(ethers.constants.AddressZero);
 
             await expect(governorPango.propose(...PROPOSAL_ARGS)).to.be.revertedWith('InvalidOwner()');
         });
 
         it("cannot use a recently updated NFT", async function() {
             const block = await ethers.provider.getBlock('latest');
-            _pangolinStakingPositions.positions.whenCalledWith(PROPOSER_NFT_ID).returns(createPosition({
+            _warpdefiStakingPositions.positions.whenCalledWith(PROPOSER_NFT_ID).returns(createPosition({
                 lastUpdate: block.timestamp - PROPOSAL_LIFECYCLE_TIME.toNumber() + 1,
                 valueVariables: {
                     balance: PROPOSAL_THRESHOLD,
@@ -139,7 +139,7 @@ describe("GovernorPango", function () {
         });
 
         it("must have enough votes", async function() {
-            _pangolinStakingPositions.positions.whenCalledWith(PROPOSER_NFT_ID).returns(createPosition({
+            _warpdefiStakingPositions.positions.whenCalledWith(PROPOSER_NFT_ID).returns(createPosition({
                 lastUpdate: 0,
                 valueVariables: {
                     balance: PROPOSAL_THRESHOLD.sub(1),
@@ -151,7 +151,7 @@ describe("GovernorPango", function () {
 
         it("can create a proposal", async function() {
             const block = await ethers.provider.getBlock('latest');
-            _pangolinStakingPositions.positions.whenCalledWith(PROPOSER_NFT_ID).returns(createPosition({
+            _warpdefiStakingPositions.positions.whenCalledWith(PROPOSER_NFT_ID).returns(createPosition({
                 lastUpdate: block.timestamp - PROPOSAL_LIFECYCLE_TIME,
                 valueVariables: {
                     balance: PROPOSAL_THRESHOLD,
@@ -184,8 +184,8 @@ describe("GovernorPango", function () {
         let VOTING_PERIOD_BEGIN_TIMESTAMP;
 
         beforeEach(async function () {
-            _pangolinStakingPositions.ownerOf.whenCalledWith(NFT_ID).returns(signerA.address);
-            _pangolinStakingPositions.positions.whenCalledWith(NFT_ID).returns(createPosition({
+            _warpdefiStakingPositions.ownerOf.whenCalledWith(NFT_ID).returns(signerA.address);
+            _warpdefiStakingPositions.positions.whenCalledWith(NFT_ID).returns(createPosition({
                 lastUpdate: 0,
                 valueVariables: {
                     balance: PROPOSAL_THRESHOLD,
@@ -213,7 +213,7 @@ describe("GovernorPango", function () {
             await expect(governorPango.cancel(1)).to.be.revertedWith('InvalidState');
         });
         it("anybody can cancel when vote power drops before voting begins", async function() {
-            _pangolinStakingPositions.positions.whenCalledWith(NFT_ID).returns(createPosition({
+            _warpdefiStakingPositions.positions.whenCalledWith(NFT_ID).returns(createPosition({
                 lastUpdate: 0,
                 valueVariables: {
                     balance: PROPOSAL_THRESHOLD.sub(1),
@@ -223,7 +223,7 @@ describe("GovernorPango", function () {
             await expect(governorPango.connect(signerB).cancel(1)).to.emit(governorPango, 'ProposalCanceled');
         });
         it("anybody can cancel when vote power drops after voting begins", async function() {
-            _pangolinStakingPositions.positions.whenCalledWith(NFT_ID).returns(createPosition({
+            _warpdefiStakingPositions.positions.whenCalledWith(NFT_ID).returns(createPosition({
                 lastUpdate: 0,
                 valueVariables: {
                     balance: PROPOSAL_THRESHOLD.sub(1),
@@ -259,8 +259,8 @@ describe("GovernorPango", function () {
 
         beforeEach(async function () {
             const PROPOSER_NFT_ID = 1;
-            _pangolinStakingPositions.ownerOf.whenCalledWith(PROPOSER_NFT_ID).returns(signerA.address);
-            _pangolinStakingPositions.positions.whenCalledWith(PROPOSER_NFT_ID).returns(createPosition({
+            _warpdefiStakingPositions.ownerOf.whenCalledWith(PROPOSER_NFT_ID).returns(signerA.address);
+            _warpdefiStakingPositions.positions.whenCalledWith(PROPOSER_NFT_ID).returns(createPosition({
                 lastUpdate: 0,
                 valueVariables: {
                     balance: PROPOSAL_THRESHOLD,
@@ -276,8 +276,8 @@ describe("GovernorPango", function () {
                 PROPOSER_NFT_ID
             );
 
-            _pangolinStakingPositions.ownerOf.whenCalledWith(VOTER_NFT_ID).returns(signerB.address);
-            _pangolinStakingPositions.positions.whenCalledWith(VOTER_NFT_ID).returns(createPosition({
+            _warpdefiStakingPositions.ownerOf.whenCalledWith(VOTER_NFT_ID).returns(signerB.address);
+            _warpdefiStakingPositions.positions.whenCalledWith(VOTER_NFT_ID).returns(createPosition({
                 lastUpdate: 0,
                 valueVariables: {
                     balance: 100,
@@ -331,7 +331,7 @@ describe("GovernorPango", function () {
             ).to.emit(governorPango, 'VoteCast');
 
             // Transfer to signerC
-            _pangolinStakingPositions.ownerOf.whenCalledWith(VOTER_NFT_ID).returns(signerC.address);
+            _warpdefiStakingPositions.ownerOf.whenCalledWith(VOTER_NFT_ID).returns(signerC.address);
 
             // Vote from signerC
             await expect(
@@ -347,8 +347,8 @@ describe("GovernorPango", function () {
 
             // Move funds into NFT 3
             const NEW_NFT_ID = 3;
-            _pangolinStakingPositions.ownerOf.whenCalledWith(NEW_NFT_ID).returns(signerB.address);
-            _pangolinStakingPositions.positions.whenCalledWith(NEW_NFT_ID).returns(createPosition({
+            _warpdefiStakingPositions.ownerOf.whenCalledWith(NEW_NFT_ID).returns(signerB.address);
+            _warpdefiStakingPositions.positions.whenCalledWith(NEW_NFT_ID).returns(createPosition({
                 lastUpdate: VOTING_PERIOD_BEGIN_TIMESTAMP,
                 valueVariables: {
                     balance: 100,
@@ -364,7 +364,7 @@ describe("GovernorPango", function () {
             await network.provider.send("evm_setNextBlockTimestamp", [VOTING_PERIOD_BEGIN_TIMESTAMP]);
 
             // Make NFT owned by signerC
-            _pangolinStakingPositions.ownerOf.whenCalledWith(VOTER_NFT_ID).returns(signerC.address);
+            _warpdefiStakingPositions.ownerOf.whenCalledWith(VOTER_NFT_ID).returns(signerC.address);
 
             await expect(
                 governorPango.connect(signerB).castVote(1, true, VOTER_NFT_ID)
@@ -374,7 +374,7 @@ describe("GovernorPango", function () {
             await network.provider.send("evm_setNextBlockTimestamp", [VOTING_PERIOD_BEGIN_TIMESTAMP]);
 
             // Remove voting power
-            _pangolinStakingPositions.positions.whenCalledWith(VOTER_NFT_ID).returns(createPosition({
+            _warpdefiStakingPositions.positions.whenCalledWith(VOTER_NFT_ID).returns(createPosition({
                 lastUpdate: 0,
                 valueVariables: {
                     balance: 0,
@@ -389,7 +389,7 @@ describe("GovernorPango", function () {
             await network.provider.send("evm_setNextBlockTimestamp", [VOTING_PERIOD_BEGIN_TIMESTAMP]);
 
             // Simulation freshly created NFT
-            _pangolinStakingPositions.positions.whenCalledWith(VOTER_NFT_ID).returns(createPosition({
+            _warpdefiStakingPositions.positions.whenCalledWith(VOTER_NFT_ID).returns(createPosition({
                 lastUpdate: VOTING_PERIOD_BEGIN_TIMESTAMP,
                 valueVariables: {
                     balance: 100,
@@ -412,8 +412,8 @@ describe("GovernorPango", function () {
         let VOTING_PERIOD_END_TIMESTAMP;
 
         beforeEach(async function () {
-            _pangolinStakingPositions.ownerOf.whenCalledWith(PROPOSER_NFT_ID).returns(signerA.address);
-            _pangolinStakingPositions.positions.whenCalledWith(PROPOSER_NFT_ID).returns(createPosition({
+            _warpdefiStakingPositions.ownerOf.whenCalledWith(PROPOSER_NFT_ID).returns(signerA.address);
+            _warpdefiStakingPositions.positions.whenCalledWith(PROPOSER_NFT_ID).returns(createPosition({
                 lastUpdate: 0,
                 valueVariables: {
                     balance: PROPOSAL_THRESHOLD,
@@ -489,8 +489,8 @@ describe("GovernorPango", function () {
         let PROPOSAL_ARGS;
 
         beforeEach(async function () {
-            _pangolinStakingPositions.ownerOf.whenCalledWith(PROPOSER_NFT_ID).returns(signerA.address);
-            _pangolinStakingPositions.positions.whenCalledWith(PROPOSER_NFT_ID).returns(createPosition({
+            _warpdefiStakingPositions.ownerOf.whenCalledWith(PROPOSER_NFT_ID).returns(signerA.address);
+            _warpdefiStakingPositions.positions.whenCalledWith(PROPOSER_NFT_ID).returns(createPosition({
                 lastUpdate: 0,
                 valueVariables: {
                     balance: PROPOSAL_THRESHOLD,

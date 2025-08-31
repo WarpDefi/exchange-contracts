@@ -1,14 +1,14 @@
 pragma solidity =0.5.16;
 
-import './interfaces/IPangolinPair.sol';
-import './PangolinERC20.sol';
+import './interfaces/IWarpDefiPair.sol';
+import './WarpDefiERC20.sol';
 import './libraries/Math.sol';
 import './libraries/UQ112x112.sol';
 import './interfaces/IERC20.sol';
-import './interfaces/IPangolinFactory.sol';
-import './interfaces/IPangolinCallee.sol';
+import './interfaces/IWarpDefiFactory.sol';
+import './interfaces/IWarpDefiCallee.sol';
 
-contract PangolinPair is IPangolinPair, PangolinERC20 {
+contract WarpDefiPair is IWarpDefiPair, WarpDefiERC20 {
     using SafeMath  for uint;
     using UQ112x112 for uint224;
 
@@ -87,7 +87,7 @@ contract PangolinPair is IPangolinPair, PangolinERC20 {
 
     // if fee is on, mint liquidity equivalent to 1/6th of the growth in sqrt(k)
     function _mintFee(uint112 _reserve0, uint112 _reserve1) private returns (bool feeOn) {
-        address feeTo = IPangolinFactory(factory).feeTo();
+        address feeTo = IWarpDefiFactory(factory).feeTo();
         feeOn = feeTo != address(0);
         uint _kLast = kLast; // gas savings
         if (feeOn) {
@@ -169,7 +169,7 @@ contract PangolinPair is IPangolinPair, PangolinERC20 {
         require(to != _token0 && to != _token1, 'WarpDefi: INVALID_TO');
         if (amount0Out > 0) _safeTransfer(_token0, to, amount0Out); // optimistically transfer tokens
         if (amount1Out > 0) _safeTransfer(_token1, to, amount1Out); // optimistically transfer tokens
-        if (data.length > 0) IPangolinCallee(to).pangolinCall(msg.sender, amount0Out, amount1Out, data);
+        if (data.length > 0) IWarpDefiCallee(to).warpdefiCall(msg.sender, amount0Out, amount1Out, data);
         balance0 = IERC20(_token0).balanceOf(address(this));
         balance1 = IERC20(_token1).balanceOf(address(this));
         }

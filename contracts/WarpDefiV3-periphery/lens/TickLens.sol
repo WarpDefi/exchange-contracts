@@ -2,7 +2,7 @@
 pragma solidity >=0.5.0 <0.8.0;
 pragma abicoder v2;
 
-import '../../PangolinV3-core/interfaces/IPangolinV3Pool.sol';
+import '../../WarpDefiV3-core/interfaces/IWarpDefiV3Pool.sol';
 
 import '../interfaces/ITickLens.sol';
 
@@ -16,7 +16,7 @@ contract TickLens is ITickLens {
         returns (PopulatedTick[] memory populatedTicks)
     {
         // fetch bitmap
-        uint256 bitmap = IPangolinV3Pool(pool).tickBitmap(tickBitmapIndex);
+        uint256 bitmap = IWarpDefiV3Pool(pool).tickBitmap(tickBitmapIndex);
 
         // calculate the number of populated ticks
         uint256 numberOfPopulatedTicks;
@@ -25,12 +25,12 @@ contract TickLens is ITickLens {
         }
 
         // fetch populated tick data
-        int24 tickSpacing = IPangolinV3Pool(pool).tickSpacing();
+        int24 tickSpacing = IWarpDefiV3Pool(pool).tickSpacing();
         populatedTicks = new PopulatedTick[](numberOfPopulatedTicks);
         for (uint256 i = 0; i < 256; i++) {
             if (bitmap & (1 << i) > 0) {
                 int24 populatedTick = ((int24(tickBitmapIndex) << 8) + int24(i)) * tickSpacing;
-                (uint128 liquidityGross, int128 liquidityNet, , , , , , , ) = IPangolinV3Pool(pool).ticks(populatedTick);
+                (uint128 liquidityGross, int128 liquidityNet, , , , , , , ) = IWarpDefiV3Pool(pool).ticks(populatedTick);
                 populatedTicks[--numberOfPopulatedTicks] = PopulatedTick({
                     tick: populatedTick,
                     liquidityNet: liquidityNet,

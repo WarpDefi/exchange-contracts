@@ -1,6 +1,6 @@
 const { ethers } = require("hardhat");
 const fs = require("fs");
-const { CHAINS } = require("@pangolindex/sdk");
+const { CHAINS } = require("@warpdefidex/sdk");
 require('dotenv').config();
 
 function delay(timeout) {
@@ -22,9 +22,9 @@ async function main() {
 
     const poolDeployer = new ethers.Wallet(process.env.IMPLEMENTATION_DEPLOYER_PRIVATE_KEY, ethers.provider);
     //await deployer.sendTransaction({ to: poolDeployer.address, value: implementationDeployCost });
-    const poolFactory = await ethers.getContractFactory("PangolinV3Rewarder");
+    const poolFactory = await ethers.getContractFactory("WarpDefiV3Rewarder");
     const pool = await poolFactory.connect(poolDeployer).deploy();
-    console.log("Deployed PangolinV3Rewarder: " + pool.address);
+    console.log("Deployed WarpDefiV3Rewarder: " + pool.address);
 
 
     console.log("\n============\n END DEPLOYMENT \n============");

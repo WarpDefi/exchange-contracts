@@ -1,20 +1,20 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 pragma solidity >=0.6.8 <0.8.0;
 
-import '../../PangolinV3-core/interfaces/IPangolinV3Pool.sol';
-import '../../PangolinV3-core/libraries/FixedPoint128.sol';
-import '../../PangolinV3-core/libraries/TickMath.sol';
-import '../../PangolinV3-core/libraries/Tick.sol';
+import '../../WarpDefiV3-core/interfaces/IWarpDefiV3Pool.sol';
+import '../../WarpDefiV3-core/libraries/FixedPoint128.sol';
+import '../../WarpDefiV3-core/libraries/TickMath.sol';
+import '../../WarpDefiV3-core/libraries/Tick.sol';
 import '../interfaces/INonfungiblePositionManager.sol';
 import './LiquidityAmounts.sol';
 import './PoolAddress.sol';
 import './PositionKey.sol';
 
-/// @title Returns information about the token value held in a PangolinV3 NFT
+/// @title Returns information about the token value held in a WarpDefiV3 NFT
 library PositionValue {
     /// @notice Returns the total amounts of token0 and token1, i.e. the sum of fees and principal
     /// that a given nonfungible position manager token is worth
-    /// @param positionManager The PangolinV3 NonfungiblePositionManager
+    /// @param positionManager The WarpDefiV3 NonfungiblePositionManager
     /// @param tokenId The tokenId of the token for which to get the total value
     /// @param sqrtRatioX96 The square root price X96 for which to calculate the principal amounts
     /// @return amount0 The total amount of token0 including principal and fees
@@ -31,7 +31,7 @@ library PositionValue {
 
     /// @notice Calculates the principal (currently acting as liquidity) owed to the token owner in the event
     /// that the position is burned
-    /// @param positionManager The PangolinV3 NonfungiblePositionManager
+    /// @param positionManager The WarpDefiV3 NonfungiblePositionManager
     /// @param tokenId The tokenId of the token for which to get the total principal owed
     /// @param sqrtRatioX96 The square root price X96 for which to calculate the principal amounts
     /// @return amount0 The principal amount of token0
@@ -66,7 +66,7 @@ library PositionValue {
     }
 
     /// @notice Calculates the total fees owed to the token owner
-    /// @param positionManager The PangolinV3 NonfungiblePositionManager
+    /// @param positionManager The WarpDefiV3 NonfungiblePositionManager
     /// @param tokenId The tokenId of the token for which to get the total fees owed
     /// @return amount0 The amount of fees owed in token0
     /// @return amount1 The amount of fees owed in token1
@@ -115,7 +115,7 @@ library PositionValue {
     {
         (uint256 poolFeeGrowthInside0LastX128, uint256 poolFeeGrowthInside1LastX128) =
             _getFeeGrowthInside(
-                IPangolinV3Pool(
+                IWarpDefiV3Pool(
                     PoolAddress.computeAddress(
                         positionManager.factory(),
                         PoolAddress.PoolKey({token0: feeParams.token0, token1: feeParams.token1, fee: feeParams.fee})
@@ -143,7 +143,7 @@ library PositionValue {
     }
 
     function _getFeeGrowthInside(
-        IPangolinV3Pool pool,
+        IWarpDefiV3Pool pool,
         int24 tickLower,
         int24 tickUpper
     ) private view returns (uint256 feeGrowthInside0X128, uint256 feeGrowthInside1X128) {

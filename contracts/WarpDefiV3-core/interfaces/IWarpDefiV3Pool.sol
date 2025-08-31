@@ -1,24 +1,24 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 pragma solidity >=0.5.0;
 
-import './pool/IPangolinV3PoolImmutables.sol';
-import './pool/IPangolinV3PoolState.sol';
-import './pool/IPangolinV3PoolDerivedState.sol';
-import './pool/IPangolinV3PoolActions.sol';
-import './pool/IPangolinV3PoolOwnerActions.sol';
-import './pool/IPangolinV3PoolEvents.sol';
+import './pool/IWarpDefiV3PoolImmutables.sol';
+import './pool/IWarpDefiV3PoolState.sol';
+import './pool/IWarpDefiV3PoolDerivedState.sol';
+import './pool/IWarpDefiV3PoolActions.sol';
+import './pool/IWarpDefiV3PoolOwnerActions.sol';
+import './pool/IWarpDefiV3PoolEvents.sol';
 
-/// @title The interface for a PangolinV3 Pool
+/// @title The interface for a WarpDefiV3 Pool
 /// @notice A WarpDefi pool facilitates swapping and automated market making between any two assets that strictly conform
 /// to the ERC20 specification
 /// @dev The pool interface is broken up into many smaller pieces
-interface IPangolinV3Pool is
-    IPangolinV3PoolImmutables,
-    IPangolinV3PoolState,
-    IPangolinV3PoolDerivedState,
-    IPangolinV3PoolActions,
-    IPangolinV3PoolOwnerActions,
-    IPangolinV3PoolEvents
+interface IWarpDefiV3Pool is
+    IWarpDefiV3PoolImmutables,
+    IWarpDefiV3PoolState,
+    IWarpDefiV3PoolDerivedState,
+    IWarpDefiV3PoolActions,
+    IWarpDefiV3PoolOwnerActions,
+    IWarpDefiV3PoolEvents
 {
 
 }

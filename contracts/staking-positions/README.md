@@ -8,8 +8,8 @@ staking duration.
 
 These files are in scope:
 
-* [`PangolinStakingPositions.sol`](./PangolinStakingPositions.sol)
-* [`PangolinStakingPositionsFunding.sol`](./PangolinStakingPositionsFunding.sol)
+* [`WarpDefiStakingPositions.sol`](./WarpDefiStakingPositions.sol)
+* [`WarpDefiStakingPositionsFunding.sol`](./WarpDefiStakingPositionsFunding.sol)
 * [`WarpDefiChef.sol`](./WarpDefiChef.sol)
 * [`PangoChefFunding.sol`](./PangoChefFunding.sol)
 * [`ReentrancyGuard.sol`](./ReentrancyGuard.sol)
@@ -69,12 +69,12 @@ function to the staking duration are described below.
 
 In this repository, there are two implementations of SAR algorithm.
 
-### `PangolinStakingPositions`
+### `WarpDefiStakingPositions`
 
-[`PangolinStakingPositions`](./PangolinStakingPositions.sol) is a single-sided staking solution in
+[`WarpDefiStakingPositions`](./WarpDefiStakingPositions.sol) is a single-sided staking solution in
 which both the staking and reward tokens are the same token (i.e.: WARP). The rewards come from AMM
 revenue. The revenue tokens get converted to WARP through `FeeCollector` (`SushiMaker` equivalent),
-and then WARP is added to `PangolinStakingPositions` as reward. In this implementation of SAR, we also
+and then WARP is added to `WarpDefiStakingPositions` as reward. In this implementation of SAR, we also
 track positions instead of users, which allows leveraging the NFT technology.
 
 This implementation allows us to add an extra `compound()` (🟢) function to the core SAR
@@ -97,7 +97,7 @@ marketplaces from executing `transferFrom()` function of NFTs to process the tra
 tries to frontrun a buyer by withdrawing the staked balance from the NFT position, the transaction
 will revert.
 
-`PangolinStakingPositions` is written specifically for WARP, which has a total supply of
+`WarpDefiStakingPositions` is written specifically for WARP, which has a total supply of
 `230_000_000e18`, and reverts on failed transactions.
 
 ### `WarpDefiChef`
@@ -115,7 +115,7 @@ WarpDefiChef requires a Uniswap V2 factory and a wrapped native token address to
 the constructor. Although it accepts any ERC20 token to be staked, it is mainly intended for
 WarpDefi liquidity pool tokens.
 
-PangolinStakingPosition had a simple compounding mechanism. In WarpDefiChef, compounding requires
+WarpDefiStakingPosition had a simple compounding mechanism. In WarpDefiChef, compounding requires
 that (1) pool’s staking token is a liquidity pool pair token of the factory defined in the
 constructor, and (2) one of the tokens in the pair is `rewardsToken`. Given these requirements are satisfied for a pool,
 compounding works as follows.
@@ -171,7 +171,7 @@ Yet another feature of WarpDefiChef is relayer pools. That is an alternative typ
 and the only purpose of the pool is to divert its share of rewards to a single address. This can
 allow us to divert emissions to partners, or have a separate contract that manages ERC721 staking.
 
-`WarpDefiChef` is mainly written for PangolinPair tokens. The total staked amount limit of
+`WarpDefiChef` is mainly written for WarpDefiPair tokens. The total staked amount limit of
 `type(uint104).max` is likely to be sufficient for most pair tokens. Weird tokens (rebasing tokens,
 fee-on-transfer tokens, and quintillion-supply meme tokens) are not supported.
 

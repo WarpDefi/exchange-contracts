@@ -2,10 +2,10 @@
 pragma solidity =0.7.6;
 pragma abicoder v2;
 
-import '../PangolinV3-core/interfaces/IPangolinV3Pool.sol';
-import '../PangolinV3-core/libraries/FixedPoint128.sol';
-import '../PangolinV3-core/libraries/FullMath.sol';
-import '../PangolinV3-rewarder/interfaces/IPangolinV3Rewarder.sol';
+import '../WarpDefiV3-core/interfaces/IWarpDefiV3Pool.sol';
+import '../WarpDefiV3-core/libraries/FixedPoint128.sol';
+import '../WarpDefiV3-core/libraries/FullMath.sol';
+import '../WarpDefiV3-rewarder/interfaces/IWarpDefiV3Rewarder.sol';
 
 import './interfaces/INonfungiblePositionManager.sol';
 import './libraries/PositionKey.sol';
@@ -72,16 +72,16 @@ contract NonfungiblePositionManager is
     address private _tokenDescriptor;
 
     /// @dev The address that will send rewards to the user based on the amount in `claimReward` function
-    address private _pangolinRewarder;
+    address private _warpdefiRewarder;
 
     constructor(
         address _factory,
         address _WETH9,
         address _tokenDescriptor_,
-        address _pangolinRewarder_
+        address _warpdefiRewarder_
     ) ERC721Permit('WarpDefi V3 Positions NFT', 'PNV3-POS', '1') PeripheryImmutableState(_factory, _WETH9) {
         _tokenDescriptor = _tokenDescriptor_;
-        _pangolinRewarder = _pangolinRewarder_;
+        _warpdefiRewarder = _warpdefiRewarder_;
     }
 
     /// @inheritdoc INonfungiblePositionManager
@@ -138,7 +138,7 @@ contract NonfungiblePositionManager is
         Position memory position = _positions[tokenId];
         require(position.poolId != 0);
         PoolAddress.PoolKey memory poolKey = _poolIdToPoolKey[position.poolId];
-        IPangolinV3Pool pool = IPangolinV3Pool(PoolAddress.computeAddress(factory, poolKey));
+        IWarpDefiV3Pool pool = IWarpDefiV3Pool(PoolAddress.computeAddress(factory, poolKey));
 
         (, , , uint192 rewardPerLiquidityInsideCurrentX64) =
             pool.snapshotCumulativesInside(position.tickLower, position.tickUpper);
@@ -180,7 +180,7 @@ contract NonfungiblePositionManager is
             uint256 amount1
         )
     {
-        IPangolinV3Pool pool;
+        IWarpDefiV3Pool pool;
         (liquidity, amount0, amount1, pool) = addLiquidity(
             AddLiquidityParams({
                 token0: params.token0,
@@ -241,7 +241,7 @@ contract NonfungiblePositionManager is
     }
 
     function _onlyFactoryOwner() internal view {
-        require(msg.sender == IPangolinV3Factory(factory).owner());
+        require(msg.sender == IWarpDefiV3Factory(factory).owner());
     }
     modifier onlyFactoryOwner() {
         _onlyFactoryOwner();
@@ -269,7 +269,7 @@ contract NonfungiblePositionManager is
 
         PoolAddress.PoolKey memory poolKey = _poolIdToPoolKey[position.poolId];
 
-        IPangolinV3Pool pool;
+        IWarpDefiV3Pool pool;
         (liquidity, amount0, amount1, pool) = addLiquidity(
             AddLiquidityParams({
                 token0: poolKey.token0,
@@ -330,7 +330,7 @@ contract NonfungiblePositionManager is
         require(positionLiquidity >= params.liquidity);
 
         PoolAddress.PoolKey memory poolKey = _poolIdToPoolKey[position.poolId];
-        IPangolinV3Pool pool = IPangolinV3Pool(PoolAddress.computeAddress(factory, poolKey));
+        IWarpDefiV3Pool pool = IWarpDefiV3Pool(PoolAddress.computeAddress(factory, poolKey));
 
         // we must update reward before burn otherwise it reverts if ticks get unintialized
         _updateReward(position, pool);
@@ -386,7 +386,7 @@ contract NonfungiblePositionManager is
 
         PoolAddress.PoolKey memory poolKey = _poolIdToPoolKey[position.poolId];
 
-        IPangolinV3Pool pool = IPangolinV3Pool(PoolAddress.computeAddress(factory, poolKey));
+        IWarpDefiV3Pool pool = IWarpDefiV3Pool(PoolAddress.computeAddress(factory, poolKey));
 
         (uint128 tokensOwed0, uint128 tokensOwed1) = (position.tokensOwed0, position.tokensOwed1);
 
@@ -445,7 +445,7 @@ contract NonfungiblePositionManager is
         Position storage position = _positions[tokenId];
 
         PoolAddress.PoolKey memory poolKey = _poolIdToPoolKey[position.poolId];
-        IPangolinV3Pool pool = IPangolinV3Pool(PoolAddress.computeAddress(factory, poolKey));
+        IWarpDefiV3Pool pool = IWarpDefiV3Pool(PoolAddress.computeAddress(factory, poolKey));
 
         _updateReward(position, pool);
 
@@ -455,7 +455,7 @@ contract NonfungiblePositionManager is
         position.rewardOwed = 0;
         position.rewardLastCollected = rewardLastCollected;
 
-        IPangolinV3Rewarder(_pangolinRewarder).claimReward(
+        IWarpDefiV3Rewarder(_warpdefiRewarder).claimReward(
             recipient,
             rewardOwed,
             tokenId,
@@ -478,15 +478,15 @@ contract NonfungiblePositionManager is
         _burn(tokenId);
     }
 
-    function updateRewardManager(address _pangolinRewarder_) external payable override onlyFactoryOwner {
-        _pangolinRewarder = _pangolinRewarder_;
+    function updateRewardManager(address _warpdefiRewarder_) external payable override onlyFactoryOwner {
+        _warpdefiRewarder = _warpdefiRewarder_;
     }
 
     function _clampedTimestamp() internal view returns (uint32) {
         return block.timestamp > type(uint32).max ? type(uint32).max : uint32(block.timestamp);
     }
 
-    function _updateReward(Position storage position, IPangolinV3Pool pool) internal {
+    function _updateReward(Position storage position, IWarpDefiV3Pool pool) internal {
         (, , , uint192 rewardPerLiquidityInsideCurrentX64) =
             pool.snapshotCumulativesInside(position.tickLower, position.tickUpper);
 

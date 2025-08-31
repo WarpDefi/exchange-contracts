@@ -52,13 +52,13 @@ exports.ADDRESSES=[
       ]
     },
     {
-      "address": "0xf7b351C98B5585b7aDa089F3fFD0fED785fB6cff", // PangolinFactory
+      "address": "0xf7b351C98B5585b7aDa089F3fFD0fED785fB6cff", // WarpDefiFactory
       "args": [
         "0x5F27686E1fD42513c3c940b29C75441e656357D9"
       ]
     },
     {
-      "address": "0x680ad00c72B8d55436E2812Df0f5a9Df7675e054", // PangolinRouter
+      "address": "0x680ad00c72B8d55436E2812Df0f5a9Df7675e054", // WarpDefiRouter
       "args": [
         "0xf7b351C98B5585b7aDa089F3fFD0fED785fB6cff",
         "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889"

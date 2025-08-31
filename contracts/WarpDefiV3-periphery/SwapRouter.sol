@@ -2,9 +2,9 @@
 pragma solidity =0.7.6;
 pragma abicoder v2;
 
-import '../PangolinV3-core/libraries/SafeCast.sol';
-import '../PangolinV3-core/libraries/TickMath.sol';
-import '../PangolinV3-core/interfaces/IPangolinV3Pool.sol';
+import '../WarpDefiV3-core/libraries/SafeCast.sol';
+import '../WarpDefiV3-core/libraries/TickMath.sol';
+import '../WarpDefiV3-core/interfaces/IWarpDefiV3Pool.sol';
 
 import './interfaces/ISwapRouter.sol';
 import './base/PeripheryImmutableState.sol';
@@ -17,8 +17,8 @@ import './libraries/PoolAddress.sol';
 import './libraries/CallbackValidation.sol';
 import './interfaces/external/IWETH9.sol';
 
-/// @title PangolinV3 Swap Router
-/// @notice Router for stateless execution of swaps against PangolinV3
+/// @title WarpDefiV3 Swap Router
+/// @notice Router for stateless execution of swaps against WarpDefiV3
 contract SwapRouter is
     ISwapRouter,
     PeripheryImmutableState,
@@ -44,8 +44,8 @@ contract SwapRouter is
         address tokenA,
         address tokenB,
         uint24 fee
-    ) private view returns (IPangolinV3Pool) {
-        return IPangolinV3Pool(PoolAddress.computeAddress(factory, PoolAddress.getPoolKey(tokenA, tokenB, fee)));
+    ) private view returns (IWarpDefiV3Pool) {
+        return IWarpDefiV3Pool(PoolAddress.computeAddress(factory, PoolAddress.getPoolKey(tokenA, tokenB, fee)));
     }
 
     struct SwapCallbackData {
@@ -53,8 +53,8 @@ contract SwapRouter is
         address payer;
     }
 
-    /// @inheritdoc IPangolinV3SwapCallback
-    function pangolinv3SwapCallback(
+    /// @inheritdoc IWarpDefiV3SwapCallback
+    function warpdefiv3SwapCallback(
         int256 amount0Delta,
         int256 amount1Delta,
         bytes calldata _data

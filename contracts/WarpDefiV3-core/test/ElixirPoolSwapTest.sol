@@ -3,10 +3,10 @@ pragma solidity =0.7.6;
 
 import "../interfaces/IERC20Minimal.sol";
 
-import "../interfaces/callback/IPangolinV3SwapCallback.sol";
-import "../interfaces/IPangolinV3Pool.sol";
+import "../interfaces/callback/IWarpDefiV3SwapCallback.sol";
+import "../interfaces/IWarpDefiV3Pool.sol";
 
-contract PangolinV3PoolSwapTest is IPangolinV3SwapCallback {
+contract WarpDefiV3PoolSwapTest is IWarpDefiV3SwapCallback {
     int256 private _amount0Delta;
     int256 private _amount1Delta;
 
@@ -23,7 +23,7 @@ contract PangolinV3PoolSwapTest is IPangolinV3SwapCallback {
             uint160 nextSqrtRatio
         )
     {
-        (amount0Delta, amount1Delta) = IPangolinV3Pool(pool).swap(
+        (amount0Delta, amount1Delta) = IWarpDefiV3Pool(pool).swap(
             address(0),
             zeroForOne,
             amountSpecified,
@@ -31,10 +31,10 @@ contract PangolinV3PoolSwapTest is IPangolinV3SwapCallback {
             abi.encode(msg.sender)
         );
 
-        (nextSqrtRatio, , , , , , ) = IPangolinV3Pool(pool).slot0();
+        (nextSqrtRatio, , , , , , ) = IWarpDefiV3Pool(pool).slot0();
     }
 
-    function pangolinv3SwapCallback(
+    function warpdefiv3SwapCallback(
         int256 amount0Delta,
         int256 amount1Delta,
         bytes calldata data
@@ -42,13 +42,13 @@ contract PangolinV3PoolSwapTest is IPangolinV3SwapCallback {
         address sender = abi.decode(data, (address));
 
         if (amount0Delta > 0) {
-            IERC20Minimal(IPangolinV3Pool(msg.sender).token0()).transferFrom(
+            IERC20Minimal(IWarpDefiV3Pool(msg.sender).token0()).transferFrom(
                 sender,
                 msg.sender,
                 uint256(amount0Delta)
             );
         } else if (amount1Delta > 0) {
-            IERC20Minimal(IPangolinV3Pool(msg.sender).token1()).transferFrom(
+            IERC20Minimal(IWarpDefiV3Pool(msg.sender).token1()).transferFrom(
                 sender,
                 msg.sender,
                 uint256(amount1Delta)

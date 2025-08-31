@@ -2,8 +2,8 @@ import { Fixture } from "ethereum-waffle";
 import { constants, Contract, Wallet } from "ethers";
 import { ethers, waffle, network } from "hardhat";
 import {
-  IPangolinPair,
-  IPangolinV3Factory,
+  IWarpDefiPair,
+  IWarpDefiV3Factory,
   IWETH9,
   MockTimeNonfungiblePositionManager,
   TestERC20,
@@ -12,7 +12,7 @@ import {
 import completeFixture from "./shared/completeFixture";
 import { v2FactoryFixture } from "./shared/externalFixtures";
 
-import { abi as PAIR_V2_ABI } from "../../artifacts/contracts/pangolin-core/PangolinPair.sol/PangolinPair.json";
+import { abi as PAIR_V2_ABI } from "../../artifacts/contracts/warpdefi-core/WarpDefiPair.sol/WarpDefiPair.json";
 import { expect } from "chai";
 import { FeeAmount } from "./shared/constants";
 import { encodePriceSqrt } from "./shared/encodePriceSqrt";
@@ -25,7 +25,7 @@ describe("ElixirMigrator", () => {
 
   const migratorFixture: Fixture<{
     factoryV2: Contract;
-    factoryV3: IPangolinV3Factory;
+    factoryV3: IWarpDefiV3Factory;
     token: TestERC20;
     weth9: IWETH9;
     nft: MockTimeNonfungiblePositionManager;
@@ -79,12 +79,12 @@ describe("ElixirMigrator", () => {
   };
 
   let factoryV2: Contract;
-  let factoryV3: IPangolinV3Factory;
+  let factoryV3: IWarpDefiV3Factory;
   let token: TestERC20;
   let weth9: IWETH9;
   let nft: MockTimeNonfungiblePositionManager;
   let migrator: ElixirMigrator;
-  let pair: IPangolinPair;
+  let pair: IWarpDefiPair;
 
   let loadFixture: ReturnType<typeof waffle.createFixtureLoader>;
 
@@ -112,7 +112,7 @@ describe("ElixirMigrator", () => {
       pairAddress,
       PAIR_V2_ABI,
       wallet
-    ) as IPangolinPair;
+    ) as IWarpDefiPair;
 
     await token.transfer(pair.address, 10000);
     await weth9.transfer(pair.address, 10000);

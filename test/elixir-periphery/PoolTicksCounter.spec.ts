@@ -21,7 +21,7 @@ describe("PoolTicksCounter", () => {
 
     before(async () => {
       const wallets = await (ethers as any).getSigners();
-      PoolAbi = await artifacts.readArtifact("IPangolinV3Pool");
+      PoolAbi = await artifacts.readArtifact("IWarpDefiV3Pool");
       const poolTicksHelperFactory = await ethers.getContractFactory(
         "PoolTicksCounterTest"
       );
